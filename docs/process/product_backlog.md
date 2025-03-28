@@ -1,0 +1,16 @@
+| **Priorità** | **Item**                                               | **Dettagli**                                                                                    | **Stima iniziale (h)** |
+|--------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------|------------------------|
+| 1            | Requisiti e specifica                                  | Analisi e specifica dei requisiti                                                               | 5                      |
+| 2            | Architettura                                           | Identificazione dei componenti del sistema, scelta dei pattern architetturali, diagrammi UML    | 3                      |
+| 3            | Design di dettaglio                                    | Identificazione delle entità del sistema e loro interazioni, diagrammi UML                      | 4                      |
+| 4            | Identificazione elementi base del processo di sviluppo | Durata degli sprint, "definition of done", tipologie e cadenza di meeting                       | 1                      |
+| 5            | Preparazione CI e setup repo                           | Controlli e azioni per ogni “commit”, regole per accettazione “pull request”, regole sui branch | 2                      |
+| 6            | Definizione cubo multidimensionale                     |                                                                                                 | 3                      |
+| 7            | Implementazione cubo multidimensionale                 |                                                                                                 | 30                     |
+| 8            | Definizione operatori OLAP                             |                                                                                                 | 3                      |
+| 9            | Implementazione operatori OLAP                         |                                                                                                 | 42                     |
+| 10           | Definizione DSL per interrogazione DW                  |                                                                                                 | 4                      |
+| 11           | Implementazione DSL per interrogazione DW              |                                                                                                 | 42                     |
+| 12           | Scelta DW di esempio                                   |                                                                                                 | 2                      |
+| 13           | Implementazione DW di esempio                          |                                                                                                 | 12                     |
+| 14           | Conclusione documentazione                             |                                                                                                 | 14                     |
