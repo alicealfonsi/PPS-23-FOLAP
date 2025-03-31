@@ -17,8 +17,5 @@ jobs:
         with:
           java-version: "21"
           distribution: "temurin"
-      - name: Setup sbt for macos
-        if: matrix.os == 'macos-latest'
-        run: brew install sbt
       - name: Run tests
         run: sbt test
