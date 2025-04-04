@@ -37,7 +37,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
       - name: Run tests
-        run: sbt scalafixAll --check
+        run: sbt "scalafixAll --check"
 
   scalafmt:
     runs-on: ubuntu-22.04
