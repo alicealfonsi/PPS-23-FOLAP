@@ -26,3 +26,27 @@ jobs:
         run: brew install sbt
       - name: Run tests
         run: sbt test
+
+  scalafix:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+      - name: Run tests
+        run: sbt "scalafixAll --check"
+
+  scalafmt:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+      - name: Run tests
+        run: sbt scalafmtCheckAll
