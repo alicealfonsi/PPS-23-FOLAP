@@ -9,8 +9,9 @@
 | 7           | Implementazione cubo multidimensionale                 |                                                                                                 | 30                     |
 | 8           | Definizione operatori OLAP                             |                                                                                                 | 3                      |
 | 9           | Implementazione operatori OLAP                         |                                                                                                 | 42                     |
-| 10          | Definizione DSL per interrogazione Data Warehouse (DW) |                                                                                                 | 4                      |
-| 11          | Implementazione DSL per interrogazione DW              |                                                                                                 | 42                     |
-| 12          | Scelta DW di esempio                                   |                                                                                                 | 2                      |
+| 10          | Definizione DSL per definizione Data Warehouse (DW)    |                                                                                                 | 4                      |
+| 11          | Implementazione DSL per definizione DW                 |                                                                                                 | 42                     |
+| 10          | Definizione DSL per interrogazione DW                  |                                                                                                 | 4                      |
+| 11          | Implementazione DSL per interrogazione DW              |                                                                                                 | 42                     || 12          | Scelta DW di esempio                                   |                                                                                                 | 2                      |
 | 13          | Implementazione DW di esempio                          |                                                                                                 | 12                     |
 | 14          | Conclusione documentazione                             |                                                                                                 | 14                     |

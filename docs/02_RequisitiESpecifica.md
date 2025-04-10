@@ -2,7 +2,7 @@
 
 ## 1) Requisiti di business
 - La libreria che si intende realizzare deve permettere l’esecuzione di sessioni di analisi OLAP su un data warehouse esistente.
-- La libreria deve fornire un DSL per utenti OLAP per facilitare l'interrogazione del data warehouse.
+- La libreria deve fornire un DSL per utenti OLAP per facilitare l'interrogazione del data warehouse e un DSL per definire la struttura dei data wharehouse.
 - Il framework deve essere estendibile per supportare l’aggiunta di funzionalità che permettano di fruire delle informazioni contenute in un data warehouse.
 
 ## 2) Requisiti di dominio
@@ -35,6 +35,7 @@ L’utente può:
 
 ## 4) Requisiti non funzionali
 - La libreria deve fornire un DSL intuitivo per l'interrogazione del DW.
+- La libreria deve fornire un DSL intuitivo per la definizione del DW
 
 ## 5) Requisiti di implementazione
 - Scala 3.3.5 LTS.
@@ -42,3 +43,4 @@ L’utente può:
 - Uso del TDD nel processo di sviluppo.
 - Realizzazione del DSL interno.
 - Codice scritto in maniera idiomatica, organizzato e documentato.
+
