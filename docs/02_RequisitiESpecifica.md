@@ -19,7 +19,7 @@
 - Il risultato delle interrogazioni OLAP è di tipo multidimensionale.
 
 ## 3) Requisiti funzionali
-### 3.1) Requisiti funzionali di utente
+### Requisiti funzionali di utente
 L’utente può:
 - Visualizzare i dati multidimensionali in formato tabellare.
 - Applicare i seguenti operatori OLAP ai dati:
@@ -28,10 +28,7 @@ L’utente può:
   - **slice**: permette di selezionare un membro per una dimensione;
   - **dice**: permette di selezionare un range di membri su più dimensioni;
   - **pivot**: permette una diversa modalità di organizzazione dei dati;
-  - **drill-across**: permette di comparare i dati di due o più cubi che condividono almeno una dimensione. 
-
-### 3.2) Requisiti funzionali di sistema
-
+  - **drill-across**: permette di comparare i dati di due o più cubi che condividono almeno una dimensione.
 
 ## 4) Requisiti non funzionali
 - La libreria deve fornire un DSL intuitivo per l'interrogazione del DW.
@@ -43,4 +40,3 @@ L’utente può:
 - Uso del TDD nel processo di sviluppo.
 - Realizzazione del DSL interno.
 - Codice scritto in maniera idiomatica, organizzato e documentato.
-
