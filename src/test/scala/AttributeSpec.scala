@@ -4,7 +4,7 @@ import org.scalatest.*
 import flatspec.*
 import matchers.*
 
-class AttributeSpec extends AnyFlatSpec with should.Matchers {
+class AttributeSpec extends AnyFlatSpec with should.Matchers:
 
   "An Attribute" should "have an optional parent" in new Attribute:
     override val value: String = ""
@@ -16,4 +16,3 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers {
     override val value: String = description
     override val parent: Option[Attribute] = None
     value shouldBe description
-}
