@@ -1,3 +1,4 @@
 object Cube:
   trait Attribute:
     val parent: Option[Attribute]
+    val value: String
