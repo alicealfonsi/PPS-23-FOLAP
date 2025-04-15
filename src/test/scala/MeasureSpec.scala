@@ -1,7 +1,8 @@
 import Cube.Measure
-import org.scalatest.*
-import flatspec.*
-import matchers.*
+import org.scalatest._
+
+import flatspec._
+import matchers._
 
 case class ExampleMeasure[T <: Cube.Number](override val value: T) extends Measure[T]
 

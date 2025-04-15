@@ -1,8 +1,8 @@
 import Cube.Attribute
+import org.scalatest._
 
-import org.scalatest.*
-import flatspec.*
-import matchers.*
+import flatspec._
+import matchers._
 
 private case class ExampleAttribute() extends Attribute:
   override val parent: Option[Attribute] = None
