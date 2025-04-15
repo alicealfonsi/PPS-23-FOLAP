@@ -4,7 +4,8 @@ ThisBuild / scalaVersion := "3.3.5"
 
 // For Scalafix
 ThisBuild / semanticdbEnabled := true
-scalacOptions ++= Seq("-Wunused:all")
+scalacOptions ++= Seq("-Wunused:all", "-explain"
+)
 
 lazy val root = (project in file("."))
   .settings(
