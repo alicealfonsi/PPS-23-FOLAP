@@ -8,3 +8,5 @@ object Cube:
     val value: T
 
   trait Event
+
+  trait Cube

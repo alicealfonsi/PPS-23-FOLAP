@@ -4,4 +4,4 @@ import flatspec.*
 import matchers.*
 
 class EventSpec extends AnyFlatSpec with should.Matchers with BeforeAndAfterEach:
-  val e: Event
+  case class ExampleEvent() extends Event
