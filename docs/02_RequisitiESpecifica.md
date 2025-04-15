@@ -27,7 +27,6 @@ L’utente può:
   - **drill-down**: è duale al roll-up; permette di disaggregare i dati scendendo a un livello più fine in una gerarchia;
   - **slice**: permette di selezionare un membro per una dimensione;
   - **dice**: permette di selezionare un range di membri su più dimensioni;
-  - **pivot**: permette una diversa modalità di organizzazione dei dati;
   - **drill-across**: permette di comparare i dati di due o più cubi che condividono almeno una dimensione.
 
 ## 4) Requisiti non funzionali
