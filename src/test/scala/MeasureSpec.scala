@@ -15,3 +15,8 @@ class MeasureSpec extends AnyFlatSpec with should.Matchers with BeforeAndAfterEa
     val value: Long = 4242
     val measure = ExampleMeasure(value)
     measure.value shouldEqual value
+
+  it should "accept a float value" in :
+    val value: Float = 42.42
+    val measure = ExampleMeasure(value)
+    measure.value shouldEqual value
