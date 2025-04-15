@@ -6,3 +6,5 @@ object Cube:
 
   trait Measure[T <: Number]:
     val value: T
+
+  trait Event
