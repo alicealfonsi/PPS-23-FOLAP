@@ -20,3 +20,8 @@ class MeasureSpec extends AnyFlatSpec with should.Matchers with BeforeAndAfterEa
     val value: Float = 42.42
     val measure = ExampleMeasure(value)
     measure.value shouldEqual value
+
+  it should "accept a double value" in :
+    val value: Double = 424242.424242
+    val measure = ExampleMeasure(value)
+    measure.value shouldEqual value

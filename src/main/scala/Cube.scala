@@ -1,5 +1,5 @@
 object Cube:
-  type Number = Int | Long | Float
+  type Number = Int | Long | Float | Double
   trait Attribute:
     val parent: Option[Attribute]
     val value: String
