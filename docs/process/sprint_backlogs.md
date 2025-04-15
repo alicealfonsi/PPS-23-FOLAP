@@ -1,5 +1,5 @@
 # Sprint Backlogs
-## Sprint Backlog 0 (start on 31/03/2025)
+## Sprint Backlog 0 (start on 31/03/2025, deadline 11/04/2025)
 | **Product Backlog Item**                               | **Sprint Task**                                       | **Volunteer** | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
 |--------------------------------------------------------|-------------------------------------------------------|---------------|------------------------------------|-------------------------|----------------------------------------------|
 | Identificazione elementi base del processo di sviluppo | Assegnazione dei ruoli                                | Team          | 0.25                               | 0.25                    | 0                                            |
@@ -26,3 +26,18 @@ Il team si è dovuto soffermare su aspetti di dominio essenziali per la modellaz
 previsto per essere approfonditi.
 La valutazione dei vantaggi e degli svantaggi delle varie soluzioni individuate si è rivelata lunga ed è stato difficile
 convergere verso la scelta finale.
+
+
+## Sprint Backlog 1 (start on 12/04/2025, deadline 29/04/2025)
+| **Product Backlog Item**           | **Sprint Task**                       | **Volunteer** | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
+|------------------------------------|---------------------------------------|---------------|------------------------------------|-------------------------|----------------------------------------------|
+| Definizione cubo multidimensionale | Definizione specifiche cubo           | Team          | 3                                  | 3                       |                                              |
+| Implementazione Event              |                                       | Eugenio       |                                    |                         |                                              |
+| Implementazione Attribute          |                                       | Eugenio       |                                    |                         |                                              |
+| Implementazione Measure            |                                       | Eugenio       |                                    |                         |                                              |
+| Implementazione Cube               |                                       | Eugenio       |                                    |                         |                                              |
+| Definizione operatori OLAP         | Definizione specifiche operatori OLAP | Team          | 3                                  | 3                       |                                              |
+| Implementazione roll-up            |                                       | Alice         |                                    |                         |                                              |
+| Implementazione drill-down         |                                       | Alice         |                                    |                         |                                              |
+| Implementazione slice-and-dice     |                                       | Claudia       |                                    |                         |                                              |
+| Implementazione drill-across       |                                       | Claudia       |                                    |                         |                                              |
