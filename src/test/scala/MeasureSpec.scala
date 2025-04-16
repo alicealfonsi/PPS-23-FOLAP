@@ -4,8 +4,7 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-case class ExampleMeasure[T: Numeric](override val value: T)
-    extends Measure[T]
+case class ExampleMeasure[T: Numeric](override val value: T) extends Measure[T]
 
 class MeasureSpec
     extends AnyFlatSpec
@@ -36,12 +35,12 @@ class MeasureSpec
     val measureB = ExampleMeasure(20)
     measureA should be < measureB
 
-  it should "be comparable: greater than" in :
+  it should "be comparable: greater than" in:
     val measureA = ExampleMeasure(20)
     val measureB = ExampleMeasure(10)
     measureA should be > measureB
 
-  it should "be comparable: equal" in :
+  it should "be comparable: equal" in:
     val measureA = ExampleMeasure(10)
     val measureB = ExampleMeasure(10)
     measureA shouldEqual measureB
