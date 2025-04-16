@@ -4,7 +4,7 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-case class ExampleMeasure[T <: Cube.Number](override val value: T)
+case class ExampleMeasure[T: Numeric](override val value: T)
     extends Measure[T]
 
 class MeasureSpec
@@ -30,3 +30,8 @@ class MeasureSpec
     val value: Double = 424242.424242
     val measure = ExampleMeasure(value)
     measure.value shouldEqual value
+
+  it should "be comparable: less than" in:
+    val measureA = ExampleMeasure(10)
+    val measureB = ExampleMeasure(20)
+    measureA should be < measureB
