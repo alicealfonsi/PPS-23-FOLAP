@@ -35,3 +35,13 @@ class MeasureSpec
     val measureA = ExampleMeasure(10)
     val measureB = ExampleMeasure(20)
     measureA should be < measureB
+
+  it should "be comparable: greater than" in :
+    val measureA = ExampleMeasure(20)
+    val measureB = ExampleMeasure(10)
+    measureA should be > measureB
+
+  it should "be comparable: equal" in :
+    val measureA = ExampleMeasure(10)
+    val measureB = ExampleMeasure(10)
+    measureA shouldEqual measureB
