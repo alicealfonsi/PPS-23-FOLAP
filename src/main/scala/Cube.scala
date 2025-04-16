@@ -16,6 +16,8 @@ object Cube:
       extends Equiv[Measure[T]]
       with Comparable[Measure[T]]:
 
+    import scala.math.Numeric.Implicits.infixNumericOps
+
     /** The underlying measure value
       */
     val value: T
@@ -35,8 +37,10 @@ object Cube:
     def fromRaw(value: T): Measure[T]
 
     def +(other: Measure[T]): Measure[T] =
-      import scala.math.Numeric.Implicits.infixNumericOps
       fromRaw(value + other.value)
+
+    def -(other: Measure[T]): Measure[T] =
+      fromRaw(value - other.value)
 
   /** An Event is something that happened in the business domain
     * @tparam A

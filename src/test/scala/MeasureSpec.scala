@@ -53,3 +53,10 @@ class MeasureSpec
     val measureA = ExampleMeasure(valueA)
     val measureB = ExampleMeasure(valueB)
     (measureA + measureB).value shouldEqual valueA + valueB
+
+  it should "return a correct difference" in :
+    val valueA = 10
+    val valueB = 20
+    val measureA = ExampleMeasure(valueA)
+    val measureB = ExampleMeasure(valueB)
+    (measureA - measureB).value shouldEqual valueA - valueB
