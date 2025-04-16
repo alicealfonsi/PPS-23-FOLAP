@@ -12,6 +12,7 @@ class EventSpec
   case class ExampleEvent() extends Event[ExampleAttribute]:
     override val attributes: Iterable[(String, ExampleAttribute)] = Seq(("test", ExampleAttribute()))
 
-  "An Event" should "allow iterating on all of its attributes" in:
-    val e: Event = ExampleEvent()
+  "An Event" should "have at least one attribute" in:
+    val e: Event[ExampleAttribute] = ExampleEvent()
     val attributes: Iterable[(String, Cube.Attribute)] = e.attributes
+    attributes.size should be >= 1
