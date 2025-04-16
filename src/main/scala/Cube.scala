@@ -7,6 +7,7 @@ object Cube:
   trait Measure[T <: Number]:
     val value: T
 
-  trait Event
+  trait Event[A <: Attribute]:
+    val attributes: Iterable[(String, A)]
 
   trait Cube
