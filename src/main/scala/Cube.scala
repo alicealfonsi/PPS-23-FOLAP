@@ -27,6 +27,17 @@ object Cube:
       import scala.math.Ordered.orderingToOrdered
       value.compare(o.value)
 
+    /**
+     * Create a Measure from the raw value
+     * @param value the raw value
+     * @return a Measure
+     */
+    def fromRaw(value: T): Measure[T]
+
+    def +(other: Measure[T]): Measure[T] =
+      import scala.math.Numeric.Implicits.infixNumericOps
+      fromRaw(value + other.value)
+
   /** An Event is something that happened in the business domain
     * @tparam A
     *   The attributes union type

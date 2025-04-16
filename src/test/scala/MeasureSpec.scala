@@ -4,7 +4,9 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-case class ExampleMeasure[T: Numeric](override val value: T) extends Measure[T]
+case class ExampleMeasure[T: Numeric](override val value: T) extends Measure[T] {
+  override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)
+}
 
 class MeasureSpec
     extends AnyFlatSpec
@@ -44,3 +46,10 @@ class MeasureSpec
     val measureA = ExampleMeasure(10)
     val measureB = ExampleMeasure(10)
     measureA shouldEqual measureB
+
+  it should "return a correct sum" in:
+    val valueA = 10
+    val valueB = 20
+    val measureA = ExampleMeasure(valueA)
+    val measureB = ExampleMeasure(valueB)
+    (measureA + measureB).value shouldEqual valueA + valueB
