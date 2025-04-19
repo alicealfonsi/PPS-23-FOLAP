@@ -5,9 +5,9 @@ object Cube:
   /** An Attribute occupies a single level in a hierarchy
     */
   trait Attribute:
-    val parent: Option[Attribute]
+    def parent: Option[Attribute]
     def name: String = getClass.getName
-    val value: String
+    def value: String
 
     /** Indicates whether this attribute is "equal to" some other attribute
       * @param other
