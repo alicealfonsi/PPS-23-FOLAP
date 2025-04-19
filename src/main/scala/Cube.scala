@@ -6,6 +6,7 @@ object Cube:
     */
   trait Attribute:
     val parent: Option[Attribute]
+    def name: String = getClass.getName
     val value: String
 
   /** A Measure represent a numeric value associated with an Event
@@ -29,11 +30,12 @@ object Cube:
       import scala.math.Ordered.orderingToOrdered
       value.compare(o.value)
 
-    /**
-     * Create a Measure from the raw value
-     * @param value the raw value
-     * @return a Measure
-     */
+    /** Create a Measure from the raw value
+      * @param value
+      *   the raw value
+      * @return
+      *   a Measure
+      */
     def fromRaw(value: T): Measure[T]
 
     def +(other: Measure[T]): Measure[T] =

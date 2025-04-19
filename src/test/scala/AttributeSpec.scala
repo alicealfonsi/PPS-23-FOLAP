@@ -20,5 +20,8 @@ class AttributeSpec
     val parent: Option[Attribute] = attribute.parent
     parent shouldEqual None
 
+  it should "have a name equal to the class name" in:
+    attribute.name shouldEqual "ExampleAttribute"
+
   it should "have a descriptive value" in:
     attribute.value shouldEqual ""
