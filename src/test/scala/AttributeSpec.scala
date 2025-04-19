@@ -8,6 +8,11 @@ private case class ExampleAttribute() extends Attribute:
   override val parent: Option[Attribute] = None
   override val value: String = ""
 
+private case class OtherAttribute(
+    override val parent: Option[Attribute],
+    override val value: String
+) extends Attribute
+
 class AttributeSpec
     extends AnyFlatSpec
     with should.Matchers
@@ -25,3 +30,8 @@ class AttributeSpec
 
   it should "have a descriptive value" in:
     attribute.value shouldEqual ""
+
+  it should "be comparable: equal to" in:
+    val other1: Attribute = OtherAttribute(None, "")
+    val other2: Attribute = OtherAttribute(Some(ExampleAttribute()), "")
+    other1.equals(other2) shouldBe true

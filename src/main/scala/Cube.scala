@@ -9,6 +9,16 @@ object Cube:
     def name: String = getClass.getName
     val value: String
 
+    /** Indicates whether this attribute is "equal to" some other attribute
+      * @param other
+      *   the attribute with which to compare
+      * @return
+      *   true if this attribute has the same name and value as the other; false
+      *   otherwise
+      */
+    def equals(other: Attribute): Boolean =
+      name == other.name && value == other.value
+
   /** A Measure represent a numeric value associated with an Event
     * @tparam T
     *   the underlying measure type
