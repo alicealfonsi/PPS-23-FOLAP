@@ -19,6 +19,10 @@ object Cube:
 
     import scala.math.Numeric.Implicits.infixNumericOps
 
+    /** The measure name
+      */
+    def name: String = getClass.getName
+
     /** The underlying measure value
       */
     val value: T
