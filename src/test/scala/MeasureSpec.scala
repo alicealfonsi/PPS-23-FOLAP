@@ -4,7 +4,8 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-case class ExampleMeasure[T: Numeric](override val value: T) extends Measure[T] {
+case class ExampleMeasure[T: Numeric](override val value: T)
+    extends Measure[T] {
   override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)
 }
 
@@ -54,7 +55,7 @@ class MeasureSpec
     val measureB = ExampleMeasure(valueB)
     (measureA + measureB).value shouldEqual valueA + valueB
 
-  it should "return a correct difference" in :
+  it should "return a correct difference" in:
     val valueA = 10
     val valueB = 20
     val measureA = ExampleMeasure(valueA)
