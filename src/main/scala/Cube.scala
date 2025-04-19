@@ -35,7 +35,7 @@ object Cube:
 
     /** The underlying measure value
       */
-    val value: T
+    def value: T
 
     override def equiv(x: Measure[T], y: Measure[T]): Boolean =
       x.value == y.value
