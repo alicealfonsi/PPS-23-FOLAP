@@ -4,10 +4,12 @@ ThisBuild / scalaVersion := "3.3.5"
 
 // For Scalafix
 ThisBuild / semanticdbEnabled := true
-scalacOptions ++= Seq("-Wunused:all")
+scalacOptions ++= Seq("-Wunused:all", "-explain"
+)
 
 lazy val root = (project in file("."))
   .settings(
     name := "FOLAP",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.19",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % "test"
   )
