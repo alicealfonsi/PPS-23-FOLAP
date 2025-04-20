@@ -12,7 +12,7 @@ class EventSpec
     with BeforeAndAfterEach:
   private case class ExampleEvent()
       extends Event[ExampleAttribute, ExampleMeasure[_]]:
-    override val attributes: Iterable[ExampleAttribute] = Seq(
+    override val attributes: Iterable[ExampleAttribute] = List(
       ExampleAttribute()
     )
     override val measures: Iterable[ExampleMeasure[_]] = List(ExampleMeasure(10))
@@ -21,7 +21,7 @@ class EventSpec
     event = ExampleEvent()
 
   "An Event" should "have a list of attributes" in:
-    event.attributes shouldEqual Seq(ExampleAttribute())
+    event.attributes shouldEqual List(ExampleAttribute())
 
   it should "have at least one attribute" in:
     event.attributes.size should be >= 1
