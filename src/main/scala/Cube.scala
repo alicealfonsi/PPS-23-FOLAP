@@ -65,6 +65,6 @@ object Cube:
   trait Event[A <: Attribute]:
     /** The attributes that describe the Event
       */
-    val attributes: Iterable[A]
+    def attributes: Iterable[A]
 
   trait Cube
