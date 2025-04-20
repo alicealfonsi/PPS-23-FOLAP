@@ -62,9 +62,15 @@ object Cube:
     * @tparam A
     *   the attributes union type
     */
-  trait Event[A <: Attribute]:
+  trait Event[A <: Attribute, M <: Measure[_]]:
     /** The attributes that describe the Event
       */
     def attributes: Iterable[A]
+
+    /** The measures that quantify the Event
+      * @return
+      *   the list of Event measures
+      */
+    def measures: Iterable[M]
 
   trait Cube

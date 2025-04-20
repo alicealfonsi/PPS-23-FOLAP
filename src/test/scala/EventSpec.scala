@@ -10,11 +10,13 @@ class EventSpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
-  private case class ExampleEvent() extends Event[ExampleAttribute]:
+  private case class ExampleEvent()
+      extends Event[ExampleAttribute, ExampleMeasure[_]]:
     override val attributes: Iterable[ExampleAttribute] = Seq(
       ExampleAttribute()
     )
-  var event: Event[ExampleAttribute] = ExampleEvent()
+    override val measures: Iterable[ExampleMeasure[_]] = List(ExampleMeasure(10))
+  var event: Event[ExampleAttribute, ExampleMeasure[_]] = ExampleEvent()
   override protected def beforeEach(): Unit =
     event = ExampleEvent()
 
@@ -23,3 +25,6 @@ class EventSpec
 
   it should "have at least one attribute" in:
     event.attributes.size should be >= 1
+
+  it should "have a list of measures" in:
+    event.measures shouldEqual List(ExampleMeasure(10))
