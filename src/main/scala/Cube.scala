@@ -64,6 +64,8 @@ object Cube:
     */
   trait Event[A <: Attribute, M <: Measure[_]]:
     /** The attributes that describe the Event
+      * @return
+      *   the list of Event attributes
       */
     def attributes: Iterable[A]
 
