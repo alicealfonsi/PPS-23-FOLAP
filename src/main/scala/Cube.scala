@@ -58,14 +58,13 @@ object Cube:
     def -(other: Measure[T]): Measure[T] =
       fromRaw(value - other.value)
 
-  /** An Event is something that happened in the business domain
+  /** An Event is an instance of a fact that occurred in the business domain
     * @tparam A
-    *   The attributes union type
+    *   the attributes union type
     */
   trait Event[A <: Attribute]:
-    /** List all attributes. It must return all attributes contained in the
-      * event.
+    /** The attributes that describe the Event
       */
-    val attributes: Iterable[(String, A)]
+    val attributes: Iterable[A]
 
   trait Cube
