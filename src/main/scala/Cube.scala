@@ -75,6 +75,8 @@ object Cube:
   /** An Event is an instance of a fact that occurred in the business domain
     * @tparam A
     *   the attributes union type
+    * @tparam M
+    *   the measures union type
     */
   trait Event[A <: Attribute, M <: Measure[_]]:
     /** The attributes that describe the Event
