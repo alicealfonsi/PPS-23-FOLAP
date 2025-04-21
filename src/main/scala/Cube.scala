@@ -33,9 +33,9 @@ object Cube:
     def equals(other: Attribute): Boolean =
       name == other.name && value == other.value
 
-  /** A Measure represent a numeric value associated with an Event
+  /** A Measure represents a numeric value associated with an Event
     * @tparam T
-    *   the underlying measure type
+    *   the measure type
     */
   trait Measure[T](implicit num: Numeric[T])
       extends Equiv[Measure[T]]
@@ -43,11 +43,15 @@ object Cube:
 
     import scala.math.Numeric.Implicits.infixNumericOps
 
-    /** The measure name
+    /** The name of the measure
+      * @return
+      *   the measure name
       */
     def name: String = getClass.getName
 
-    /** The underlying measure value
+    /** The value of the measure
+      * @return
+      *   the measure value
       */
     def value: T
 
