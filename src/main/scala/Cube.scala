@@ -89,4 +89,17 @@ object Cube:
       */
     def measures: Iterable[M]
 
-  trait Cube
+  /** A Cube stores events related to the same fact
+    * @tparam A
+    *   the attributes union type
+    * @tparam M
+    *   the measures union type
+    * @tparam E
+    *   the type of events
+    */
+  trait Cube[A <: Attribute, M <: Measure[_], E <: Event[A, M]]:
+    /** The events stored in the Cube
+      * @return
+      *   the list of Cube events
+      */
+    def events: Iterable[Event[A, M]]
