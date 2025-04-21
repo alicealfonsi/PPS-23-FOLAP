@@ -5,8 +5,22 @@ object Cube:
   /** An Attribute occupies a single level in a hierarchy
     */
   trait Attribute:
+    /** The attribute that precedes this attribute in the hierarchy
+      * @return
+      *   the parent attribute
+      */
     def parent: Option[Attribute]
+
+    /** The name of the attribute
+      * @return
+      *   the attribute name
+      */
     def name: String = getClass.getName
+
+    /** The value of the attribute
+      * @return
+      *   the attribute value
+      */
     def value: String
 
     /** Indicates whether this attribute is "equal to" some other attribute
