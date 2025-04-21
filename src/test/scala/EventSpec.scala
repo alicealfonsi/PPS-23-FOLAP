@@ -1,4 +1,4 @@
-import Cube.Event
+import MultidimensionalModel.Event
 import org.scalatest._
 
 import scala.language.postfixOps

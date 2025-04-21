@@ -1,6 +1,6 @@
-/** The Cube defines the types needed to implement a multidimensional cube
+/** The model for representing and querying data in a DW
   */
-object Cube:
+object MultidimensionalModel:
 
   /** An Attribute occupies a single level in a hierarchy
     */

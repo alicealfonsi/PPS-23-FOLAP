@@ -1,4 +1,4 @@
-import Cube.Measure
+import MultidimensionalModel.Measure
 import org.scalatest._
 
 import flatspec._
