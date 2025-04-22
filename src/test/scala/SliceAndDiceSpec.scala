@@ -62,3 +62,8 @@ class SliceAndDiceSpec
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None))
     )
     filtered should contain theSameElementsAs Seq(event1)
+
+  it should "return all events when no filter is provided" in:
+    val filtered = Operator.sliceAndDice(events, Seq.empty)
+    filtered should contain theSameElementsAs events
+
