@@ -1,14 +1,17 @@
 import MultidimensionalModel._
 object Operators {
   trait Operators:
-    def slice[A <: Attribute, M <: Measure[_]](
+    def sliceAndDice[A <: Attribute, M <: Measure[_]](
         events: Iterable[Event[A, M]],
-        filterAttribute: A
+        filters: Iterable[Attribute]
     ): Iterable[Event[A, M]] =
       events.filter { event =>
-        event.attributes
-          .find(attr => attr.name == filterAttribute.name)
-          .exists(_.value == filterAttribute.value)
+        filters.forall { filter =>
+          event.attributes
+            .find(attr => attr.name == filter.name)
+            .exists(_.value == filter.value)
+        }
+
       }
 
   object Operator extends Operators

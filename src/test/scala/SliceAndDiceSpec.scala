@@ -49,9 +49,16 @@ class SliceAndDiceSpec
     measures = Seq(SalesMeasure(120))
   )
 
-  
   var events = Seq(event1, event2, event3)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
-    val filtered = Operator.slice(events, NationAttribute("Italy", None))
+    val filtered =
+      Operator.sliceAndDice(events, Seq(NationAttribute("Italy", None)))
     filtered should contain theSameElementsAs Seq(event1, event3)
+
+  it should "filter events by multiple attributes (dice)" in:
+    val filtered = Operator.sliceAndDice(
+      events,
+      Seq(NationAttribute("Italy", None), YearAttribute("2024", None))
+    )
+    filtered should contain theSameElementsAs Seq(event1)
