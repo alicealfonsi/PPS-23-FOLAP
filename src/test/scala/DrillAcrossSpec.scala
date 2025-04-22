@@ -100,7 +100,7 @@ class SliceAndDiceSpec
         measures: Iterable[Measure[_]]
     ) => ResultEvent(attributes, measures)
 
-  "drillAcross" should "combine measures of events with matching attributes" in:
+  "drillAcross" should "combine events with matching attributes" in:
     val result = Operator.drillAcross(eventsA, eventsB, createEvent)
     val resultEvent1 = ResultEvent(
       Seq(NationAttribute("Italy", None)),
