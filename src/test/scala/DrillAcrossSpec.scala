@@ -21,12 +21,19 @@ private case class CategoryAttribute(
     override val value: String,
     override val parent: Option[Attribute]
 ) extends Attribute;
+private case class CustomerAttribute(
+    override val value: String,
+    override val parent: Option[Attribute]
+) extends Attribute;
 private case class TotSalesMeasure[T: Numeric](override val value: T)
     extends Measure[T]:
   override def fromRaw(value: T): Measure[T] = TotSalesMeasure(value)
 private case class TotProfitsMeasure[T: Numeric](override val value: T)
     extends Measure[T]:
   override def fromRaw(value: T): Measure[T] = TotProfitsMeasure(value)
+private case class TotPurchasesMeasure[T: Numeric](override val value: T)
+    extends Measure[T]:
+  override def fromRaw(value: T): Measure[T] = TotPurchasesMeasure(value)
 
 private case class SalesEvent(
     override val attributes: Iterable[Attribute],
@@ -37,6 +44,10 @@ private case class ProfitsEvent(
     override val measures: Iterable[Measure[_]]
 ) extends Event[Attribute, Measure[_]];
 private case class ResultEvent(
+    override val attributes: Iterable[Attribute],
+    override val measures: Iterable[Measure[_]]
+) extends Event[Attribute, Measure[_]];
+private case class CustomerEvent(
     override val attributes: Iterable[Attribute],
     override val measures: Iterable[Measure[_]]
 ) extends Event[Attribute, Measure[_]];
@@ -74,9 +85,14 @@ class SliceAndDiceSpec
       Seq(NationAttribute("Spain", None), CategoryAttribute("bags", None)),
     measures = Seq(TotProfitsMeasure(40))
   )
+  val event6 = CustomerEvent(
+    Seq(CustomerAttribute("Claudia", None)),
+    Seq(TotPurchasesMeasure(5))
+  )
 
   var eventsA = Seq(event1, event2, event3)
   var eventsB = Seq(event4, event5)
+  var eventsC = Seq(event6)
 
   def createEvent: EventConstructor[Attribute, Measure[_]] =
     (
@@ -97,3 +113,7 @@ class SliceAndDiceSpec
     val resultEvents = Seq(resultEvent1, resultEvent2)
     result should have size 2
     result should contain theSameElementsAs resultEvents
+
+  it should "return empty when no attributes match" in:
+    val result = Operator.drillAcross(eventsA, eventsC, createEvent)
+    result should be(empty)
