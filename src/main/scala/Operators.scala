@@ -1,6 +1,6 @@
 import MultidimensionalModel._
 object Operators {
-  trait Operator:
+  trait Operators:
     def slice[A <: Attribute, M <: Measure[_]](
         events: Iterable[Event[A, M]],
         filterAttribute: A
@@ -11,5 +11,5 @@ object Operators {
           .exists(_.value == filterAttribute.value)
       }
 
-  object Operator extends Operator
+  object Operator extends Operators
 }

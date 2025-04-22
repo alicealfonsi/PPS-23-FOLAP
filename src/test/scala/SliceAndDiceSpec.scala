@@ -49,6 +49,7 @@ class SliceAndDiceSpec
     measures = Seq(SalesMeasure(120))
   )
 
+  
   var events = Seq(event1, event2, event3)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
