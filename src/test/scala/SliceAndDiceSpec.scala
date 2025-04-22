@@ -68,7 +68,6 @@ class SliceAndDiceSpec
     filtered should contain theSameElementsAs events
 
   it should "return an empty result when no event matches the filter" in:
-    val filtered = Operator.sliceAndDice(events, Seq(NationAttribute("Germany", None)))
-    filtered should be (empty)
-
-
+    val filtered =
+      Operator.sliceAndDice(events, Seq(NationAttribute("Germany", None)))
+    filtered should be(empty)
