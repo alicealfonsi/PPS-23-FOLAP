@@ -57,30 +57,30 @@ class SliceAndDiceSpec
     with should.Matchers
     with BeforeAndAfterEach:
 
-  var event1 = SalesEvent(
+  val event1 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
-  var event2 = SalesEvent(
+  val event2 = SalesEvent(
     attributes =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
-  var event3 = SalesEvent(
+  val event3 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
-  var event4 = ProfitsEvent(
+  val event4 = ProfitsEvent(
     attributes =
       Seq(NationAttribute("Italy", None), CategoryAttribute("shoes", None)),
     measures = Seq(TotProfitsMeasure(30))
   )
-  var event5 = ProfitsEvent(
+  val event5 = ProfitsEvent(
     attributes =
       Seq(NationAttribute("Spain", None), CategoryAttribute("bags", None)),
     measures = Seq(TotProfitsMeasure(40))
@@ -90,9 +90,9 @@ class SliceAndDiceSpec
     Seq(TotPurchasesMeasure(5))
   )
 
-  var eventsA = Seq(event1, event2, event3)
-  var eventsB = Seq(event4, event5)
-  var eventsC = Seq(event6)
+  val eventsA = Seq(event1, event2, event3)
+  val eventsB = Seq(event4, event5)
+  val eventsC = Seq(event6)
 
   def createEvent: EventConstructor[Attribute, Measure[_]] =
     (
