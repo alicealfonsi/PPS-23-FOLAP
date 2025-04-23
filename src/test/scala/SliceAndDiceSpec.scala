@@ -1,7 +1,7 @@
 import MultidimensionalModel.Attribute
 import MultidimensionalModel.Event
 import MultidimensionalModel.Measure
-import Operators.Operator
+import Operators.sliceAndDice
 import org.scalatest._
 
 import scala.language.postfixOps
@@ -53,21 +53,23 @@ class SliceAndDiceSpec
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
     val filtered =
-      Operator.sliceAndDice(events, Seq(NationAttribute("Italy", None)))
+      sliceAndDice(events, Seq(NationAttribute("Italy", None)))
     filtered should contain theSameElementsAs Seq(event1, event3)
 
   it should "filter events by multiple attributes (dice)" in:
-    val filtered = Operator.sliceAndDice(
+    val filtered = sliceAndDice(
       events,
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None))
     )
     filtered should contain theSameElementsAs Seq(event1)
 
   it should "return all events when no filter is provided" in:
-    val filtered = Operator.sliceAndDice(events, Seq.empty)
+    val filtered = sliceAndDice(events, Seq.empty)
     filtered should contain theSameElementsAs events
 
   it should "return an empty result when no event matches the filter" in:
     val filtered =
-      Operator.sliceAndDice(events, Seq(NationAttribute("Germany", None)))
+      sliceAndDice(events, Seq(NationAttribute("Germany", None)))
     filtered should be(empty)
+
+    

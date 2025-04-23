@@ -1,7 +1,7 @@
 import MultidimensionalModel._
-object Operators {
-  trait Operators:
-    def sliceAndDice[A <: Attribute, M <: Measure[_]](
+object Operators:
+  
+  def sliceAndDice[A <: Attribute, M <: Measure[_]](      
         events: Iterable[Event[A, M]],
         filters: Iterable[Attribute]
     ): Iterable[Event[A, M]] =
@@ -14,5 +14,5 @@ object Operators {
 
       }
 
-  object Operator extends Operators
-}
+  
+
