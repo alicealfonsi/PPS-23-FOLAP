@@ -12,19 +12,19 @@ import matchers._
 private case class NationAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute;
+) extends Attribute
 private case class YearAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute;
+) extends Attribute
 private case class CategoryAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute;
+) extends Attribute
 private case class CustomerAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute;
+) extends Attribute
 private case class TotSalesMeasure[T: Numeric](override val value: T)
     extends Measure[T]:
   override def fromRaw(value: T): Measure[T] = TotSalesMeasure(value)
@@ -38,19 +38,19 @@ private case class TotPurchasesMeasure[T: Numeric](override val value: T)
 private case class SalesEvent(
     override val attributes: Iterable[Attribute],
     override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]];
+) extends Event[Attribute, Measure[_]]
 private case class ProfitsEvent(
     override val attributes: Iterable[Attribute],
     override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]];
+) extends Event[Attribute, Measure[_]]
 private case class ResultEvent(
     override val attributes: Iterable[Attribute],
     override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]];
+) extends Event[Attribute, Measure[_]]
 private case class CustomerEvent(
     override val attributes: Iterable[Attribute],
     override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]];
+) extends Event[Attribute, Measure[_]]
 
 class SliceAndDiceSpec
     extends AnyFlatSpec
