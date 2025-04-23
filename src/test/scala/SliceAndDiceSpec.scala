@@ -12,11 +12,11 @@ import matchers._
 private case class NationAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute;
+) extends Attribute
 private case class YearAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute;
+) extends Attribute
 private case class SalesMeasure[T: Numeric](override val value: T)
     extends Measure[T]:
   override def fromRaw(value: T): Measure[T] = SalesMeasure(value)
@@ -24,7 +24,7 @@ private case class SalesMeasure[T: Numeric](override val value: T)
 private case class SalesEvent(
     override val attributes: Iterable[Attribute],
     override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]];
+) extends Event[Attribute, Measure[_]]
 
 class SliceAndDiceSpec
     extends AnyFlatSpec
