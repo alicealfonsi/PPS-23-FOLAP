@@ -1,7 +1,7 @@
 import MultidimensionalModel.Attribute
 import MultidimensionalModel.Event
 import MultidimensionalModel.Measure
-import Operators.Operator
+import Operators.drillAcross
 import org.scalatest._
 
 import scala.language.postfixOps
@@ -101,7 +101,7 @@ class SliceAndDiceSpec
     ) => ResultEvent(attributes, measures)
 
   "drillAcross" should "combine events with matching attributes" in:
-    val result = Operator.drillAcross(eventsA, eventsB, createEvent)
+    val result = drillAcross(eventsA, eventsB, createEvent)
     val resultEvent1 = ResultEvent(
       Seq(NationAttribute("Italy", None)),
       Seq(TotSalesMeasure(100), TotProfitsMeasure(30))
@@ -115,5 +115,5 @@ class SliceAndDiceSpec
     result should contain theSameElementsAs resultEvents
 
   it should "return empty when no attributes match" in:
-    val result = Operator.drillAcross(eventsA, eventsC, createEvent)
+    val result = drillAcross(eventsA, eventsC, createEvent)
     result should be(empty)
