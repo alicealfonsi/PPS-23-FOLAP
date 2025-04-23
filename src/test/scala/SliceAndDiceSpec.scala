@@ -71,5 +71,3 @@ class SliceAndDiceSpec
     val filtered =
       sliceAndDice(events, Seq(NationAttribute("Germany", None)))
     filtered should be(empty)
-
-    
