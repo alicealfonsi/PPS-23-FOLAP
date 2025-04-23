@@ -1,7 +1,7 @@
 import MultidimensionalModel._
 
-object Operators {
-  trait Operators:
+object Operators:
+  
     def drillAcross[A <: Attribute, M <: Measure[_]](
         events: Iterable[Event[A, M]],
         otherEvents: Iterable[Event[A, M]],
@@ -25,5 +25,4 @@ object Operators {
       }
     }
 
-  object Operator extends Operators
-}
+
