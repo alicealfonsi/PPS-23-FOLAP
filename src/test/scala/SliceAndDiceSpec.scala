@@ -31,25 +31,25 @@ class SliceAndDiceSpec
     with should.Matchers
     with BeforeAndAfterEach:
 
-  var event1 = SalesEvent(
+  val event1 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
     measures = Seq(SalesMeasure(100))
   )
 
-  var event2 = SalesEvent(
+  val event2 = SalesEvent(
     attributes =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
     measures = Seq(SalesMeasure(150))
   )
 
-  var event3 = SalesEvent(
+  val event3 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
     measures = Seq(SalesMeasure(120))
   )
 
-  var events = Seq(event1, event2, event3)
+  val events = Seq(event1, event2, event3)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
     val filtered =
