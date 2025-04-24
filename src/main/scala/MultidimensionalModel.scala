@@ -82,13 +82,21 @@ object MultidimensionalModel:
     def -(other: Measure[T]): Measure[T] =
       fromRaw(value - other.value)
 
+  /** The type of attributes of an Event
+    */
+  type EventAttribute = Attribute
+
+  /** The type of measures of an Event
+    */
+  type EventMeasure[T] = Measure[T]
+
   /** An Event is an instance of a fact that occurred in the business domain
     * @tparam A
-    *   the attributes union type
+    *   the type of the Event attributes
     * @tparam M
-    *   the measures union type
+    *   the type of the Event measures
     */
-  trait Event[A <: Attribute, M <: Measure[_]]:
+  trait Event[A <: EventAttribute, M <: EventMeasure[_]]:
     /** The attributes that describe the Event
       * @return
       *   the list of Event attributes
@@ -103,13 +111,13 @@ object MultidimensionalModel:
 
   /** A Cube stores events related to the same fact
     * @tparam A
-    *   the attributes union type
+    *   the type of events attributes
     * @tparam M
-    *   the measures union type
+    *   the type of events measures
     * @tparam E
     *   the type of events
     */
-  trait Cube[A <: Attribute, M <: Measure[_], E <: Event[A, M]]:
+  trait Cube[A <: EventAttribute, M <: EventMeasure[_], E <: Event[A, M]]:
     /** The events stored in the Cube
       * @return
       *   the list of Cube events
