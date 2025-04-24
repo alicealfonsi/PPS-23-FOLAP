@@ -15,7 +15,7 @@ object MultidimensionalModel:
       * @return
       *   the attribute name
       */
-    def name: String = getClass.getName
+    def name: String = getClass.getSimpleName
 
     /** The value of the attribute
       * @return
@@ -47,7 +47,7 @@ object MultidimensionalModel:
       * @return
       *   the measure name
       */
-    def name: String = getClass.getName
+    def name: String = getClass.getSimpleName
 
     /** The value of the measure
       * @return
