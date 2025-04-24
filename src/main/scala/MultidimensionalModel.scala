@@ -33,6 +33,12 @@ object MultidimensionalModel:
     def equals(other: Attribute): Boolean =
       name == other.name && value == other.value
 
+  /** The top attribute in a hierarchy
+    */
+  case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
+
   /** A Measure represents a numeric value associated with an Event
     * @tparam T
     *   the measure type
