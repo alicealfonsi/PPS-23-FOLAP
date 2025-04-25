@@ -27,7 +27,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
     override def fromRaw(value: Int): Measure[Int] = QuantitySoldMeasure(value)
 
   case class SalesEvent(
-      override val attributes: Iterable[SalesAttribute],
+      override val dimensions: Iterable[SalesAttribute],
       override val measures: Iterable[SalesMeasure[_]]
   ) extends Event[SalesAttribute, SalesMeasure[_]]
 

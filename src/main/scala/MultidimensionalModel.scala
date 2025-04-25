@@ -115,11 +115,11 @@ object MultidimensionalModel:
     *   the type of the Event measures
     */
   trait Event[A <: EventAttribute, M <: EventMeasure[_]]:
-    /** The attributes that describe the Event
+    /** The dimensions that describe the Event
       * @return
-      *   the list of Event attributes
+      *   the list of Event dimensions
       */
-    def attributes: Iterable[A]
+    def dimensions: Iterable[A]
 
     /** The measures that quantify the Event
       * @return

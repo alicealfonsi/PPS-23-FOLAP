@@ -5,7 +5,7 @@ object Operators:
       events: Iterable[Event[A, M]]
   )(groupBy: String): Iterable[Event[A, M]] =
     if events.forall(e =>
-        e.attributes.exists(
+        e.dimensions.exists(
           _.name == groupBy
         )
       )
