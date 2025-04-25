@@ -8,7 +8,7 @@ import matchers._
 class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   trait SalesAttribute extends EventAttribute
-  type SalesMeasure[T] = EventMeasure[T]
+  trait SalesMeasure[T] extends EventMeasure[T]
 
   case class NationAttribute(
       override val parent: Option[TopAttribute],

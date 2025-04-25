@@ -106,7 +106,7 @@ object MultidimensionalModel:
 
   /** The type of measures of an Event
     */
-  type EventMeasure[T] = Measure[T]
+  trait EventMeasure[T] extends Measure[T]
 
   /** An Event is an instance of a fact that occurred in the business domain
     * @tparam A

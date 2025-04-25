@@ -1,10 +1,11 @@
-import MultidimensionalModel.Measure
+import MultidimensionalModel._
 import org.scalatest._
 
 import flatspec._
 import matchers._
 
-case class ExampleMeasure[T: Numeric](override val value: T) extends Measure[T]:
+case class ExampleMeasure[T: Numeric](override val value: T)
+    extends EventMeasure[T]:
   override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)
 
 class MeasureSpec extends AnyFlatSpec with should.Matchers:
