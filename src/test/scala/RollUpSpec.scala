@@ -1,0 +1,56 @@
+import MultidimensionalModel._
+import Operators._
+import org.scalatest._
+
+import flatspec._
+import matchers._
+
+class RollUpSpec extends AnyFlatSpec with should.Matchers:
+
+  type SalesAttribute = EventAttribute
+  type SalesMeasure[T] = EventMeasure[T]
+
+  case class NationAttribute(
+      override val parent: Option[TopAttribute],
+      override val value: String
+  ) extends SalesAttribute
+  case class CityAttribute(
+      override val parent: Option[NationAttribute],
+      override val value: String
+  ) extends SalesAttribute
+  case class ShopAttribute(
+      override val parent: Option[CityAttribute],
+      override val value: String
+  ) extends SalesAttribute
+
+  case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
+    override def fromRaw(value: Int): Measure[Int] = QuantitySoldMeasure(value)
+
+  case class SalesEvent(
+      override val attributes: Iterable[SalesAttribute],
+      override val measures: Iterable[SalesMeasure[_]]
+  ) extends Event[SalesAttribute, SalesMeasure[_]]
+
+  val nationAttribute: NationAttribute =
+    NationAttribute(Some(TopAttribute()), "Italy")
+
+  val cityAttribute1: CityAttribute =
+    CityAttribute(Some(nationAttribute), "Bologna")
+  val shopAttribute1: ShopAttribute =
+    ShopAttribute(Some(cityAttribute1), "Shop1")
+  val salesEvent1: SalesEvent =
+    SalesEvent(List(shopAttribute1), List(QuantitySoldMeasure(40)))
+
+  val cityAttribute2: CityAttribute =
+    CityAttribute(Some(nationAttribute), "Cesena")
+  val shopAttribute2: ShopAttribute =
+    ShopAttribute(Some(cityAttribute2), "Shop2")
+  val salesEvent2: SalesEvent =
+    SalesEvent(List(shopAttribute2), List(QuantitySoldMeasure(25)))
+
+  "RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
+    val groupByAttribute = "ClientAttribute"
+    rollUp(List(salesEvent1, salesEvent2))(groupByAttribute) shouldEqual List(
+      salesEvent1,
+      salesEvent2
+    )
