@@ -1,4 +1,4 @@
-import MultidimensionalModel.Attribute
+import MultidimensionalModel._
 import org.scalatest._
 
 import flatspec._
@@ -9,6 +9,11 @@ private case class ExampleAttribute() extends Attribute:
   override val value: String = ""
 
 private case class OtherAttribute(
+    override val parent: Option[Attribute],
+    override val value: String
+) extends Attribute
+
+private case class HierarchyAttribute(
     override val parent: Option[Attribute],
     override val value: String
 ) extends Attribute
@@ -35,3 +40,12 @@ class AttributeSpec
     val other1: Attribute = OtherAttribute(None, "")
     val other2: Attribute = OtherAttribute(Some(ExampleAttribute()), "")
     other1.equals(other2) shouldBe true
+
+  it should "have a hierarchy" in:
+    val grandParent: HierarchyAttribute =
+      HierarchyAttribute(Some(TopAttribute()), "GrandParentAttribute")
+    val parent: HierarchyAttribute =
+      HierarchyAttribute(Some(grandParent), "ParentAttribute")
+    val dim: HierarchyAttribute =
+      HierarchyAttribute(Some(parent), "DimensionAttribute")
+    dim.hierarchy shouldEqual List(parent, grandParent, TopAttribute())

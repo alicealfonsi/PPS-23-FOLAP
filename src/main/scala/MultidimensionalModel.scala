@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 /** The model for representing and querying data in a DW
   */
 object MultidimensionalModel:
@@ -22,6 +24,22 @@ object MultidimensionalModel:
       *   the attribute value
       */
     def value: String
+
+    /** The hierarchy rooted in the attribute
+      * @return
+      *   the list of attributes in the hierarchy in ascending order of
+      *   aggregation
+      */
+    def hierarchy: Iterable[Attribute] =
+      @tailrec
+      def recursiveHierarchy(
+          attr: Attribute,
+          acc: Iterable[Attribute]
+      ): Iterable[Attribute] = attr.parent match
+        case None => acc
+        case _ =>
+          recursiveHierarchy(attr.parent.get, acc ++ List(attr.parent.get))
+      recursiveHierarchy(this, List())
 
     /** Indicates whether this attribute is "equal to" some other attribute
       * @param other
