@@ -7,6 +7,10 @@ object Operators:
     if events.forall(e =>
         e.dimensions.exists(
           _.name == groupBy
+        ) | e.dimensions.forall(d =>
+          d.hierarchy.exists(
+            _.name == groupBy
+          )
         )
       )
     then List()
