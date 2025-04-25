@@ -4,7 +4,7 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-private case class ExampleAttribute() extends Attribute:
+private case class ExampleAttribute() extends EventAttribute:
   override val parent: Option[Attribute] = None
   override val value: String = ""
 

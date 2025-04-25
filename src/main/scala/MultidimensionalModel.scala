@@ -102,7 +102,7 @@ object MultidimensionalModel:
 
   /** The type of attributes of an Event
     */
-  type EventAttribute = Attribute
+  trait EventAttribute extends Attribute
 
   /** The type of measures of an Event
     */

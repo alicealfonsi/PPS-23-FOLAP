@@ -7,7 +7,7 @@ import matchers._
 
 class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
-  type SalesAttribute = EventAttribute
+  trait SalesAttribute extends EventAttribute
   type SalesMeasure[T] = EventMeasure[T]
 
   case class NationAttribute(
