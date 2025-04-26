@@ -8,26 +8,21 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
-private abstract class SalesAttribute(
-    override val value: String,
-    override val parent: Option[Attribute]
-) extends Attribute
-
+private trait SalesAttribute extends Attribute
+private trait SalesMeasure[T] extends Measure[T]
 private case class NationAttribute(
     override val value: String,
     override val parent: Option[SalesAttribute]
-) extends SalesAttribute(value, parent)
+) extends SalesAttribute
 
 private case class YearAttribute(
     override val value: String,
     override val parent: Option[SalesAttribute]
-) extends SalesAttribute(value, parent)
+) extends SalesAttribute
 
-private abstract class SalesMeasure[T: Numeric](val value: T) extends Measure[T]
-
-private case class totSalesMeasure[T: Numeric](override val value: T)
-    extends SalesMeasure[T](value):
-  override def fromRaw(value: T): SalesMeasure[T] = totSalesMeasure(value)
+private case class TotSalesMeasure[T: Numeric](val value: T)
+    extends SalesMeasure[T]:
+  override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
 
 private case class SalesEvent(
     override val attributes: Iterable[SalesAttribute],
@@ -42,19 +37,19 @@ class SliceAndDiceSpec
   val event1 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
-    measures = Seq(totSalesMeasure(100))
+    measures = Seq(TotSalesMeasure(100))
   )
 
   val event2 = SalesEvent(
     attributes =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
-    measures = Seq(totSalesMeasure(150))
+    measures = Seq(TotSalesMeasure(150))
   )
 
   val event3 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
-    measures = Seq(totSalesMeasure(120))
+    measures = Seq(TotSalesMeasure(120))
   )
 
   val events = Seq(event1, event2, event3)
