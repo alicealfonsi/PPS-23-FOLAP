@@ -8,23 +8,31 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
+private abstract class SalesAttribute(
+    override val value: String,
+    override val parent: Option[Attribute]
+) extends Attribute
 
 private case class NationAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute
+) extends SalesAttribute(value, parent)
+
 private case class YearAttribute(
     override val value: String,
     override val parent: Option[Attribute]
-) extends Attribute
-private case class SalesMeasure[T: Numeric](override val value: T)
-    extends Measure[T]:
-  override def fromRaw(value: T): Measure[T] = SalesMeasure(value)
+) extends SalesAttribute(value, parent)
+
+private abstract class SalesMeasure[T: Numeric](val value: T) extends Measure[T]
+
+private case class totSalesMeasure[T: Numeric](override val value: T)
+    extends SalesMeasure[T](value):
+  override def fromRaw(value: T): SalesMeasure[T] = totSalesMeasure(value)
 
 private case class SalesEvent(
-    override val attributes: Iterable[Attribute],
-    override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]]
+    override val attributes: Iterable[SalesAttribute],
+    override val measures: Iterable[SalesMeasure[_]]
+) extends Event[SalesAttribute, SalesMeasure[_]]
 
 class SliceAndDiceSpec
     extends AnyFlatSpec
@@ -34,19 +42,19 @@ class SliceAndDiceSpec
   val event1 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
-    measures = Seq(SalesMeasure(100))
+    measures = Seq(totSalesMeasure(100))
   )
 
   val event2 = SalesEvent(
     attributes =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
-    measures = Seq(SalesMeasure(150))
+    measures = Seq(totSalesMeasure(150))
   )
 
   val event3 = SalesEvent(
     attributes =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
-    measures = Seq(SalesMeasure(120))
+    measures = Seq(totSalesMeasure(120))
   )
 
   val events = Seq(event1, event2, event3)
