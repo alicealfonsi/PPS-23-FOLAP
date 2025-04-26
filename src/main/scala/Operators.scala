@@ -22,11 +22,16 @@ object Operators:
     * @return
     *   events resulting from the combination of matching events from both sets
     */
-  def drillAcross[A <: Attribute, M <: Measure[_]](
-      events: Iterable[Event[A, M]],
-      otherEvents: Iterable[Event[A, M]],
-      createEvent: EventConstructor[A, M]
-  ): Iterable[Event[A, M]] = {
+  def drillAcross[
+      A1 <: Attribute,
+      M1 <: Measure[_],
+      A2 <: Attribute,
+      M2 <: Measure[_]
+  ](
+      events: Iterable[Event[A1, M1]],
+      otherEvents: Iterable[Event[A2, M2]],
+      createEvent: EventConstructor[A1, M1 | M2]
+  ): Iterable[Event[A1, M1 | M2]] = {
     events.flatMap { eventA =>
       otherEvents.flatMap { eventB =>
         val commonAttributes = eventA.attributes.filter { attrA =>
@@ -36,7 +41,8 @@ object Operators:
         }
 
         if (commonAttributes.nonEmpty) {
-          val combinedMeasures = eventA.measures ++ eventB.measures
+          val combinedMeasures: Iterable[M1 | M2] =
+            eventA.measures ++ eventB.measures
           Some(createEvent(commonAttributes, combinedMeasures))
         } else {
           None
