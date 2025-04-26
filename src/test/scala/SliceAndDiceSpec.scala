@@ -15,12 +15,12 @@ private abstract class SalesAttribute(
 
 private case class NationAttribute(
     override val value: String,
-    override val parent: Option[Attribute]
+    override val parent: Option[SalesAttribute]
 ) extends SalesAttribute(value, parent)
 
 private case class YearAttribute(
     override val value: String,
-    override val parent: Option[Attribute]
+    override val parent: Option[SalesAttribute]
 ) extends SalesAttribute(value, parent)
 
 private abstract class SalesMeasure[T: Numeric](val value: T) extends Measure[T]
