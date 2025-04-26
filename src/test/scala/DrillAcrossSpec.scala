@@ -8,49 +8,63 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
+private trait SalesAttribute extends Attribute
+private trait ProfitsAttribute extends Attribute
+private trait CustomerAttribute extends Attribute
+private trait SalesMeasure[T] extends Measure[T]
+private trait ProfitsMeasure[T] extends Measure[T]
+private trait CustomerMeasure[T] extends Measure[T]
 
 private case class NationAttribute(
     override val value: String,
-    override val parent: Option[Attribute]
-) extends Attribute
+    override val parent: Option[SalesAttribute | ProfitsAttribute]
+) extends SalesAttribute
+    with ProfitsAttribute
+
 private case class YearAttribute(
     override val value: String,
-    override val parent: Option[Attribute]
-) extends Attribute
+    override val parent: Option[SalesAttribute]
+) extends SalesAttribute
+
 private case class CategoryAttribute(
     override val value: String,
-    override val parent: Option[Attribute]
-) extends Attribute
-private case class CustomerAttribute(
+    override val parent: Option[ProfitsAttribute]
+) extends ProfitsAttribute
+private case class CustomerNameAttribute(
     override val value: String,
-    override val parent: Option[Attribute]
-) extends Attribute
-private case class TotSalesMeasure[T: Numeric](override val value: T)
-    extends Measure[T]:
-  override def fromRaw(value: T): Measure[T] = TotSalesMeasure(value)
-private case class TotProfitsMeasure[T: Numeric](override val value: T)
-    extends Measure[T]:
-  override def fromRaw(value: T): Measure[T] = TotProfitsMeasure(value)
-private case class TotPurchasesMeasure[T: Numeric](override val value: T)
-    extends Measure[T]:
-  override def fromRaw(value: T): Measure[T] = TotPurchasesMeasure(value)
+    override val parent: Option[CustomerAttribute]
+) extends CustomerAttribute
+
+private case class TotSalesMeasure[T: Numeric](val value: T)
+    extends SalesMeasure[T]:
+  override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
+private case class TotProfitsMeasure[T: Numeric](val value: T)
+    extends ProfitsMeasure[T]:
+  override def fromRaw(value: T): TotProfitsMeasure[T] = TotProfitsMeasure(
+    value
+  )
+private case class TotPurchasesMeasure[T: Numeric](val value: T)
+    extends CustomerMeasure[T]:
+  override def fromRaw(value: T): TotPurchasesMeasure[T] = TotPurchasesMeasure(
+    value
+  )
 
 private case class SalesEvent(
-    override val attributes: Iterable[Attribute],
-    override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]]
+    override val attributes: Iterable[SalesAttribute],
+    override val measures: Iterable[SalesMeasure[_]]
+) extends Event[SalesAttribute, SalesMeasure[_]]
 private case class ProfitsEvent(
-    override val attributes: Iterable[Attribute],
-    override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]]
-private case class ResultEvent(
-    override val attributes: Iterable[Attribute],
-    override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]]
+    override val attributes: Iterable[ProfitsAttribute],
+    override val measures: Iterable[ProfitsMeasure[_]]
+) extends Event[ProfitsAttribute, ProfitsMeasure[_]]
 private case class CustomerEvent(
-    override val attributes: Iterable[Attribute],
-    override val measures: Iterable[Measure[_]]
-) extends Event[Attribute, Measure[_]]
+    override val attributes: Iterable[CustomerAttribute],
+    override val measures: Iterable[CustomerMeasure[_]]
+) extends Event[CustomerAttribute, CustomerMeasure[_]]
+private case class ResultEvent[A <: Attribute, M <: Measure[_]](
+    override val attributes: Iterable[A],
+    override val measures: Iterable[M]
+) extends Event[A, M]
 
 class SliceAndDiceSpec
     extends AnyFlatSpec
@@ -86,7 +100,7 @@ class SliceAndDiceSpec
     measures = Seq(TotProfitsMeasure(40))
   )
   val event6 = CustomerEvent(
-    Seq(CustomerAttribute("Claudia", None)),
+    Seq(CustomerNameAttribute("Claudia", None)),
     Seq(TotPurchasesMeasure(5))
   )
 
@@ -94,10 +108,10 @@ class SliceAndDiceSpec
   val eventsB = Seq(event4, event5)
   val eventsC = Seq(event6)
 
-  def createEvent: EventConstructor[Attribute, Measure[_]] =
+  def createEvent[A <: Attribute, M <: Measure[_]]: EventConstructor[A, M] =
     (
-        attributes: Iterable[Attribute],
-        measures: Iterable[Measure[_]]
+        attributes: Iterable[A],
+        measures: Iterable[M]
     ) => ResultEvent(attributes, measures)
 
   "drillAcross" should "combine events with matching attributes" in:
