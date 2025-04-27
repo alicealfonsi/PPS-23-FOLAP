@@ -15,12 +15,17 @@ object Operators:
     * @param createEvent
     *   function to construct a new event from shared attributes and combined
     *   measures
-    * @tparam A
-    *   type of attributes
-    * @tparam M
-    *   type of measures
+    * @tparam A1
+    *   the type of attributes in the first set of events
+    * @tparam M1
+    *   the type of measures in the first set of events
+    * @tparam A2
+    *   the type of attributes in the second set of events
+    * @tparam M2
+    *   the type of measures in the second set of events
     * @return
-    *   events resulting from the combination of matching events from both sets
+    *   set of events resulting from the combination of matching events from
+    *   both sets
     */
   def drillAcross[
       A1 <: Attribute,
