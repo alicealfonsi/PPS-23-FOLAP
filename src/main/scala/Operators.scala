@@ -1,5 +1,3 @@
-import MultidimensionalModel._
-
 object Operators:
   def rollUp[A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
