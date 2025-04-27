@@ -1,18 +1,10 @@
-import scala.annotation.tailrec
-
 /** The model for representing and querying data in a DW
   */
 object MultidimensionalModel:
 
-  /** An Attribute occupies a single level in a hierarchy
+  /** An Attribute is a finite domain property of an Event
     */
   trait Attribute:
-    /** The attribute that precedes this attribute in the hierarchy
-      * @return
-      *   the parent attribute
-      */
-    def parent: Option[Attribute]
-
     /** The name of the attribute
       * @return
       *   the attribute name
@@ -24,38 +16,6 @@ object MultidimensionalModel:
       *   the attribute value
       */
     def value: String
-
-    /** The hierarchy rooted in the attribute
-      * @return
-      *   the list of attributes in the hierarchy in ascending order of
-      *   aggregation
-      */
-    def hierarchy: Iterable[Attribute] =
-      @tailrec
-      def recursiveHierarchy(
-          attr: Attribute,
-          acc: Iterable[Attribute]
-      ): Iterable[Attribute] = attr.parent match
-        case None => acc
-        case _ =>
-          recursiveHierarchy(attr.parent.get, acc ++ List(attr.parent.get))
-      recursiveHierarchy(this, List())
-
-    /** Indicates whether this attribute is "equal to" some other attribute
-      * @param other
-      *   the attribute with which to compare
-      * @return
-      *   true if this attribute has the same name and value as the other; false
-      *   otherwise
-      */
-    def equals(other: Attribute): Boolean =
-      name == other.name && value == other.value
-
-  /** The top attribute in a hierarchy
-    */
-  case class TopAttribute() extends Attribute:
-    override val parent: Option[Attribute] = None
-    override val value: String = ""
 
   /** A Measure represents a numeric value associated with an Event
     * @tparam T
@@ -99,45 +59,3 @@ object MultidimensionalModel:
 
     def -(other: Measure[T]): Measure[T] =
       fromRaw(value - other.value)
-
-  /** The type of attributes of an Event
-    */
-  trait EventAttribute extends Attribute
-
-  /** The type of measures of an Event
-    */
-  trait EventMeasure[T] extends Measure[T]
-
-  /** An Event is an instance of a fact that occurred in the business domain
-    * @tparam A
-    *   the type of the Event attributes
-    * @tparam M
-    *   the type of the Event measures
-    */
-  trait Event[A <: EventAttribute, M <: EventMeasure[_]]:
-    /** The dimensions that describe the Event
-      * @return
-      *   the list of Event dimensions
-      */
-    def dimensions: Iterable[A]
-
-    /** The measures that quantify the Event
-      * @return
-      *   the list of Event measures
-      */
-    def measures: Iterable[M]
-
-  /** A Cube stores events related to the same fact
-    * @tparam A
-    *   the type of events attributes
-    * @tparam M
-    *   the type of events measures
-    * @tparam E
-    *   the type of events
-    */
-  trait Cube[A <: EventAttribute, M <: EventMeasure[_], E <: Event[A, M]]:
-    /** The events stored in the Cube
-      * @return
-      *   the list of Cube events
-      */
-    def events: Iterable[Event[A, M]]
