@@ -4,18 +4,18 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-case class ExampleMeasure[T: Numeric](override val value: T)
-    extends EventMeasure[T]:
-  override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)
-
 class MeasureSpec extends AnyFlatSpec with should.Matchers:
+
+  private case class ExampleMeasure[T: Numeric](override val value: T)
+      extends EventMeasure[T]:
+    override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)
 
   "A Measure" should "have a name equal to the class name" in:
     val value: Int = 10
     val measure: ExampleMeasure[Int] = ExampleMeasure(value)
     measure.name shouldEqual "ExampleMeasure"
 
-  "A Measure" should "accept an integer value" in:
+  it should "accept an integer value" in:
     val value: Int = 42
     val measure = ExampleMeasure(value)
     measure.value shouldEqual value
