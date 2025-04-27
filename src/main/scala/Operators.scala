@@ -7,11 +7,10 @@ object Operators:
     if events.matchAttribute(groupBy)
     then
       val groupByMap: Map[Iterable[String], Iterable[Event[A, M]]] =
-        events.groupBy(_.attributes.filter(_.name == groupBy).map(_.value))
+        events.groupBy(_.findAttributeByName(groupBy).map(_.value))
       var newDimensions: Iterable[A] = List()
       groupByMap.values.foreach(v =>
-        newDimensions =
-          newDimensions ++ v.head.attributes.filter(_.name == groupBy)
+        newDimensions = newDimensions ++ v.head.findAttributeByName(groupBy)
       )
       var aggregatedEvents: Iterable[Event[A, M]] = List()
       for d <- newDimensions do
@@ -21,6 +20,10 @@ object Operators:
         aggregatedEvents = aggregatedEvents ++ aggregatedEvent
       aggregatedEvents
     else events
+
+  extension [A <: EventAttribute, M <: EventMeasure[_]](event: Event[A, M])
+    private def findAttributeByName(attribute: String): Iterable[A] =
+      event.attributes.filter(_.name == attribute)
 
   extension [A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
