@@ -13,11 +13,7 @@ object Operators:
   )
     private def matchAttribute(groupBy: String): Boolean =
       events.forall(e =>
-        e.dimensions.exists(
+        e.attributes.exists(
           _.name == groupBy
-        ) | e.dimensions.forall(d =>
-          d.hierarchy.exists(
-            _.name == groupBy
-          )
         )
       )
