@@ -56,17 +56,38 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       List(QuantitySoldMeasure(quantitySoldValue2))
     )
 
+  private case class ResultEvent[A <: SalesAttribute, M <: SalesMeasure[_]](
+      override val dimensions: Iterable[A],
+      override val measures: Iterable[M]
+  ) extends Event[A, M]
+
+  def createEvent[A <: SalesAttribute, M <: SalesMeasure[_]]
+      : EventConstructor[A, M] =
+    (dimensions: Iterable[A], measures: Iterable[M]) =>
+      ResultEvent(dimensions, measures)
+
   "RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
-    val groupByAttribute = "ClientAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(groupByAttribute) shouldEqual List(
+    val groupByAttributeName = "ClientAttribute"
+    rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName)(
+      createEvent
+    ) shouldEqual List(
       salesEvent1,
       salesEvent2
     )
 
   it should "search for the group-by attribute among the dimensions" in:
-    val groupByAttribute = "ShopAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(groupByAttribute) shouldEqual List()
+    val groupByAttributeName1 = "ShopAttribute"
+    rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName1)(
+      createEvent
+    ) shouldEqual List(
+      ResultEvent(salesEvent1.dimensions, List()),
+      ResultEvent(salesEvent2.dimensions, List())
+    )
 
   it should "search for the group-by attribute moving up attributes hierarchies" in:
-    val groupByAttribute = "CityAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(groupByAttribute) shouldEqual List()
+    val groupByAttributeName2 = "NationAttribute"
+    rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName2)(
+      createEvent
+    ) shouldEqual List(
+      ResultEvent(List(NationAttribute(Some(TopAttribute()), "Italy")), List())
+    )
