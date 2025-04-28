@@ -16,11 +16,7 @@ trait Event[A <: EventAttribute, M <: EventMeasure[_]]:
     *   the list of Event attributes
     */
   def attributes: Iterable[A] =
-    var attributes: Iterable[A] = List()
-    dimensions.foreach(d =>
-      attributes = attributes ++ d.hierarchy.asInstanceOf[Iterable[A]]
-    )
-    attributes
+    dimensions.flatMap(_.hierarchy.asInstanceOf[Iterable[A]])
 
   /** The measures that quantify the Event
     * @return
