@@ -4,11 +4,7 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-class EventAttributeSpec
-    extends AnyFlatSpec
-    with should.Matchers
-    with BeforeAndAfterEach:
-
+class EventAttributeSpec extends AnyFlatSpec with should.Matchers:
   private case class ParentAttribute(
       override val parent: Option[EventAttribute],
       override val value: String
@@ -17,13 +13,8 @@ class EventAttributeSpec
       override val parent: Option[EventAttribute],
       override val value: String
   ) extends EventAttribute
-
-  var parent: EventAttribute = ParentAttribute(Some(TopAttribute()), "")
-  var dim: EventAttribute = DimensionAttribute(Some(parent), "")
-
-  override protected def beforeEach(): Unit =
-    parent = ParentAttribute(Some(TopAttribute()), "")
-    dim = DimensionAttribute(Some(parent), "")
+  val parent: EventAttribute = ParentAttribute(Some(TopAttribute()), "")
+  val dim: EventAttribute = DimensionAttribute(Some(parent), "")
 
   "An EventAttribute" should "have an optional parent" in:
     parent.parent shouldEqual Some(TopAttribute())
@@ -32,5 +23,6 @@ class EventAttributeSpec
     dim.hierarchy shouldEqual List(dim, parent, TopAttribute())
 
   it should "be comparable: equal to" in:
-    val dim2: EventAttribute = DimensionAttribute(Some(TopAttribute()), "")
-    dim.equals(dim2) shouldBe true
+    val anotherDim: EventAttribute =
+      DimensionAttribute(Some(TopAttribute()), "")
+    dim.equals(anotherDim) shouldBe true

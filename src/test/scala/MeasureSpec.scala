@@ -5,7 +5,6 @@ import flatspec._
 import matchers._
 
 class MeasureSpec extends AnyFlatSpec with should.Matchers:
-
   private case class ExampleMeasure[T: Numeric](override val value: T)
       extends EventMeasure[T]:
     override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)

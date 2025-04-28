@@ -6,10 +6,8 @@ import flatspec._
 import matchers._
 
 class RollUpSpec extends AnyFlatSpec with should.Matchers:
-
   trait SalesAttribute extends EventAttribute
   trait SalesMeasure[T] extends EventMeasure[T]
-
   case class NationAttribute(
       override val parent: Option[TopAttribute],
       override val value: String
@@ -22,10 +20,8 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       override val parent: Option[CityAttribute],
       override val value: String
   ) extends SalesAttribute
-
-  case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
+  private case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
     override def fromRaw(value: Int): Measure[Int] = QuantitySoldMeasure(value)
-
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
       override val measures: Iterable[SalesMeasure[_]]
@@ -33,7 +29,6 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   val nationAttribute12: NationAttribute =
     NationAttribute(Some(TopAttribute()), "Italy")
-
   val cityAttribute1: CityAttribute =
     CityAttribute(Some(nationAttribute12), "Bologna")
   val shopAttribute1: ShopAttribute =
@@ -44,7 +39,6 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       List(shopAttribute1),
       List(QuantitySoldMeasure(quantitySoldValue1))
     )
-
   val cityAttribute2: CityAttribute =
     CityAttribute(Some(nationAttribute12), "Cesena")
   val shopAttribute2: ShopAttribute =
@@ -60,8 +54,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
-
-  def createEvent[A <: SalesAttribute, M <: SalesMeasure[_]]
+  private def createEvent[A <: SalesAttribute, M <: SalesMeasure[_]]
       : EventConstructor[A, M] =
     (dimensions: Iterable[A], measures: Iterable[M]) =>
       ResultEvent(dimensions, measures)
