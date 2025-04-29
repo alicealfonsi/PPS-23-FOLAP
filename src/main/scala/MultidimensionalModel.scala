@@ -2,36 +2,20 @@
   */
 object MultidimensionalModel:
 
-  /** An Attribute occupies a single level in a hierarchy
+  /** An Attribute is a finite domain property of an Event
     */
   trait Attribute:
-    /** The attribute that precedes this attribute in the hierarchy
-      * @return
-      *   the parent attribute
-      */
-    def parent: Option[Attribute]
-
     /** The name of the attribute
       * @return
       *   the attribute name
       */
-    def name: String = getClass.getName
+    def name: String = getClass.getSimpleName
 
     /** The value of the attribute
       * @return
       *   the attribute value
       */
     def value: String
-
-    /** Indicates whether this attribute is "equal to" some other attribute
-      * @param other
-      *   the attribute with which to compare
-      * @return
-      *   true if this attribute has the same name and value as the other; false
-      *   otherwise
-      */
-    def equals(other: Attribute): Boolean =
-      name == other.name && value == other.value
 
   /** A Measure represents a numeric value associated with an Event
     * @tparam T
@@ -47,7 +31,7 @@ object MultidimensionalModel:
       * @return
       *   the measure name
       */
-    def name: String = getClass.getName
+    def name: String = getClass.getSimpleName
 
     /** The value of the measure
       * @return
@@ -75,37 +59,3 @@ object MultidimensionalModel:
 
     def -(other: Measure[T]): Measure[T] =
       fromRaw(value - other.value)
-
-  /** An Event is an instance of a fact that occurred in the business domain
-    * @tparam A
-    *   the attributes union type
-    * @tparam M
-    *   the measures union type
-    */
-  trait Event[A <: Attribute, M <: Measure[_]]:
-    /** The attributes that describe the Event
-      * @return
-      *   the list of Event attributes
-      */
-    def attributes: Iterable[A]
-
-    /** The measures that quantify the Event
-      * @return
-      *   the list of Event measures
-      */
-    def measures: Iterable[M]
-
-  /** A Cube stores events related to the same fact
-    * @tparam A
-    *   the attributes union type
-    * @tparam M
-    *   the measures union type
-    * @tparam E
-    *   the type of events
-    */
-  trait Cube[A <: Attribute, M <: Measure[_], E <: Event[A, M]]:
-    /** The events stored in the Cube
-      * @return
-      *   the list of Cube events
-      */
-    def events: Iterable[Event[A, M]]

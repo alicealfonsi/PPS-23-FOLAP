@@ -1,9 +1,5 @@
-import MultidimensionalModel.Attribute
-import MultidimensionalModel.Event
-import MultidimensionalModel.Measure
-
-/** A type alias for a function to construct an Event given its attributes and
+/** A type alias for a function to construct an Event given its dimensions and
   * measures
   */
-type EventConstructor[A <: Attribute, M <: Measure[_]] =
+type EventConstructor[A <: EventAttribute, M <: EventMeasure[_]] =
   (Iterable[A], Iterable[M]) => Event[A, M]

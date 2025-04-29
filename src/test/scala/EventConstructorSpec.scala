@@ -1,25 +1,29 @@
-import MultidimensionalModel.Event
 import org.scalatest._
 
 import flatspec._
 import matchers._
 
-private case class ResultEvent(
-    override val attributes: Iterable[ExampleAttribute],
-    override val measures: Iterable[ExampleMeasure[_]]
-) extends Event[ExampleAttribute, ExampleMeasure[_]]
-
 class EventConstructorSpec extends AnyFlatSpec with should.Matchers:
-  val attributes: Iterable[ExampleAttribute] = List(ExampleAttribute())
-  val measures: Iterable[ExampleMeasure[_]] = List(ExampleMeasure(10))
-  def createEvent: EventConstructor[ExampleAttribute, ExampleMeasure[_]] =
+  private case class ResultEvent(
+      override val dimensions: Iterable[ExampleEventAttribute],
+      override val measures: Iterable[ExampleEventMeasure[_]]
+  ) extends Event[ExampleEventAttribute, ExampleEventMeasure[_]]
+  val dimensions: Iterable[ExampleEventAttribute] = List(
+    DimensionExampleAttribute(None, "")
+  )
+  val measureValue: Int = 10
+  val measures: Iterable[ExampleEventMeasure[_]] = List(
+    QuantityExampleMeasure(measureValue)
+  )
+  private def createEvent
+      : EventConstructor[ExampleEventAttribute, ExampleEventMeasure[_]] =
     (
-        attributes: Iterable[ExampleAttribute],
-        measures: Iterable[ExampleMeasure[_]]
-    ) => ResultEvent(attributes, measures)
+        dimensions: Iterable[ExampleEventAttribute],
+        measures: Iterable[ExampleEventMeasure[_]]
+    ) => ResultEvent(dimensions, measures)
 
-  "An EventConstructor" should "create an Event with given attributes and measures" in:
-    createEvent(attributes, measures) shouldEqual ResultEvent(
-      attributes,
+  "An EventConstructor" should "create an Event with given dimensions and measures" in:
+    createEvent(dimensions, measures) shouldEqual ResultEvent(
+      dimensions,
       measures
     )
