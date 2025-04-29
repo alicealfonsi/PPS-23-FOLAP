@@ -1,5 +1,3 @@
-import MultidimensionalModel._
-
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
   */
@@ -22,7 +20,7 @@ object Operators:
 
   def sliceAndDice[A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]],
-      filters: Iterable[Attribute]
+      filters: Iterable[EventAttribute]
   ): Iterable[Event[A, M]] =
     events.filter { event =>
       filters.forall { filter =>
