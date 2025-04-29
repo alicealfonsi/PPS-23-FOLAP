@@ -1,5 +1,5 @@
 # Sprint Backlogs
-## Sprint Backlog 0 (start on 31/03/2025)
+## Sprint Backlog 0 (start on 31/03/2025, deadline 11/04/2025)
 | **Product Backlog Item**                               | **Sprint Task**                                       | **Volunteer** | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
 |--------------------------------------------------------|-------------------------------------------------------|---------------|------------------------------------|-------------------------|----------------------------------------------|
 | Identificazione elementi base del processo di sviluppo | Assegnazione dei ruoli                                | Team          | 0.25                               | 0.25                    | 0                                            |
