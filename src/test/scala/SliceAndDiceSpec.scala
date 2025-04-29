@@ -1,5 +1,3 @@
-import MultidimensionalModel.Attribute
-import MultidimensionalModel.Event
 import MultidimensionalModel.Measure
 import Operators.sliceAndDice
 import org.scalatest._
@@ -8,16 +6,16 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
-private trait SalesAttribute extends Attribute
-private trait SalesMeasure[T] extends Measure[T]
+private trait SalesAttribute extends EventAttribute
+private trait SalesMeasure[T] extends EventMeasure[T]
 private case class NationAttribute(
     override val value: String,
-    override val parent: Option[SalesAttribute]
+    override val parent: Option[TopAttribute]
 ) extends SalesAttribute
 
 private case class YearAttribute(
     override val value: String,
-    override val parent: Option[SalesAttribute]
+    override val parent: Option[TopAttribute]
 ) extends SalesAttribute
 
 private case class TotSalesMeasure[T: Numeric](val value: T)
@@ -25,7 +23,7 @@ private case class TotSalesMeasure[T: Numeric](val value: T)
   override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
 
 private case class SalesEvent(
-    override val attributes: Iterable[SalesAttribute],
+    override val dimensions: Iterable[SalesAttribute],
     override val measures: Iterable[SalesMeasure[_]]
 ) extends Event[SalesAttribute, SalesMeasure[_]]
 
@@ -35,19 +33,19 @@ class SliceAndDiceSpec
     with BeforeAndAfterEach:
 
   val event1 = SalesEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2 = SalesEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3 = SalesEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
