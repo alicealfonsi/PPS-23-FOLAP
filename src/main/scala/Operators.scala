@@ -1,5 +1,3 @@
-import MultidimensionalModel._
-
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
   */

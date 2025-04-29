@@ -15,22 +15,22 @@ private trait CustomerMeasure[T] extends EventMeasure[T]
 
 private case class NationAttribute(
     override val value: String,
-    override val parent: Option[SalesAttribute | ProfitsAttribute]
+    override val parent: Option[TopAttribute]
 ) extends SalesAttribute
     with ProfitsAttribute
 
 private case class YearAttribute(
     override val value: String,
-    override val parent: Option[SalesAttribute]
+    override val parent: Option[TopAttribute]
 ) extends SalesAttribute
 
 private case class CategoryAttribute(
     override val value: String,
-    override val parent: Option[ProfitsAttribute]
+    override val parent: Option[TopAttribute]
 ) extends ProfitsAttribute
 private case class CustomerNameAttribute(
     override val value: String,
-    override val parent: Option[CustomerAttribute]
+    override val parent: Option[TopAttribute]
 ) extends CustomerAttribute
 
 private case class TotSalesMeasure[T: Numeric](val value: T)
@@ -48,19 +48,19 @@ private case class TotPurchasesMeasure[T: Numeric](val value: T)
   )
 
 private case class SalesEvent(
-    override val attributes: Iterable[SalesAttribute],
+    override val dimensions: Iterable[SalesAttribute],
     override val measures: Iterable[SalesMeasure[_]]
 ) extends Event[SalesAttribute, SalesMeasure[_]]
 private case class ProfitsEvent(
-    override val attributes: Iterable[ProfitsAttribute],
+    override val dimensions: Iterable[ProfitsAttribute],
     override val measures: Iterable[ProfitsMeasure[_]]
 ) extends Event[ProfitsAttribute, ProfitsMeasure[_]]
 private case class CustomerEvent(
-    override val attributes: Iterable[CustomerAttribute],
+    override val dimensions: Iterable[CustomerAttribute],
     override val measures: Iterable[CustomerMeasure[_]]
 ) extends Event[CustomerAttribute, CustomerMeasure[_]]
 private case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
-    override val attributes: Iterable[A],
+    override val dimensions: Iterable[A],
     override val measures: Iterable[M]
 ) extends Event[A, M]
 
@@ -70,30 +70,30 @@ class SliceAndDiceSpec
     with BeforeAndAfterEach:
 
   val event1 = SalesEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2 = SalesEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3 = SalesEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
   val event4 = ProfitsEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("Italy", None), CategoryAttribute("shoes", None)),
     measures = Seq(TotProfitsMeasure(30))
   )
   val event5 = ProfitsEvent(
-    attributes =
+    dimensions =
       Seq(NationAttribute("Spain", None), CategoryAttribute("bags", None)),
     measures = Seq(TotProfitsMeasure(40))
   )
@@ -106,7 +106,8 @@ class SliceAndDiceSpec
   val eventsB = Seq(event4, event5)
   val eventsC = Seq(event6)
 
-  def createEvent[A <: EventAttribute, M <: EventMeasure[_]]: EventConstructor[A, M] =
+  def createEvent[A <: EventAttribute, M <: EventMeasure[_]]
+      : EventConstructor[A, M] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]
