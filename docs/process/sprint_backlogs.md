@@ -26,3 +26,27 @@ Il team si è dovuto soffermare su aspetti di dominio essenziali per la modellaz
 previsto per essere approfonditi.
 La valutazione dei vantaggi e degli svantaggi delle varie soluzioni individuate si è rivelata lunga ed è stato difficile
 convergere verso la scelta finale.
+
+
+## Sprint Backlog 1 (start on 12/04/2025, deadline 29/04/2025)
+| **Product Backlog Item**           | **Sprint Task**                                       | **Volunteer**  | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
+|------------------------------------|-------------------------------------------------------|----------------|------------------------------------|-------------------------|----------------------------------------------|
+| Definizione cubo multidimensionale | Definizione specifiche cubo                           | Team           | 3                                  | 3                       | 0                                            |
+| Implementazione Event              |                                                       | Eugenio, Alice | 1                                  | 1 + 3                   | 0.5                                          |
+| Implementazione Attribute          |                                                       | Eugenio, Alice | 1                                  | 0.5 + 1                 | 0.25                                         |
+| Implementazione Measure            |                                                       | Eugenio, Alice | 1                                  | 0.5 + 0.5               | 0.25                                         |
+| Implementazione Cube               |                                                       | Alice          | 1                                  | 0.5                     | 0.25                                         |
+| Implementazione EventConstructor   |                                                       | Alice, Claudia | 1                                  | 1                       | 0.5                                          |
+| Implementazione EventAttribute     |                                                       | Alice          | 2                                  | 3                       | 0.5                                          |
+| Implementazione EventMeasure       |                                                       | Alice          | 1                                  | 1                       | 0.25                                         |
+| Definizione operatori OLAP         | Definizione specifiche operatori OLAP                 | Team           | 3                                  | 3                       | 0                                            |
+| Implementazione roll-up            |                                                       | Alice          | 10                                 | 6                       | 4                                            |
+| Implementazione drill-down         |                                                       | Eugenio        | 3                                  | 0                       | 3                                            |
+| Implementazione slice-and-dice     |                                                       | Claudia        | 7                                  | 7                       | 1                                            |
+| Implementazione drill-across       |                                                       | Claudia        | 7                                  | 9                       | 1                                            |
+| Design di dettaglio                | Identificazione entità del sistema e loro interazioni | Team           | 2                                  | 1                       | 1                                            |
+| Design di dettaglio                | Organizzazione del codice                             | Team           | 1                                  | 0.5                     | 0.5                                          |
+| Design di dettaglio                | Diagrammi UML                                         | Team           | 1                                  | 0                       | 1                                            |
+
+### Sprint retrospective 1
+Le dipendenze fra i task hanno rallentato, soprattutto nella fase iniziale dello sprint, il lavoro del team.
