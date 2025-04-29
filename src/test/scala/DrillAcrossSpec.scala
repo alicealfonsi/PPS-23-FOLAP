@@ -5,68 +5,69 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
-private trait SalesAttribute extends EventAttribute
-private trait ProfitsAttribute extends EventAttribute
-private trait CustomerAttribute extends EventAttribute
-private trait SalesMeasure[T] extends EventMeasure[T]
-private trait ProfitsMeasure[T] extends EventMeasure[T]
-private trait CustomerMeasure[T] extends EventMeasure[T]
 
-private case class NationAttribute(
-    override val value: String,
-    override val parent: Option[TopAttribute]
-) extends SalesAttribute
-    with ProfitsAttribute
-
-private case class YearAttribute(
-    override val value: String,
-    override val parent: Option[TopAttribute]
-) extends SalesAttribute
-
-private case class CategoryAttribute(
-    override val value: String,
-    override val parent: Option[TopAttribute]
-) extends ProfitsAttribute
-private case class CustomerNameAttribute(
-    override val value: String,
-    override val parent: Option[TopAttribute]
-) extends CustomerAttribute
-
-private case class TotSalesMeasure[T: Numeric](val value: T)
-    extends SalesMeasure[T]:
-  override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
-private case class TotProfitsMeasure[T: Numeric](val value: T)
-    extends ProfitsMeasure[T]:
-  override def fromRaw(value: T): TotProfitsMeasure[T] = TotProfitsMeasure(
-    value
-  )
-private case class TotPurchasesMeasure[T: Numeric](val value: T)
-    extends CustomerMeasure[T]:
-  override def fromRaw(value: T): TotPurchasesMeasure[T] = TotPurchasesMeasure(
-    value
-  )
-
-private case class SalesEvent(
-    override val dimensions: Iterable[SalesAttribute],
-    override val measures: Iterable[SalesMeasure[_]]
-) extends Event[SalesAttribute, SalesMeasure[_]]
-private case class ProfitsEvent(
-    override val dimensions: Iterable[ProfitsAttribute],
-    override val measures: Iterable[ProfitsMeasure[_]]
-) extends Event[ProfitsAttribute, ProfitsMeasure[_]]
-private case class CustomerEvent(
-    override val dimensions: Iterable[CustomerAttribute],
-    override val measures: Iterable[CustomerMeasure[_]]
-) extends Event[CustomerAttribute, CustomerMeasure[_]]
-private case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
-    override val dimensions: Iterable[A],
-    override val measures: Iterable[M]
-) extends Event[A, M]
-
-class SliceAndDiceSpec
+class DrillAcrossSpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
+
+  trait SalesAttribute extends EventAttribute
+  trait ProfitsAttribute extends EventAttribute
+  trait CustomerAttribute extends EventAttribute
+  trait SalesMeasure[T] extends EventMeasure[T]
+  trait ProfitsMeasure[T] extends EventMeasure[T]
+  trait CustomerMeasure[T] extends EventMeasure[T]
+
+  case class NationAttribute(
+      override val value: String,
+      override val parent: Option[TopAttribute]
+  ) extends SalesAttribute
+      with ProfitsAttribute
+
+  case class YearAttribute(
+      override val value: String,
+      override val parent: Option[TopAttribute]
+  ) extends SalesAttribute
+
+  case class CategoryAttribute(
+      override val value: String,
+      override val parent: Option[TopAttribute]
+  ) extends ProfitsAttribute
+  case class CustomerNameAttribute(
+      override val value: String,
+      override val parent: Option[TopAttribute]
+  ) extends CustomerAttribute
+
+  case class TotSalesMeasure[T: Numeric](val value: T) extends SalesMeasure[T]:
+    override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
+  case class TotProfitsMeasure[T: Numeric](val value: T)
+      extends ProfitsMeasure[T]:
+    override def fromRaw(value: T): TotProfitsMeasure[T] = TotProfitsMeasure(
+      value
+    )
+  case class TotPurchasesMeasure[T: Numeric](val value: T)
+      extends CustomerMeasure[T]:
+    override def fromRaw(value: T): TotPurchasesMeasure[T] =
+      TotPurchasesMeasure(
+        value
+      )
+
+  case class SalesEvent(
+      override val dimensions: Iterable[SalesAttribute],
+      override val measures: Iterable[SalesMeasure[_]]
+  ) extends Event[SalesAttribute, SalesMeasure[_]]
+  case class ProfitsEvent(
+      override val dimensions: Iterable[ProfitsAttribute],
+      override val measures: Iterable[ProfitsMeasure[_]]
+  ) extends Event[ProfitsAttribute, ProfitsMeasure[_]]
+  case class CustomerEvent(
+      override val dimensions: Iterable[CustomerAttribute],
+      override val measures: Iterable[CustomerMeasure[_]]
+  ) extends Event[CustomerAttribute, CustomerMeasure[_]]
+  case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
+      override val dimensions: Iterable[A],
+      override val measures: Iterable[M]
+  ) extends Event[A, M]
 
   val event1 = SalesEvent(
     dimensions =
