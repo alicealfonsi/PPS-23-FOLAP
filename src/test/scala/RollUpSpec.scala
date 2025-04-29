@@ -9,23 +9,23 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
   trait SalesAttribute extends EventAttribute
   trait SalesMeasure[T] extends EventMeasure[T]
   case class NationAttribute(
-                              override val parent: Option[TopAttribute],
-                              override val value: String
-                            ) extends SalesAttribute
+      override val parent: Option[TopAttribute],
+      override val value: String
+  ) extends SalesAttribute
   case class CityAttribute(
-                            override val parent: Option[NationAttribute],
-                            override val value: String
-                          ) extends SalesAttribute
+      override val parent: Option[NationAttribute],
+      override val value: String
+  ) extends SalesAttribute
   case class ShopAttribute(
-                            override val parent: Option[CityAttribute],
-                            override val value: String
-                          ) extends SalesAttribute
+      override val parent: Option[CityAttribute],
+      override val value: String
+  ) extends SalesAttribute
   private case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
     override def fromRaw(value: Int): Measure[Int] = QuantitySoldMeasure(value)
   case class SalesEvent(
-                         override val dimensions: Iterable[SalesAttribute],
-                         override val measures: Iterable[SalesMeasure[_]]
-                       ) extends Event[SalesAttribute, SalesMeasure[_]]
+      override val dimensions: Iterable[SalesAttribute],
+      override val measures: Iterable[SalesMeasure[_]]
+  ) extends Event[SalesAttribute, SalesMeasure[_]]
 
   val nationAttribute12: NationAttribute =
     NationAttribute(Some(TopAttribute()), "Italy")
@@ -51,11 +51,11 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
     )
 
   private case class ResultEvent[A <: SalesAttribute, M <: SalesMeasure[_]](
-                                                                             override val dimensions: Iterable[A],
-                                                                             override val measures: Iterable[M]
-                                                                           ) extends Event[A, M]
+      override val dimensions: Iterable[A],
+      override val measures: Iterable[M]
+  ) extends Event[A, M]
   private def createEvent[A <: SalesAttribute, M <: SalesMeasure[_]]
-  : EventConstructor[A, M] =
+      : EventConstructor[A, M] =
     (dimensions: Iterable[A], measures: Iterable[M]) =>
       ResultEvent(dimensions, measures)
 
