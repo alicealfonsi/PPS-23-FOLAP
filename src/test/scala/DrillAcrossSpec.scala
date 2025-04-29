@@ -1,4 +1,3 @@
-import MultidimensionalModel._
 import Operators.drillAcross
 import org.scalatest._
 
