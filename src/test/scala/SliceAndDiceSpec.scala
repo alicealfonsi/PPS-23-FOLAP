@@ -1,4 +1,3 @@
-import MultidimensionalModel.Measure
 import Operators.sliceAndDice
 import org.scalatest._
 
