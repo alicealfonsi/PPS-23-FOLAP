@@ -28,10 +28,10 @@ object Operators:
     *   both sets
     */
   def drillAcross[
-      A1 <: Attribute,
-      M1 <: Measure[_],
-      A2 <: Attribute,
-      M2 <: Measure[_]
+      A1 <: EventAttribute,
+      M1 <: EventMeasure[_],
+      A2 <: EventAttribute,
+      M2 <: EventMeasure[_]
   ](
       events: Iterable[Event[A1, M1]],
       otherEvents: Iterable[Event[A2, M2]],

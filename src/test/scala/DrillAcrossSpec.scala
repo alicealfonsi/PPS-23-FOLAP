@@ -1,6 +1,4 @@
-import MultidimensionalModel.Attribute
-import MultidimensionalModel.Event
-import MultidimensionalModel.Measure
+import MultidimensionalModel._
 import Operators.drillAcross
 import org.scalatest._
 
@@ -8,12 +6,12 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
-private trait SalesAttribute extends Attribute
-private trait ProfitsAttribute extends Attribute
-private trait CustomerAttribute extends Attribute
-private trait SalesMeasure[T] extends Measure[T]
-private trait ProfitsMeasure[T] extends Measure[T]
-private trait CustomerMeasure[T] extends Measure[T]
+private trait SalesAttribute extends EventAttribute
+private trait ProfitsAttribute extends EventAttribute
+private trait CustomerAttribute extends EventAttribute
+private trait SalesMeasure[T] extends EventMeasure[T]
+private trait ProfitsMeasure[T] extends EventMeasure[T]
+private trait CustomerMeasure[T] extends EventMeasure[T]
 
 private case class NationAttribute(
     override val value: String,
