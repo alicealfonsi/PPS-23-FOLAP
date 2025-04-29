@@ -5,31 +5,30 @@ import scala.language.postfixOps
 
 import flatspec._
 import matchers._
-private trait SalesAttribute extends EventAttribute
-private trait SalesMeasure[T] extends EventMeasure[T]
-private case class NationAttribute(
-    override val value: String,
-    override val parent: Option[TopAttribute]
-) extends SalesAttribute
-
-private case class YearAttribute(
-    override val value: String,
-    override val parent: Option[TopAttribute]
-) extends SalesAttribute
-
-private case class TotSalesMeasure[T: Numeric](val value: T)
-    extends SalesMeasure[T]:
-  override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
-
-private case class SalesEvent(
-    override val dimensions: Iterable[SalesAttribute],
-    override val measures: Iterable[SalesMeasure[_]]
-) extends Event[SalesAttribute, SalesMeasure[_]]
 
 class SliceAndDiceSpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
+  trait SalesAttribute extends EventAttribute
+  trait SalesMeasure[T] extends EventMeasure[T]
+  case class NationAttribute(
+      override val value: String,
+      override val parent: Option[TopAttribute]
+  ) extends SalesAttribute
+
+  case class YearAttribute(
+      override val value: String,
+      override val parent: Option[TopAttribute]
+  ) extends SalesAttribute
+
+  case class TotSalesMeasure[T: Numeric](val value: T) extends SalesMeasure[T]:
+    override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
+
+  case class SalesEvent(
+      override val dimensions: Iterable[SalesAttribute],
+      override val measures: Iterable[SalesMeasure[_]]
+  ) extends Event[SalesAttribute, SalesMeasure[_]]
 
   val event1 = SalesEvent(
     dimensions =
