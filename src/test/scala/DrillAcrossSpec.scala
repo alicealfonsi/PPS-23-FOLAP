@@ -59,7 +59,7 @@ private case class CustomerEvent(
     override val attributes: Iterable[CustomerAttribute],
     override val measures: Iterable[CustomerMeasure[_]]
 ) extends Event[CustomerAttribute, CustomerMeasure[_]]
-private case class ResultEvent[A <: Attribute, M <: Measure[_]](
+private case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
     override val attributes: Iterable[A],
     override val measures: Iterable[M]
 ) extends Event[A, M]
@@ -106,7 +106,7 @@ class SliceAndDiceSpec
   val eventsB = Seq(event4, event5)
   val eventsC = Seq(event6)
 
-  def createEvent[A <: Attribute, M <: Measure[_]]: EventConstructor[A, M] =
+  def createEvent[A <: EventAttribute, M <: EventMeasure[_]]: EventConstructor[A, M] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]
