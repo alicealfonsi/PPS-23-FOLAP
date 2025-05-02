@@ -20,7 +20,7 @@ object Operators:
 
   def sliceAndDice[A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]],
-      filters: Iterable[EventAttribute]
+      filters: Iterable[A]
   ): Iterable[Event[A, M]] =
     events.filter { event =>
       filters.forall { filter =>
