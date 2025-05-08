@@ -11,7 +11,7 @@ class SeqBuilderSpec extends AnyFlatSpec with should.Matchers:
     val seq = first --> second
     seq shouldEqual Seq(first, second)
 
-  "A SeqBuilder" should "create a Seq from a list and a string" in :
+  "A SeqBuilder" should "create a Seq from a list and a string" in:
     val first = "first"
     val second = "second"
     val third = "third"

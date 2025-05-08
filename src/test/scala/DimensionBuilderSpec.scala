@@ -1,5 +1,5 @@
-import SeqBuilder.-->
 import DimensionBuilder.dimension
+import SeqBuilder.-->
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
