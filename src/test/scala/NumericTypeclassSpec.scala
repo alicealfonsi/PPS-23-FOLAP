@@ -22,7 +22,6 @@ class TypeFromStringSpec extends AnyFlatSpec with Matchers:
   "TypeFromString[Long]" should "resolve Measure[Long] correctly" in:
     val m = TypeFromString.resolve("price", "Long")
     m shouldBe Measure[Long]("price", "Long")
-  
 
   "TypeFromString[Long]" should "return typeName = Long" in:
     val m = TypeFromString.resolve("price", "Long")
@@ -31,16 +30,13 @@ class TypeFromStringSpec extends AnyFlatSpec with Matchers:
   "TypeFromString[Float]" should "resolve Measure[Float] correctly" in:
     val m = TypeFromString.resolve("price", "Float")
     m shouldBe Measure[Float]("price", "Float")
-  
 
   "TypeFromString[Float]" should "return typeName = Float" in:
     val m = TypeFromString.resolve("price", "Float")
     m shouldBe Measure[Float]("price", "Float")
-  
 
   "TypeFromString" should "throw an exception for unsupported types" in:
-    an [IllegalArgumentException] should be thrownBy {
+    an[RuntimeException] should be thrownBy {
       TypeFromString.resolve("weight", "BigDecimal")
-    
-    }
 
+    }

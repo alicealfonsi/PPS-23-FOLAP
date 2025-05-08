@@ -1,14 +1,13 @@
+import MeasureDSL.as
+import MeasureDSL.measure
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import MeasureDSL.measure
-import MeasureDSL.as
 
 class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
 
   "The Measure DSL" should "construct a Measure[Int] from DSL" in:
     val m = "" measure "price" as "Int"
     m shouldBe Measure[Int]("price", "Int")
-    
 
   it should "construct a Measure[Double] from DSL" in:
     val m = "" measure "price" as "Double"
@@ -23,10 +22,8 @@ class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
     val m = "" measure "price" as "Float"
     m.name shouldBe "price"
     m shouldBe Measure[Float]("price", "Float")
-    
 
   it should "throw an exception for unsupported types" in:
-    an [IllegalArgumentException] should be thrownBy {
+    an[IllegalArgumentException] should be thrownBy {
       "" measure "weight" as "String"
     }
-
