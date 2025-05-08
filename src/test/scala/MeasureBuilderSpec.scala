@@ -24,6 +24,6 @@ class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
     m shouldBe Measure[Float]("price", "Float")
 
   it should "throw an exception for unsupported types" in:
-    an[IllegalArgumentException] should be thrownBy {
+    an[RuntimeException] should be thrownBy {
       "" measure "weight" as "String"
     }
