@@ -104,8 +104,15 @@ object Operators:
       aggregatedEvents
     else events
   extension [A <: EventAttribute, M <: EventMeasure[_]](event: Event[A, M])
-    private def findAttributeByName(attribute: String): Iterable[A] =
-      event.attributes.filter(_.name == attribute)
+    /** Finds the attribute of this event whose name is equal to the specified
+      * name
+      * @param name
+      *   the name of the attribute to be found
+      * @return
+      *   the attribute with the specified name as an iterable
+      */
+    private def findAttributeByName(name: String): Iterable[A] =
+      event.attributes.filter(_.name == name)
   extension [A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
   )
