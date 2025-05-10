@@ -91,9 +91,8 @@ object Operators:
     then
       val groupByMap =
         events.groupBy(_.findAttributeByName(groupBy).map(_.value))
-      var newDimensions: Iterable[A] = List()
-      groupByMap.values.foreach(v =>
-        newDimensions = newDimensions ++ v.head.findAttributeByName(groupBy)
+      val groupByDimensions = groupByMap.values.map(
+        _.head.findAttributeByName(groupBy)
       )
       var aggregatedEvents: Iterable[Event[A, M]] = List()
       for d <- newDimensions do
