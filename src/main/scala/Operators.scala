@@ -87,7 +87,7 @@ object Operators:
   )(
       groupBy: String
   )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
-    if events.matchAttribute(groupBy)
+    if events.matchAttributeByName(groupBy)
     then
       val groupByMap: Map[Iterable[String], Iterable[Event[A, M]]] =
         events.groupBy(_.findAttributeByName(groupBy).map(_.value))
