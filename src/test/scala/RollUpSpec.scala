@@ -83,5 +83,5 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
     rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName2)(
       createEvent
     ) shouldEqual List(
-      ResultEvent(List(NationAttribute(Some(TopAttribute()), "Italy")), List())
+      ResultEvent(List(nationAttribute12), List())
     )
