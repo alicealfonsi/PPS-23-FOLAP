@@ -89,7 +89,7 @@ object Operators:
   )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
     if events.matchAttributeByName(groupBy)
     then
-      val groupByMap: Map[Iterable[String], Iterable[Event[A, M]]] =
+      val groupByMap =
         events.groupBy(_.findAttributeByName(groupBy).map(_.value))
       var newDimensions: Iterable[A] = List()
       groupByMap.values.foreach(v =>
