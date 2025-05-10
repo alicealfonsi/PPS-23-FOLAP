@@ -23,6 +23,18 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       override val parent: Option[CityAttribute],
       override val value: String
   ) extends SalesAttribute
+  case class CategoryAttribute(
+      override val parent: Option[TopAttribute],
+      override val value: String
+  ) extends SalesAttribute
+  case class TypeAttribute(
+      override val parent: Option[CategoryAttribute],
+      override val value: String
+  ) extends SalesAttribute
+  case class ProductAttribute(
+      override val parent: Option[TypeAttribute],
+      override val value: String
+  ) extends SalesAttribute
   private case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
     override def fromRaw(value: Int): Measure[Int] = QuantitySoldMeasure(value)
   case class SalesEvent(
@@ -52,6 +64,16 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       List(shopAttribute2),
       List(QuantitySoldMeasure(quantitySoldValue2))
     )
+  val categoryAttribute12: CategoryAttribute =
+    CategoryAttribute(Some(TopAttribute()), "Groceries")
+  val typeAttribute12: TypeAttribute =
+    TypeAttribute(Some(categoryAttribute12), "Drink")
+  val productAttribute12: ProductAttribute =
+    ProductAttribute(Some(typeAttribute12), "Drink1")
+  val salesEvent3: SalesEvent =
+    SalesEvent(List(shopAttribute1, productAttribute12), List())
+  val salesEvent4: SalesEvent =
+    SalesEvent(List(shopAttribute2, productAttribute12), List())
 
   private case class ResultEvent(
       override val dimensions: Iterable[SalesAttribute],
@@ -88,3 +110,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
     ) shouldEqual List(
       ResultEvent(List(nationAttribute12), List())
     )
+
+  it should "aggregate along the entire hierarchy for dimensions for which no attribute is specified in the group-by set" in:
+    val groupByAttributeName = "NationAttribute"
+    rollUp(List(salesEvent3, salesEvent4))(groupByAttributeName)(
+      createEvent
+    ) shouldEqual
+      List(ResultEvent(List(nationAttribute12, TopAttribute()), List()))

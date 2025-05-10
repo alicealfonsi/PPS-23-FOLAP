@@ -94,13 +94,13 @@ object Operators:
       val groupByDimensions = groupByMap.values.map(
         _.head.findAttributeByName(groupBy)
       )
-      var aggregatedEvents: Iterable[Event[A, M]] = List()
-      for d <- newDimensions do
-        val aggregatedEvent: Iterable[Event[A, M]] = List(
-          createEvent(List(d), List())
-        )
-        aggregatedEvents = aggregatedEvents ++ aggregatedEvent
-      aggregatedEvents
+      val otherDimensions =
+        groupByMap.values.head.head.dimensions
+          .filter(_.hierarchy.forall(_.name != groupBy))
+          .map(_ => events.head.topAttribute)
+      groupByDimensions
+        .map(d => d ++ otherDimensions)
+        .map(dimensions => createEvent(dimensions, List()))
     else events
   extension [A <: EventAttribute, M <: EventMeasure[_]](event: Event[A, M])
     /** Finds the attribute of this event whose name is equal to the specified
