@@ -87,16 +87,26 @@ object Operators:
   )(
       groupBySet: Iterable[String]
   )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
-    if events.matchAttributeByName(groupBy)
+    if groupBySet.exists(name => events.matchAttributeByName(name))
     then
+      val groupByAttributesNames =
+        groupBySet.filter(name => events.matchAttributeByName(name))
       val groupByMap =
-        events.groupBy(_.findAttributeByName(groupBy).map(_.value))
+        events.groupBy(
+          _.findAttributesByNames(groupByAttributesNames).map(_.value)
+        )
       val groupByDimensions = groupByMap.values.map(
-        _.head.findAttributeByName(groupBy)
+        _.head.findAttributesByNames(groupByAttributesNames)
       )
       val otherDimensions =
         groupByMap.values.head.head.dimensions
-          .filter(_.hierarchy.forall(_.name != groupBy))
+          .filter(
+            _.hierarchy.forall(a =>
+              groupByAttributesNames.forall(
+                _ != a.name
+              )
+            )
+          )
           .map(_ => events.head.topAttribute)
       groupByDimensions
         .map(d => d ++ otherDimensions)

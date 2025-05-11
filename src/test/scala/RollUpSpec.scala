@@ -75,6 +75,15 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
   val salesEvent4: SalesEvent =
     SalesEvent(List(shopAttribute2, productAttribute12), List())
 
+  val shopAttribute5: ShopAttribute =
+    ShopAttribute(Some(cityAttribute1), "Shop5")
+  val typeAttribute5: TypeAttribute =
+    TypeAttribute(Some(categoryAttribute12), "Food")
+  val productAttribute5: ProductAttribute =
+    ProductAttribute(Some(typeAttribute5), "Food1")
+  val salesEvent5: SalesEvent =
+    SalesEvent(List(shopAttribute5, productAttribute5), List())
+
   private case class ResultEvent(
       override val dimensions: Iterable[SalesAttribute],
       override val measures: Iterable[SalesMeasure[_]]
@@ -117,3 +126,13 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       createEvent
     ) shouldEqual
       List(ResultEvent(List(nationAttribute12, TopAttribute()), List()))
+
+  it should "aggregate foreach attribute specified in the group-by set" in:
+    val groupByAttributeName1 = "TypeAttribute"
+    val groupByAttributeName2 = "NationAttribute"
+    rollUp(List(salesEvent3, salesEvent4, salesEvent5))(
+      List(groupByAttributeName1, groupByAttributeName2)
+    )(createEvent) shouldEqual List(
+      ResultEvent(List(typeAttribute5, nationAttribute12), List()),
+      ResultEvent(List(typeAttribute12, nationAttribute12), List())
+    )
