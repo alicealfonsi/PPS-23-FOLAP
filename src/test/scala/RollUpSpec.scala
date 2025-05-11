@@ -95,8 +95,8 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
     )
 
   it should "search for the group-by attribute among the dimensions" in:
-    val groupByAttributeName1 = "ShopAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(List(groupByAttributeName1))(
+    val groupByAttributeName = "ShopAttribute"
+    rollUp(List(salesEvent1, salesEvent2))(List(groupByAttributeName))(
       createEvent
     ) shouldEqual List(
       ResultEvent(salesEvent1.dimensions, List()),
