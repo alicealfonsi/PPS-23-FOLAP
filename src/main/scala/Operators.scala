@@ -103,15 +103,15 @@ object Operators:
         .map(dimensions => createEvent(dimensions, List()))
     else events
   extension [A <: EventAttribute, M <: EventMeasure[_]](event: Event[A, M])
-    /** Finds the attribute of this event whose name is equal to the specified
-      * name
-      * @param name
-      *   the name of the attribute to be found
+    /** Finds the attributes of this event whose name is equal to one of the
+      * specified names
+      * @param names
+      *   the names of the attributes to be found
       * @return
-      *   the attribute with the specified name as an iterable
+      *   a new iterable collection containing the found attributes
       */
-    private def findAttributeByName(name: String): Iterable[A] =
-      event.attributes.filter(_.name == name)
+    private def findAttributesByNames(names: Iterable[String]): Iterable[A] =
+      names.flatMap(name => event.attributes.filter(_.name == name))
   extension [A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
   )
