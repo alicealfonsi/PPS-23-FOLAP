@@ -85,7 +85,7 @@ object Operators:
   def rollUp[A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
   )(
-      groupBy: String
+      groupBySet: Iterable[String]
   )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
     if events.matchAttributeByName(groupBy)
     then
