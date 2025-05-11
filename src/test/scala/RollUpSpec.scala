@@ -87,7 +87,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   "RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
     val groupByAttributeName = "ClientAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName)(
+    rollUp(List(salesEvent1, salesEvent2))(List(groupByAttributeName))(
       createEvent
     ) shouldEqual List(
       salesEvent1,
@@ -96,7 +96,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "search for the group-by attribute among the dimensions" in:
     val groupByAttributeName1 = "ShopAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName1)(
+    rollUp(List(salesEvent1, salesEvent2))(List(groupByAttributeName1))(
       createEvent
     ) shouldEqual List(
       ResultEvent(salesEvent1.dimensions, List()),
@@ -105,7 +105,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "search for the group-by attribute moving up attributes hierarchies" in:
     val groupByAttributeName2 = "NationAttribute"
-    rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName2)(
+    rollUp(List(salesEvent1, salesEvent2))(List(groupByAttributeName2))(
       createEvent
     ) shouldEqual List(
       ResultEvent(List(nationAttribute12), List())
@@ -113,7 +113,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "aggregate along the entire hierarchy for dimensions for which no attribute is specified in the group-by set" in:
     val groupByAttributeName = "NationAttribute"
-    rollUp(List(salesEvent3, salesEvent4))(groupByAttributeName)(
+    rollUp(List(salesEvent3, salesEvent4))(List(groupByAttributeName))(
       createEvent
     ) shouldEqual
       List(ResultEvent(List(nationAttribute12, TopAttribute()), List()))
