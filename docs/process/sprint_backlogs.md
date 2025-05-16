@@ -77,6 +77,8 @@ Le dipendenze fra i task hanno rallentato, soprattutto nella fase iniziale dello
 | Implementazione DSL evento         |                                                           | Alice          | 5                                  | 0                       | 5                                            |
 
 ### Sprint retrospective 2
+Durante l'implementazione del roll-up sono emerse complessità impreviste che non erano state affrontate in precedenza.
+Ciò ha richiesto di ripensare la soluzione e di conseguenza ha ritardato lo svolgimento di alcuni task.
 
 
 ## Sprint Backlog 3 (start on 16/05/2025, deadline 28/05/2025)
