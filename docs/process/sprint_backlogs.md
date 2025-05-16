@@ -60,21 +60,21 @@ Le dipendenze fra i task hanno rallentato, soprattutto nella fase iniziale dello
 | Implementazione Measure            | Relazione                                                 | Eugenio, Alice | 0.25                               | 0                       | 0.25                                         |
 | Implementazione Cube               | Relazione                                                 | Alice          | 0.25                               | 0                       | 0.25                                         |
 | Implementazione EventConstructor   | Relazione                                                 | Claudia        | 0.5                                | 0.5                     | 0                                            |
-| Implementazione EventAttribute     | Relazione                                                 | Alice          | 0.5                                | 0.5                     | 0.5                                          |
-| Implementazione EventMeasure       | Relazione                                                 | Alice          | 0.25                               | 0.25                    | 0.25                                         |
+| Implementazione EventAttribute     | Relazione                                                 | Alice          | 0.5                                | 0                       | 0.5                                          |
+| Implementazione EventMeasure       | Relazione                                                 | Alice          | 0.25                               | 0                       | 0.25                                         |
 | Implementazione roll-up            | Aggregazione misure, group-by su più attributi, relazione | Alice          | 4                                  | 10                      | 6                                            |
 | Implementazione drill-down         | Implementazione, relazione                                | Eugenio        | 3                                  | 0                       | 3                                            |
 | Implementazione slice-and-dice     | Relazione                                                 | Claudia        | 1                                  | 1                       | 0                                            |
 | Implementazione drill-across       | Relazione                                                 | Claudia        | 1                                  | 1                       | 0                                            |
-| Design di dettaglio                | Relazione                                                 | Team           | 1                                  | 1                       | 1                                            |
-| Design di dettaglio                | Organizzazione del codice                                 | Team           | 0.5                                | 0.5                     | 0.5                                          |
-| Design di dettaglio                | Diagrammi UML                                             | Team           | 1                                  | 1                       | 1                                            |
+| Design di dettaglio                | Relazione                                                 | Team           | 1                                  | 0                       | 1                                            |
+| Design di dettaglio                | Organizzazione del codice                                 | Team           | 0.5                                | 0                       | 0.5                                          |
+| Design di dettaglio                | Diagrammi UML                                             | Team           | 1                                  | 0                       | 1                                            |
 | Refactoring operatori              |                                                           | Eugenio        | 3                                  | 0                       | 3                                            |
 | Studio di fattibilità delle macro  |                                                           | Eugenio        | 3                                  | 6                       | 0                                            |
 | Definizione DSL per definizione DW |                                                           | Team           | 2                                  | 2                       | 0                                            |
 | Implementazione DSL gerarchie      |                                                           | Eugenio        | 5                                  | 1                       | 1                                            |
 | Implementazione DSL misure         |                                                           | Claudia        | 5                                  | 3                       | 1                                            |
-| Implementazione DSL evento         |                                                           | Alice          | 5                                  | 5                       | 0                                            |
+| Implementazione DSL evento         |                                                           | Alice          | 5                                  | 0                       | 5                                            |
 
 ### Sprint retrospective 2
 
