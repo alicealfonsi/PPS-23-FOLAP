@@ -53,23 +53,51 @@ Le dipendenze fra i task hanno rallentato, soprattutto nella fase iniziale dello
 
 
 ## Sprint Backlog 2 (start on 05/05/2025, deadline 16/05/2025)
-| **Product Backlog Item**               | **Sprint Task**                                           | **Volunteer**           | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
-|----------------------------------------|-----------------------------------------------------------|-------------------------|------------------------------------|-------------------------|----------------------------------------------|
-| Implementazione Event                  | Relazione                                                 | Eugenio, Alice          | 0.5                                |                         |                                              |
-| Implementazione Attribute              | Relazione                                                 | Eugenio, Alice          | 0.25                               |                         |                                              |
-| Implementazione Measure                | Relazione                                                 | Eugenio, Alice          | 0.25                               |                         |                                              |
-| Implementazione Cube                   | Relazione                                                 | Alice                   | 0.25                               |                         |                                              |
-| Implementazione EventConstructor       | Relazione                                                 | Alice, Claudia          | 0.5                                |                         |                                              |
-| Implementazione EventAttribute         | Relazione                                                 | Alice                   | 0.5                                |                         |                                              |
-| Implementazione EventMeasure           | Relazione                                                 | Alice                   | 0.25                               |                         |                                              |
-| Implementazione roll-up                | Aggregazione misure, group-by su più attributi, relazione | Alice                   | 4                                  |                         |                                              |
-| Implementazione drill-down             | Implementazione, relazione                                | Eugenio                 | 3                                  |                         |                                              |
-| Implementazione slice-and-dice         | Relazione                                                 | Claudia                 | 1                                  |                         |                                              |
-| Implementazione drill-across           | Relazione                                                 | Claudia                 | 1                                  |                         |                                              |
-| Design di dettaglio                    | Relazione                                                 | Team                    | 1                                  |                         |                                              |
-| Design di dettaglio                    | Organizzazione del codice                                 | Team                    | 0.5                                |                         |                                              |
-| Design di dettaglio                    | Diagrammi UML                                             | Team                    | 1                                  |                         |                                              |
-| Refactoring operatori                  |                                                           | Eugenio                 | 3                                  |                         |                                              |
-| Studio di fattibilità delle macro      |                                                           | Eugenio                 | 3                                  |                         |                                              |
-| Definizione DSL per definizione DW     |                                                           | Team                    | 2                                  |                         |                                              |
-| Implementazione DSL per definizione DW |                                                           | Eugenio, Alice, Claudia | 15                                 |                         |                                              |
+| **Product Backlog Item**           | **Sprint Task**                                           | **Volunteer**  | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
+|------------------------------------|-----------------------------------------------------------|----------------|------------------------------------|-------------------------|----------------------------------------------|
+| Implementazione Event              | Relazione                                                 | Eugenio, Alice | 0.5                                | 0                       | 0.5                                          |
+| Implementazione Attribute          | Relazione                                                 | Eugenio, Alice | 0.25                               | 0                       | 0.25                                         |
+| Implementazione Measure            | Relazione                                                 | Eugenio, Alice | 0.25                               | 0                       | 0.25                                         |
+| Implementazione Cube               | Relazione                                                 | Alice          | 0.25                               | 0                       | 0.25                                         |
+| Implementazione EventConstructor   | Relazione                                                 | Claudia        | 0.5                                | 0.5                     | 0                                            |
+| Implementazione EventAttribute     | Relazione                                                 | Alice          | 0.5                                | 0.5                     | 0.5                                          |
+| Implementazione EventMeasure       | Relazione                                                 | Alice          | 0.25                               | 0.25                    | 0.25                                         |
+| Implementazione roll-up            | Aggregazione misure, group-by su più attributi, relazione | Alice          | 4                                  | 10                      | 6                                            |
+| Implementazione drill-down         | Implementazione, relazione                                | Eugenio        | 3                                  | 0                       | 3                                            |
+| Implementazione slice-and-dice     | Relazione                                                 | Claudia        | 1                                  | 1                       | 0                                            |
+| Implementazione drill-across       | Relazione                                                 | Claudia        | 1                                  | 1                       | 0                                            |
+| Design di dettaglio                | Relazione                                                 | Team           | 1                                  | 1                       | 1                                            |
+| Design di dettaglio                | Organizzazione del codice                                 | Team           | 0.5                                | 0.5                     | 0.5                                          |
+| Design di dettaglio                | Diagrammi UML                                             | Team           | 1                                  | 1                       | 1                                            |
+| Refactoring operatori              |                                                           | Eugenio        | 3                                  | 0                       | 3                                            |
+| Studio di fattibilità delle macro  |                                                           | Eugenio        | 3                                  | 6                       | 0                                            |
+| Definizione DSL per definizione DW |                                                           | Team           | 2                                  | 2                       | 0                                            |
+| Implementazione DSL gerarchie      |                                                           | Eugenio        | 5                                  | 1                       | 1                                            |
+| Implementazione DSL misure         |                                                           | Claudia        | 5                                  | 3                       | 1                                            |
+| Implementazione DSL evento         |                                                           | Alice          | 5                                  | 5                       | 0                                            |
+
+### Sprint retrospective 2
+
+
+## Sprint Backlog 3 (start on 16/05/2025, deadline 28/05/2025)
+| **Product Backlog Item**              | **Sprint Task**                | **Volunteer** | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
+|---------------------------------------|--------------------------------|---------------|------------------------------------|-------------------------|----------------------------------------------|
+| Implementazione Event                 | Relazione                      | Alice         | 0.5                                |                         |                                              |
+| Implementazione Attribute             | Relazione                      | Alice         | 0.25                               |                         |                                              |
+| Implementazione Measure               | Relazione                      | Alice         | 0.25                               |                         |                                              |
+| Implementazione Cube                  | Relazione                      | Alice         | 0.25                               |                         |                                              |
+| Implementazione EventAttribute        | Relazione                      | Alice         | 0.5                                |                         |                                              |
+| Implementazione EventMeasure          | Relazione                      | Alice         | 0.25                               |                         |                                              |
+| Implementazione roll-up               | Aggregazione misure, relazione | Alice         | 6                                  |                         |                                              |
+| Refactor Measure                      |                                | Alice         | 3                                  |                         |                                              |
+| Implementazione drill-down            | Implementazione, relazione     | Eugenio       | 3                                  |                         |                                              |
+| Design di dettaglio                   | Relazione                      | Team          | 1                                  |                         |                                              |
+| Design di dettaglio                   | Organizzazione del codice      | Team          | 0.5                                |                         |                                              |
+| Design di dettaglio                   | Diagrammi UML                  | Team          | 1                                  |                         |                                              |
+| Refactoring operatori                 |                                | Eugenio       | 3                                  |                         |                                              |
+| Implementazione DSL gerarchie         | Relazione                      | Eugenio       | 1                                  |                         |                                              |
+| Implementazione DSL misure            | Relazione                      | Claudia       | 1                                  |                         |                                              |
+| Implementazione DSL evento            | Implementazione, relazione     | Alice         | 5                                  |                         |                                              |
+| Task sbt generazione codice           |                                | Eugenio       | 3                                  |                         |                                              |
+| Definizione DSL per interrogazione DW |                                | Team          | 3                                  |                         |                                              |
+| Implementazione DW di esempio         |                                |               |                                    |                         |                                              |
