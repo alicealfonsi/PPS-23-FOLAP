@@ -1,7 +1,8 @@
-package folap.core
+package folap.typingDSL
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import folap.typingDSL.Measure
 
 class TypeFromStringSpec extends AnyFlatSpec with Matchers:
 

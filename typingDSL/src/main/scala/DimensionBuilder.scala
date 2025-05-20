@@ -1,4 +1,4 @@
-package folap.core
+package folap.typingDSL
 
 case class Dimension(name: String, attributes: Seq[String])
 

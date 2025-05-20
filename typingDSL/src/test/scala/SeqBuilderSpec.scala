@@ -1,4 +1,4 @@
-package folap.core
+package folap.typingDSL
 
 import SeqBuilder.-->
 import org.scalatest.flatspec.AnyFlatSpec

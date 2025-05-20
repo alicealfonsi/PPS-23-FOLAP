@@ -1,4 +1,4 @@
-package folap.core
+package folap.typingDSL
 
 import MeasureDSL.as
 import MeasureDSL.measure

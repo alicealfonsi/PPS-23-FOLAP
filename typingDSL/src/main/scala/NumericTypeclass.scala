@@ -1,4 +1,4 @@
-package folap.core
+package folap.typingDSL
 
 trait TypeFromString[T]:
   def typeName: String
