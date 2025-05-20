@@ -1,4 +1,4 @@
-val scala3Version = "3.7.0"
+val scala3Version = "3.3.6"
 
 ThisBuild / scalacOptions ++= Seq("-Wunused:all", "-explain")
 
