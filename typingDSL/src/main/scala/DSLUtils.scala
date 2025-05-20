@@ -1,4 +1,4 @@
-package folap.core
+package folap.typingDSL
 
 /** This object contains utility functions for the DSL
   */

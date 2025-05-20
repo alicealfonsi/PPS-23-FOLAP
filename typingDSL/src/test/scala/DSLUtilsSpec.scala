@@ -1,4 +1,4 @@
-package folap.core
+package folap.typingDSL
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
