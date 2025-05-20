@@ -3,7 +3,7 @@ val scala3Version = "3.7.0"
 scalacOptions ++= Seq("-Wunused:all", "-explain")
 
 lazy val core = project
-  .in(file("."))
+  .in(file("./core"))
   .settings(
     version := "0.1.0-SNAPSHOT",
     scalaVersion := scala3Version,
