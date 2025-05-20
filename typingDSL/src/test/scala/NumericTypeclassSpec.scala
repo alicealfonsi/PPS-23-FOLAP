@@ -1,6 +1,4 @@
 package folap.typingDSL
-
-import folap.typingDSL.Measure
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
