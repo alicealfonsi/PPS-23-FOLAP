@@ -1,10 +1,10 @@
 package folap.core
 
-import Operators.sliceAndDice
 import org.scalatest._
 
 import scala.language.postfixOps
 
+import Operators.sliceAndDice
 import flatspec._
 import matchers._
 

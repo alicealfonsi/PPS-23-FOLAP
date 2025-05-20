@@ -1,9 +1,10 @@
 package folap.typingDSL
 
-import MeasureDSL.as
-import MeasureDSL.measure
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+
+import MeasureDSL.as
+import MeasureDSL.measure
 
 class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
 

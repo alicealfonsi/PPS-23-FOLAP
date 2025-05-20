@@ -1,6 +1,4 @@
 package folap.core
-
-import MultidimensionalModel._
 import org.scalatest._
 
 import flatspec._

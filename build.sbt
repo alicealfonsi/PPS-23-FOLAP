@@ -1,6 +1,6 @@
 val scala3Version = "3.7.0"
 
-scalacOptions ++= Seq("-Wunused:all", "-explain")
+ThisBuild / scalacOptions ++= Seq("-Wunused:all", "-explain")
 
 lazy val core = project
   .in(file("./core"))

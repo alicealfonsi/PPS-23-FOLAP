@@ -1,9 +1,9 @@
 package folap.core
 
-import MultidimensionalModel._
-import Operators._
 import org.scalatest._
 
+import MultidimensionalModel._
+import Operators._
 import flatspec._
 import matchers._
 
