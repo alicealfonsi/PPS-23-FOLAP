@@ -1,3 +1,5 @@
+package folap.core
+
 import DimensionBuilder.dimension
 import SeqBuilder.-->
 import org.scalatest.flatspec.AnyFlatSpec

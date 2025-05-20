@@ -1,3 +1,5 @@
+package folap.core
+
 import MultidimensionalModel._
 import Operators._
 import org.scalatest._

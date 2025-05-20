@@ -1,3 +1,5 @@
+package folap.core
+
 import Operators.drillAcross
 import org.scalatest._
 

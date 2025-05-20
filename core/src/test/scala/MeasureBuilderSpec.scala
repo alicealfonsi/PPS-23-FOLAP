@@ -1,3 +1,5 @@
+package folap.core
+
 import MeasureDSL.as
 import MeasureDSL.measure
 import org.scalatest.flatspec.AnyFlatSpec

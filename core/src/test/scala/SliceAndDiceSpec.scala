@@ -1,3 +1,5 @@
+package folap.core
+
 import Operators.sliceAndDice
 import org.scalatest._
 
