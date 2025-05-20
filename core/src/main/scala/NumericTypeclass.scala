@@ -1,3 +1,5 @@
+package folap.core
+
 trait TypeFromString[T]:
   def typeName: String
   def measure(name: String): Measure[T]

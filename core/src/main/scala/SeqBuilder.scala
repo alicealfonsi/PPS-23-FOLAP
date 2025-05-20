@@ -1,3 +1,5 @@
+package folap.core
+
 object SeqBuilder:
   trait ToSeq[T]:
     def toSeq: Seq[T]

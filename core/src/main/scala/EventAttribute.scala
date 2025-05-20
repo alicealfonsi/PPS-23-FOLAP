@@ -1,3 +1,5 @@
+package folap.core
+
 import MultidimensionalModel.Attribute
 
 import scala.annotation.tailrec

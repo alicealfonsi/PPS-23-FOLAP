@@ -1,3 +1,5 @@
+package folap.core
+
 object MeasureDSL:
 
   class MeasureName(val name: String)

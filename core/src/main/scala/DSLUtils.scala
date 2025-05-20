@@ -1,3 +1,5 @@
+package folap.core
+
 /** This object contains utility functions for the DSL
   */
 object DSLUtils:

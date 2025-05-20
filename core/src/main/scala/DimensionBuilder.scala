@@ -1,3 +1,5 @@
+package folap.core
+
 case class Dimension(name: String, attributes: Seq[String])
 
 object DimensionBuilder:
