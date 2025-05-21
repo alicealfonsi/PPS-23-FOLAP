@@ -9,6 +9,7 @@ case class Event(
     case d: Dimension => Event(name, dimensions :+ d, measures)
     case m: Measure[_] => Event(name, dimensions, measures :+ m)
   def and(dimension: Dimension): Event = having(dimension)
+  def and(measure: Measure[_]): Event = having(measure)
 
 object EventBuilder:
   case class EventWord():
