@@ -5,7 +5,7 @@ import folap.core.olapDSL.QueryDSLBuilder.union
 import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-class DrillAcrossDSLSpec extends AnyFlatSpec with Matchers:
+class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
   trait SalesAttribute extends EventAttribute
   trait ProfitsAttribute extends EventAttribute
   trait CustomerAttribute extends EventAttribute

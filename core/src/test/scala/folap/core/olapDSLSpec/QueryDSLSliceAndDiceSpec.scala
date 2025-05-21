@@ -8,7 +8,7 @@ import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class SalesQueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
+class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
 
   trait SalesAttribute extends EventAttribute
   trait SalesMeasure[T] extends EventMeasure[T]
