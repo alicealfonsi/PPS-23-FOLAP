@@ -21,7 +21,7 @@ object TypeFromString:
     def typeName: String = "Float"
     def measure(name: String): Measure[Float] = Measure[Float](name, typeName)
 
-  def resolve(name: String, typology: String): Measure[_] =
+  def resolve(name: String, typology: String): Option[Measure[_]] =
     val all = List(
       summon[TypeFromString[Int]],
       summon[TypeFromString[Double]],
@@ -32,4 +32,3 @@ object TypeFromString:
     all
       .find(_.typeName == typology)
       .map(_.measure(name))
-      .getOrElse(sys.error(s"Type not supported: $typology"))
