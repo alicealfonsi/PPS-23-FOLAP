@@ -1,3 +1,5 @@
+package folap.core
+
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
   */

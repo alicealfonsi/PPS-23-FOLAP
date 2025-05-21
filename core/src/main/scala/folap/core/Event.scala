@@ -1,3 +1,5 @@
+package folap.core
+
 /** An Event is an instance of a fact that occurred in the business domain
   * @tparam A
   *   the type of the Event attributes

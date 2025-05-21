@@ -1,8 +1,10 @@
-import Operators.drillAcross
+package folap.core
+
 import org.scalatest._
 
 import scala.language.postfixOps
 
+import Operators.drillAcross
 import flatspec._
 import matchers._
 

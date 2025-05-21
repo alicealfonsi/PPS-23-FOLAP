@@ -1,3 +1,5 @@
+package folap.core
+
 import org.scalatest._
 
 import flatspec._

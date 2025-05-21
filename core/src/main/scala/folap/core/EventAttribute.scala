@@ -1,6 +1,8 @@
-import MultidimensionalModel.Attribute
+package folap.core
 
 import scala.annotation.tailrec
+
+import MultidimensionalModel.Attribute
 
 /** An EventAttribute is an Attribute specific to events related to the same
   * fact
