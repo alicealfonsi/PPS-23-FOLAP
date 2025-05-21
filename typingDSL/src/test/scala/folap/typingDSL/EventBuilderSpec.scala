@@ -33,3 +33,7 @@ class EventBuilderSpec extends AnyFlatSpec with should.Matchers:
   it should "build an Event from more than one measure with the word having followed by the word and" in:
     val e = event named eventName having m1 and m2
     e shouldEqual Event(eventName, Seq(), Seq(m1, m2))
+
+  it should "build an Event from name, dimensions and measures" in:
+    val e = event named eventName having d1 and d2 and m1 and m2
+    e shouldEqual Event(eventName, Seq(d1, d2), Seq(m1, m2))
