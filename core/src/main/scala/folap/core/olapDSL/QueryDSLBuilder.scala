@@ -13,5 +13,3 @@ object QueryDSLBuilder:
     infix def where(filter: EventAttribute): QueryDSL[A, M] =
       val sliced = sliceAndDice(q.cube, Seq(filter))
       QueryDSL(sliced)
-
-    
