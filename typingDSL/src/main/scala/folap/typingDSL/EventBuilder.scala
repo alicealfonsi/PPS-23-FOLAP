@@ -4,7 +4,9 @@ case class Event(
     name: String,
     dimensions: Seq[Dimension],
     measures: Seq[Measure[_]]
-)
+):
+  def having(dimension: Dimension): Event =
+    Event(name, dimensions :+ dimension, measures)
 
 object EventBuilder:
   case class EventWord():
