@@ -11,3 +11,7 @@ case class AttributeDSL private (
 object AttributeDSL:
   def apply(baseName: String, value: String): AttributeDSL =
     new AttributeDSL(baseName + "Attribute", value)
+  def apply(baseName: String): AttributeDSL =
+    new AttributeDSL(baseName + "Attribute", "")
+
+  

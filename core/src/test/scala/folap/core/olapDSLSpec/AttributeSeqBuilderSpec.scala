@@ -4,6 +4,9 @@ import folap.core.olapDSL.AttributeDSLBuilder._
 import folap.core.olapDSL.AttributeSeqBuilder._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import folap.core._
+import folap.core.olapDSL._
+
 
 class AttributeSeqBuilderSpec extends AnyFlatSpec with Matchers:
 
@@ -20,4 +23,10 @@ class AttributeSeqBuilderSpec extends AnyFlatSpec with Matchers:
       "Nation" is "Italy",
       "Year" is "2024",
       "Product" is "Shoes"
+    )
+  it should "create a Seq[AttributeDSL] from two attributes defined only by name" in:
+    val result = "Region" and "Year"
+    result shouldEqual Seq(
+      AttributeDSL("Region", ""),
+      AttributeDSL("Year", "")
     )
