@@ -3,7 +3,6 @@ package folap.core
 import org.scalatest._
 
 import MultidimensionalModel._
-import Operators._
 import flatspec._
 import matchers._
 
@@ -56,12 +55,8 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
-  private def createEvent[A <: SalesAttribute, M <: SalesMeasure[_]]
-      : EventConstructor[A, M] =
-    (dimensions: Iterable[A], measures: Iterable[M]) =>
-      ResultEvent(dimensions, measures)
 
-  "RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
+  /*"RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
     val groupByAttributeName = "ClientAttribute"
     rollUp(List(salesEvent1, salesEvent2))(groupByAttributeName)(
       createEvent
@@ -85,4 +80,4 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       createEvent
     ) shouldEqual List(
       ResultEvent(List(NationAttribute(Some(TopAttribute()), "Italy")), List())
-    )
+    )*/

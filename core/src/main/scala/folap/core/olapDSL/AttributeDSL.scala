@@ -13,5 +13,3 @@ object AttributeDSL:
     new AttributeDSL(baseName + "Attribute", value)
   def apply(baseName: String): AttributeDSL =
     new AttributeDSL(baseName + "Attribute", "")
-
-  

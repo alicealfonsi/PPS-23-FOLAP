@@ -15,7 +15,7 @@ object AttributeSeqBuilder:
   extension (head: ToAttributeSeq)
     infix def and(tail: AttributeDSL): Seq[AttributeDSL] =
       head.toSeq.appended(tail)
-  
+
   extension (name: String)
     infix def and(other: String): Seq[AttributeDSL] =
       Seq(AttributeDSL(name), AttributeDSL(other))
@@ -25,5 +25,5 @@ object AttributeSeqBuilder:
       seq :+ AttributeDSL(next)
 
   extension (seq: Seq[AttributeDSL])
-   infix def and(attr: AttributeDSL): Seq[AttributeDSL] =
-     seq :+ attr
+    infix def and(attr: AttributeDSL): Seq[AttributeDSL] =
+      seq :+ attr
