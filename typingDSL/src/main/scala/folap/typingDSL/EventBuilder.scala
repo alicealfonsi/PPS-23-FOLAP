@@ -6,7 +6,7 @@ case class Event(
     measures: Seq[Measure[_]]
 ):
   def having(property: Dimension | Measure[_]): Event = property match
-    case d: Dimension => Event(name, dimensions :+ d, measures)
+    case d: Dimension  => Event(name, dimensions :+ d, measures)
     case m: Measure[_] => Event(name, dimensions, measures :+ m)
   def and(property: Dimension | Measure[_]): Event = having(property)
 
