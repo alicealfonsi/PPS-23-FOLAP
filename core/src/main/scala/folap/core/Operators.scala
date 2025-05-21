@@ -48,9 +48,9 @@ object Operators:
         if (commonAttributes.nonEmpty) {
           val combinedMeasures: Iterable[M1 | M2] =
             eventA.measures ++ eventB.measures
-          Some(createEvent(commonAttributes, combinedMeasures))
+          Seq(createEvent(commonAttributes, combinedMeasures))
         } else {
-          None
+          Nil
         }
       }
     }
