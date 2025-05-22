@@ -8,22 +8,22 @@ import MeasureDSL.measure
 
 class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
 
-  "The Measure DSL" should "construct a Measure[Int] from DSL" in:
+  "The Measure DSL" should "construct a Int Measure from DSL" in:
     val m = measure named "price" as "Int"
     m.map(_.name) shouldBe Some("price")
     m shouldBe Some(Measure("price", "Int"))
 
-  it should "construct a Measure[Double] from DSL" in:
+  it should "construct a Double Measure from DSL" in:
     val m = measure named "price" as "Double"
     m.map(_.name) shouldBe Some("price")
     m shouldBe Some(Measure("price", "Double"))
 
-  it should "construct a Measure[Long] from DSL" in:
+  it should "construct a Long Measure from DSL" in:
     val m = measure named "price" as "Long"
     m.map(_.name) shouldBe Some("price")
     m shouldBe Some(Measure("price", "Long"))
 
-  it should "construct a Measure[Float] from DSL" in:
+  it should "construct a Float Measure from DSL" in:
     val m = measure named "price" as "Float"
     m.map(_.name) shouldBe Some("price")
     m shouldBe Some(Measure("price", "Float"))

@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 
 class TypeFromStringSpec extends AnyFlatSpec with Matchers:
 
-  "TypeFromString[Int]" should "resolve Measure correctly" in:
+  "TypeFromString" should "resolve Int Measure correctly" in:
     val m = TypeFromString.resolve("quantity", "Int")
     m shouldBe Some(Measure("quantity", "Int"))
 
@@ -12,7 +12,7 @@ class TypeFromStringSpec extends AnyFlatSpec with Matchers:
     val tf = summon[TypeFromString[Int]]
     tf.typeName shouldBe "Int"
 
-  "TypeFromString[Double]" should "resolve Measure[Double] correctly" in:
+  "TypeFromString" should "resolve Double Measure correctly" in:
     val m = TypeFromString.resolve("price", "Double")
     m shouldBe Some(Measure("price", "Double"))
 
@@ -20,7 +20,7 @@ class TypeFromStringSpec extends AnyFlatSpec with Matchers:
     val tf = summon[TypeFromString[Double]]
     tf.typeName shouldBe "Double"
 
-  "TypeFromString[Long]" should "resolve Measure[Long] correctly" in:
+  "TypeFromString" should "resolve Long Measure correctly" in:
     val m = TypeFromString.resolve("price", "Long")
     m shouldBe Some(Measure("price", "Long"))
 
@@ -28,7 +28,7 @@ class TypeFromStringSpec extends AnyFlatSpec with Matchers:
     val m = TypeFromString.resolve("price", "Long")
     m shouldBe Some(Measure("price", "Long"))
 
-  "TypeFromString[Float]" should "resolve Measure[Float] correctly" in:
+  "TypeFromString" should "resolve Float Measure correctly" in:
     val m = TypeFromString.resolve("price", "Float")
     m shouldBe Some(Measure("price", "Float"))
 
