@@ -4,10 +4,14 @@ object MeasureDSL:
 
   class MeasureName(val name: String)
 
-  extension (space: String)
-    infix def measure(name: String): MeasureName = MeasureName(name)
+  case class MeasureWord():
+    def named(name: String): MeasureName = MeasureName(name)
+
+
+  def measure: MeasureWord = MeasureWord()
 
   extension (m: MeasureName)
     infix def as(typology: String): Option[Measure] =
       TypeFromString.resolve(m.name, typology)
+
       
