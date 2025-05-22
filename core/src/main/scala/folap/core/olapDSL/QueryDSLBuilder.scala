@@ -15,6 +15,7 @@ case class OpWord[A <: EventAttribute, M <: EventMeasure[_]](op: String):
       case "max" => RollupOp.Max
       case "min" => RollupOp.Min
       case "avg" => RollupOp.Avg
+      case "sum" => RollupOp.Sum
     QueryWithOp(q, rollupOp)
 
 object QueryDSLBuilder:
@@ -26,6 +27,9 @@ object QueryDSLBuilder:
   )
   def avg[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
     "avg"
+  )
+  def sum[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
+    "sum"
   )
 
   extension [A <: EventAttribute, M <: EventMeasure[_]](q: QueryDSL[A, M])
