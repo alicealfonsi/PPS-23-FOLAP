@@ -8,5 +8,6 @@ object MeasureDSL:
     infix def measure(name: String): MeasureName = MeasureName(name)
 
   extension (m: MeasureName)
-    infix def as(typology: String): Option[Measure[_]] =
+    infix def as(typology: String): Option[Measure] =
       TypeFromString.resolve(m.name, typology)
+      
