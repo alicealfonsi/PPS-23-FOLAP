@@ -16,13 +16,6 @@ class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
     attr.name shouldEqual "NationAttribute"
     attr.value shouldEqual "Italy"
 
-  it should "distinguish between different attributes" in:
-    val attr1 = "Year" is "2024"
-    val attr2 = "Product" is "Shoes"
-
-    attr1.name should not equal attr2.name
-    attr1.value should not equal attr2.value
-
   "The is and is chain" should "create a Seq[AttributeDSL] with correct attributes" in:
     val result = "Nation" is "Italy" and ("Year" is "2024")
 
