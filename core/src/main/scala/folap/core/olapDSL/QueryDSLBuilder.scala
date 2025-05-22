@@ -9,8 +9,24 @@ case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
     query: QueryDSL[A, M],
     op: RollupOp
 )
+case class OpWord[A <: EventAttribute, M <: EventMeasure[_]](op: String):
+  def of(q: QueryDSL[A, M]): QueryWithOp[A, M] =
+    val rollupOp = op match
+      case "max" => RollupOp.Max
+      case "min" => RollupOp.Min
+      case "avg" => RollupOp.Avg
+    QueryWithOp(q, rollupOp)
 
 object QueryDSLBuilder:
+  def max[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
+    "max"
+  )
+  def min[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
+    "min"
+  )
+  def avg[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
+    "avg"
+  )
 
   extension [A <: EventAttribute, M <: EventMeasure[_]](q: QueryDSL[A, M])
     infix def where(filters: Iterable[EventAttribute]): QueryDSL[A, M] =
@@ -18,7 +34,7 @@ object QueryDSLBuilder:
       QueryDSL(sliced)
 
     infix def where(filter: EventAttribute): QueryDSL[A, M] =
-      val sliced = sliceAndDice(q.cube, Seq(filter))
+      val sliced = sliceAndDice(q.cube, Iterable(filter))
       QueryDSL(sliced)
 
     infix def union[A2 <: EventAttribute, M2 <: EventMeasure[_]](
@@ -27,9 +43,6 @@ object QueryDSLBuilder:
       val drilled = drillAcross(q.cube, other.cube, constructor)
       QueryDSL(drilled)
 
-    def max: QueryWithOp[A, M] = QueryWithOp(q, RollupOp.Max)
-    def min: QueryWithOp[A, M] = QueryWithOp(q, RollupOp.Min)
-    def avg: QueryWithOp[A, M] = QueryWithOp(q, RollupOp.Avg)
   extension [A <: EventAttribute, M <: EventMeasure[_], M2 <: EventMeasure[_]](
       qwo: QueryWithOp[A, M]
   )

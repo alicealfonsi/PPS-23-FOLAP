@@ -61,9 +61,9 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
   val Sales = QueryDSL(Seq(event1, event2))
 
   "The rollUp DSL" should "work with more attributes" in:
-    val result = Sales.max by ("Client" and "Year")
+    val result = max of Sales by ("Client" and "Year")
     result.cube shouldEqual Seq(event1, event2)
 
   it should "work with a single attribute" in:
-    val result = Sales.max by "Client"
+    val result = max of Sales by "Client"
     result.cube shouldEqual Seq(event1, event2)
