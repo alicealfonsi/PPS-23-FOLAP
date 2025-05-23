@@ -1,6 +1,6 @@
 ## DSL
 
-È stato realizzato un Domain-Specific Language (DSL) per consentire all’utente la definizione di eventi in modo semplice e leggibile.
+È stato realizzato un Domain-Specific Language (DSL) per consentire all’utente la definizione di eventi in modo semplice e leggibile.....
 
 # Measure DSL
 
