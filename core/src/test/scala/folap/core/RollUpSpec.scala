@@ -51,10 +51,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       List(QuantitySoldMeasure(quantitySoldValue2))
     )
 
-  private case class ResultEvent[A <: SalesAttribute, M <: SalesMeasure[_]](
+  /*private case class ResultEvent[A <: SalesAttribute, M <: SalesMeasure[_]](
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
-  ) extends Event[A, M]
+  ) extends Event[A, M]*/
 
   /*"RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
     val groupByAttributeName = "ClientAttribute"
