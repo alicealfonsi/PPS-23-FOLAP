@@ -5,7 +5,7 @@ import folap.core.Operators.rollUp
 import folap.core.Operators.sliceAndDice
 import folap.core._
 
-/** Represents a queryDSL and a roll-up operation (sum, max, min, avg).
+/** Wraps a QueryDSL (cube) and a roll-up operation (sum, max, min, avg).
   *
   * @param query
   *   queryDSL containing the cube to be rolled up
