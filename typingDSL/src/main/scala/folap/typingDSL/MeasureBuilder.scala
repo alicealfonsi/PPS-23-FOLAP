@@ -15,7 +15,8 @@ object MeasureDSL:
   /** Helper class used to begin a measure definition in the DSL.
     */
   case class MeasureWord():
-    /** Starts the measure definition by specifying its name
+    /** Starts the measure definition by specifying its name using the keyword
+      * "measure named"
       *
       * @param name
       *   The name of the measure
@@ -32,7 +33,7 @@ object MeasureDSL:
   def measure: MeasureWord = MeasureWord()
 
   /** Extension method that completes a measure definition by specifying its
-    * type.
+    * type using the infix `as` keyword.
     *
     * @param m
     *   A MeasureName instance
