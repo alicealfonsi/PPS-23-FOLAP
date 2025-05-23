@@ -5,8 +5,7 @@ import folap.core.Operators.rollUp
 import folap.core.Operators.sliceAndDice
 import folap.core._
 
-/** Represents a queryDSL combined with a roll-up operation (sum, max, min,
-  * avg).
+/** Represents a queryDSL and a roll-up operation (sum, max, min, avg).
   *
   * @param query
   *   queryDSL containing the cube to be rolled up
@@ -18,7 +17,8 @@ case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
     op: RollupOp
 )
 
-/** Wraps an operation name and provides the `of` method
+/** Helper class used to begin a roll up operation in the DSL with natural
+  * syntax such as max of, min of, avg of, and sum of."
   *
   * @param op
   *   name of the operation as a string ("sum", "max", "min", "avg")
@@ -43,22 +43,22 @@ case class OpWord[A <: EventAttribute, M <: EventMeasure[_]](op: String):
   * operations
   */
 object QueryDSLBuilder:
-  /** Initiates a `max` operation on a query (cube). */
+  /** Initiates a roll up operation with operator "max" on a query (cube). */
   def max[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
     "max"
   )
 
-  /** Initiates a `min` operation on a query (cube). */
+  /** Initiates a roll up operation with operator "min" on a query (cube). */
   def min[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
     "min"
   )
 
-  /** Initiates a `avg` operation on a query (cube). */
+  /** Initiates a roll up operation with operator "avg" on a query (cube). */
   def avg[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
     "avg"
   )
 
-  /** Initiates a `sum` operation on a query (cube). */
+  /** Initiates a roll up operation with operator "sum" on a query (cube). */
   def sum[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
     "sum"
   )
