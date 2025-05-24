@@ -4,12 +4,16 @@ object SeqBuilder:
   trait ToSeq[T]:
     def toSeq: Seq[T]
 
-  implicit class SeqableString(val s: String) extends ToSeq[String]:
-    override def toSeq: Seq[String] = Seq(s)
+  implicit class SeqableAttribute(val a: String)
+      extends ToSeq[DimensionAttribute]:
+    override def toSeq: Seq[DimensionAttribute] = Seq(
+      DimensionAttribute(a, false)
+    )
 
-  implicit class SeqableStringSeq(val s: Seq[String]) extends ToSeq[String]:
-    override def toSeq: Seq[String] = s
+  implicit class SeqableAttributeSeq(val s: Seq[DimensionAttribute])
+      extends ToSeq[DimensionAttribute]:
+    override def toSeq: Seq[DimensionAttribute] = s
 
-  extension (head: ToSeq[String])
-    infix def -->(tail: String): Seq[String] =
-      head.toSeq.appended(tail)
+  extension (head: ToSeq[DimensionAttribute])
+    infix def -->(tail: String): Seq[DimensionAttribute] =
+      head.toSeq.appended(DimensionAttribute(tail, false))
