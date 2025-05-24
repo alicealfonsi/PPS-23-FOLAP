@@ -2,10 +2,12 @@ package folap.typingDSL
 
 object MeasureDSL:
 
-  class MeasureName(val name: String)
+  case class MeasureName(val name: String)
 
-  extension (space: String)
-    infix def measure(name: String): MeasureName = MeasureName(name)
+  case class MeasureWord():
+    infix def named(name: String): MeasureName = MeasureName(name)
+
+  def measure = MeasureWord()
 
   extension (m: MeasureName)
     infix def as(typology: MeasureType): Measure =
