@@ -1,12 +1,12 @@
 package folap.typingDSL
 
+import _root_.folap.typingDSL.SeqBuilder.~->
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 import scala.language.postfixOps
 
 import SeqBuilder.-->
-import _root_.folap.typingDSL.SeqBuilder.~->
 
 class SeqBuilderSpec extends AnyFlatSpec with should.Matchers:
   "A SeqBuilder" should "create a Seq from two distinct strings" in:
