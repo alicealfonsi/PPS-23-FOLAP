@@ -13,4 +13,7 @@ object DSLUtils:
     input.split(" ").map(_.capitalize).foldLeft("")(_ + _)
 
   def indent(input: String, spaces: Int): String =
-    " ".repeat(spaces) + input
+    input
+      .split("\n")
+      .map(" ".repeat(spaces) + _)
+      .mkString("\n")
