@@ -4,9 +4,9 @@ import org.scalatest._
 import flatspec._
 import matchers._
 
-import folap.typingDSL.SeqBuilder.-->
-import folap.typingDSL.DimensionBuilder.dimension
-import folap.typingDSL.Codegen.generate
+import SeqBuilder.-->
+import DimensionBuilder.dimension
+import Codegen.generate
 
 class CodegenSpec extends AnyFlatSpec with should.Matchers:
   "Code generation" should "generate a trait for a dimension" in:
