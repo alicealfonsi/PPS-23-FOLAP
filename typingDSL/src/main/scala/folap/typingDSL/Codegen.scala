@@ -1,7 +1,7 @@
 package folap.typingDSL
 
-import folap.typingDSL.DSLUtils.sanitise
 import folap.typingDSL.DSLUtils.indent
+import folap.typingDSL.DSLUtils.sanitise
 
 object Codegen:
   def generate(dimension: Dimension): String =

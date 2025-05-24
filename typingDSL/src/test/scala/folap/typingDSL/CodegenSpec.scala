@@ -1,9 +1,9 @@
 package folap.typingDSL
 
 import org.scalatest._
+
 import flatspec._
 import matchers._
-
 import SeqBuilder.-->
 import DimensionBuilder.dimension
 import Codegen.generate
