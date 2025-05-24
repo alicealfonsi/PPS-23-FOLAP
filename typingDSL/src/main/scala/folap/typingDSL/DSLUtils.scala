@@ -11,3 +11,6 @@ object DSLUtils:
     */
   def sanitise(input: String): String =
     input.split(" ").map(_.capitalize).foldLeft("")(_ + _)
+
+  def indent(input: String, spaces: Int): String =
+    " ".repeat(spaces) + input

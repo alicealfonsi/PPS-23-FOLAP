@@ -13,3 +13,8 @@ class DSLUtilsSpec extends AnyFlatSpec with should.Matchers:
     val input = "sales in africa"
     val sanitised = DSLUtils.sanitise(input)
     sanitised shouldEqual "SalesInAfrica"
+
+  it should "indent by a set number of spaces, single line" in:
+    val input = "test"
+    val indented = DSLUtils.indent(input, 4)
+    indented shouldEqual "    test"
