@@ -8,5 +8,5 @@ object MeasureDSL:
     infix def measure(name: String): MeasureName = MeasureName(name)
 
   extension (m: MeasureName)
-    infix def as(typology: String): Measure[_] =
-      TypeFromString.resolve(m.name, typology)
+    infix def as(typology: MeasureType): Measure =
+      Measure(m.name, typology)

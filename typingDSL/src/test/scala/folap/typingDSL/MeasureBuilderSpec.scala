@@ -9,24 +9,19 @@ import MeasureDSL.measure
 class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
 
   "The Measure DSL" should "construct a Measure[Int] from DSL" in:
-    val m = "" measure "price" as "Int"
-    m shouldBe Measure[Int]("price", "Int")
+    val m = "" measure "price" as Int
+    m shouldBe Measure("price", Int)
 
   it should "construct a Measure[Double] from DSL" in:
-    val m = "" measure "price" as "Double"
-    m shouldBe Measure[Double]("price", "Double")
+    val m = "" measure "price" as Double
+    m shouldBe Measure("price", Double)
 
   it should "construct a Measure[Long] from DSL" in:
-    val m = "" measure "price" as "Long"
+    val m = "" measure "price" as Long
     m.name shouldBe "price"
-    m shouldBe Measure[Double]("price", "Long")
+    m shouldBe Measure("price", Long)
 
   it should "construct a Measure[Float] from DSL" in:
-    val m = "" measure "price" as "Float"
+    val m = "" measure "price" as Float
     m.name shouldBe "price"
-    m shouldBe Measure[Float]("price", "Float")
-
-  it should "throw an exception for unsupported types" in:
-    an[RuntimeException] should be thrownBy {
-      "" measure "weight" as "String"
-    }
+    m shouldBe Measure("price", Float)

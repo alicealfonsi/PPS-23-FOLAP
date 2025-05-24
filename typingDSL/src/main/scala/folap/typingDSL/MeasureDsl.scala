@@ -1,5 +1,5 @@
 package folap.typingDSL
 
-import scala.Numeric
+type MeasureType = Int.type | Long.type | Float.type | Double.type
 
-case class Measure[T: Numeric](name: String, typology: String)
+case class Measure(name: String, typology: MeasureType)
