@@ -23,3 +23,8 @@ class DSLUtilsSpec extends AnyFlatSpec with should.Matchers:
     val input = "test\ndata"
     val indented = DSLUtils.indent(input, 4)
     indented shouldEqual "    test\n    data"
+
+  it should "indent by a set number of spaces, multiple lines, different indentations" in:
+    val input = "test\n    data"
+    val indented = DSLUtils.indent(input, 4)
+    indented shouldEqual "    test\n        data"
