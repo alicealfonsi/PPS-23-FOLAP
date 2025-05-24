@@ -17,3 +17,5 @@ object SeqBuilder:
   extension (head: ToSeq[DimensionAttribute])
     infix def -->(tail: String): Seq[DimensionAttribute] =
       head.toSeq.appended(DimensionAttribute(tail, false))
+    infix def ~->(tail: String): Seq[DimensionAttribute] =
+      head.toSeq.appended(DimensionAttribute(tail, true))
