@@ -35,3 +35,7 @@ object Codegen:
     val name = sanitise(m.name)
     val t = generate(m.typology)
     s"case class ${name}(value: ${t})"
+
+  def generate(e: Event): String =
+    val name = sanitise(e.name)
+    s"object ${name}:"

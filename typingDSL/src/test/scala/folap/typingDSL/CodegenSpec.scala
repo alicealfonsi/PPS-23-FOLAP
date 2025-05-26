@@ -6,6 +6,7 @@ import flatspec._
 import matchers._
 import SeqBuilder.-->
 import DimensionBuilder.dimension
+import EventBuilder.event
 import Codegen.generate
 import folap.typingDSL.MeasureDSL.measure
 
@@ -53,3 +54,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate a case class for a measure" in:
     val m = measure named "test" as Int
     generate(m) shouldEqual "case class Test(value: Int)"
+
+  it should "generate an object for an event" in:
+    val e = event named "test"
+    generate(e) should startWith("object Test:")
