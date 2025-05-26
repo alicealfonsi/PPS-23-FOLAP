@@ -1,5 +1,7 @@
 package folap.typingDSL
 
+import folap.typingDSL.DSLUtils.indent
+import folap.typingDSL.MeasureDSL.measure
 import org.scalatest._
 
 import flatspec._
@@ -8,8 +10,6 @@ import SeqBuilder.-->
 import DimensionBuilder.dimension
 import EventBuilder.event
 import Codegen.generate
-import folap.typingDSL.MeasureDSL.measure
-import folap.typingDSL.DSLUtils.indent
 
 class CodegenSpec extends AnyFlatSpec with should.Matchers:
   "Code generation" should "generate a trait for a dimension" in:
