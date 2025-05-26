@@ -26,6 +26,7 @@ object Codegen:
 
   def generate(t: MeasureType): String =
     t match
-      case Int   => "Int"
-      case Long  => "Long"
-      case Float => "Float"
+      case Int    => "Int"
+      case Long   => "Long"
+      case Float  => "Float"
+      case Double => "Double"
