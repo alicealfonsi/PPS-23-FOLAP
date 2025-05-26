@@ -32,3 +32,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     generate(geoDimension) should endWith(
       "case class Shop(value: String) extends GeoDimension"
     )
+
+  it should "generate the correct type string for ints" in:
+    val t: MeasureType = Int
+    generate(t) shouldEqual "Int"

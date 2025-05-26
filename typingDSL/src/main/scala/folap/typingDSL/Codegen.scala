@@ -23,3 +23,6 @@ object Codegen:
     )
 
     s"${traitAndObjectHead}\n${objectBody}\n${lastLevel}"
+
+  def generate(t: MeasureType): String =
+    "Int"
