@@ -7,6 +7,7 @@ import matchers._
 import SeqBuilder.-->
 import DimensionBuilder.dimension
 import Codegen.generate
+import folap.typingDSL.MeasureDSL.measure
 
 class CodegenSpec extends AnyFlatSpec with should.Matchers:
   "Code generation" should "generate a trait for a dimension" in:
@@ -48,3 +49,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate the correct type string for doubles" in:
     val t: MeasureType = Double
     generate(t) shouldEqual "Double"
+
+  it should "generate a case class for a measure" in:
+    val m = measure named "test" as Int
+    generate(m) shouldEqual "case class Test(value: Int)"

@@ -30,3 +30,8 @@ object Codegen:
       case Long   => "Long"
       case Float  => "Float"
       case Double => "Double"
+
+  def generate(m: Measure): String =
+    val name = sanitise(m.name)
+    val t = generate(m.typology)
+    s"case class ${name}(value: ${t})"
