@@ -64,3 +64,13 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val m = measure named "test" as Int
     val e = event named "test" having m
     generate(e) should include(indent(generate(m), 2))
+
+  it should "generate an object containing the event dimensions" in:
+    val geoDimension = "geo" dimension "shop"
+    val e = event named "test" having geoDimension
+    generate(e) should include(
+      "  sealed trait Dimension\n  object Dimension:\n" + indent(
+        generate(geoDimension),
+        4
+      )
+    )

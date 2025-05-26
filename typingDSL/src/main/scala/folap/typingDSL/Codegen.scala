@@ -42,4 +42,8 @@ object Codegen:
       .map(generate(_))
       .map(indent(_, 2))
       .mkString("\n")
-    s"object ${name}:\n${measures}"
+    val dimensions = e.dimensions
+      .map(generate(_))
+      .map(indent(_, 4))
+      .mkString("\n")
+    s"object ${name}:\n${measures}\n  sealed trait Dimension\n  object Dimension:\n${dimensions}"
