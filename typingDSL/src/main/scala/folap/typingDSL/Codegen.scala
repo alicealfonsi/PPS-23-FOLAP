@@ -19,4 +19,4 @@ object Codegen:
     val lastLevelName = sanitise(dimension.attributes.last)
     val lastLevel = indent(s"case class ${lastLevelName}(value: String)", 2)
 
-    traitAndObjectHead + objectBody + "\n" + lastLevel
+    s"${traitAndObjectHead}\n${objectBody}\n${lastLevel}"

@@ -20,7 +20,8 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val attributes = "town" --> "province" --> "region" --> "country"
     val geoMeasure = "geo" dimension attributes
     generate(geoMeasure) should endWith(
-      """  case class Town(value: String, parent: Province)
+      """
+  case class Town(value: String, parent: Province)
   case class Province(value: String, parent: Region)
   case class Region(value: String, parent: Country)
   case class Country(value: String)"""
