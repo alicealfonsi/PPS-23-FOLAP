@@ -1,32 +1,31 @@
 package folap.typingDSL
-
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-import MeasureDSL.as
-import MeasureDSL.measure
+import folap.typingDSL.MeasureDSL._
 
 class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
 
-  "The Measure DSL" should "construct a Measure[Int] from DSL" in:
-    val m = "" measure "price" as "Int"
-    m shouldBe Measure[Int]("price", "Int")
-
-  it should "construct a Measure[Double] from DSL" in:
-    val m = "" measure "price" as "Double"
-    m shouldBe Measure[Double]("price", "Double")
-
-  it should "construct a Measure[Long] from DSL" in:
-    val m = "" measure "price" as "Long"
+  "The Measure DSL" should "construct a Int Measure from DSL" in:
+    val m = measure named "price" as Int
     m.name shouldBe "price"
-    m shouldBe Measure[Double]("price", "Long")
+    m.typology shouldBe Int
+    m shouldBe Measure("price", Int)
 
-  it should "construct a Measure[Float] from DSL" in:
-    val m = "" measure "price" as "Float"
+  it should "construct a Double Measure from DSL" in:
+    val m = measure named "price" as Double
     m.name shouldBe "price"
-    m shouldBe Measure[Float]("price", "Float")
+    m.typology shouldBe Double
+    m shouldBe Measure("price", Double)
 
-  it should "throw an exception for unsupported types" in:
-    an[RuntimeException] should be thrownBy {
-      "" measure "weight" as "String"
-    }
+  it should "construct a Long Measure from DSL" in:
+    val m = measure named "price" as Long
+    m.name shouldBe "price"
+    m.typology shouldBe Long
+    m shouldBe Measure("price", Long)
+
+  it should "construct a Float Measure from DSL" in:
+    val m = measure named "price" as Float
+    m.name shouldBe "price"
+    m.typology shouldBe Float
+    m shouldBe Measure("price", Float)
