@@ -36,3 +36,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate the correct type string for ints" in:
     val t: MeasureType = Int
     generate(t) shouldEqual "Int"
+
+  it should "generate the correct type string for longs" in:
+    val t: MeasureType = Int
+    generate(t) shouldEqual "Long"

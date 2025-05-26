@@ -25,4 +25,6 @@ object Codegen:
     s"${traitAndObjectHead}\n${objectBody}\n${lastLevel}"
 
   def generate(t: MeasureType): String =
-    "Int"
+    t match
+      case Int  => "Int"
+      case Long => "Long"
