@@ -5,20 +5,20 @@ import folap.typingDSL.DSLUtils.sanitise
 
 object Codegen:
   def generate(dimension: Dimension): String =
-    val sanitised = sanitise(dimension.name)
+    val dimensionName = s"${{ sanitise(dimension.name) }}Dimension"
     val traitAndObjectHead =
-      s"sealed trait ${sanitised}Dimension\nobject ${sanitised}Dimension:"
+      s"sealed trait ${dimensionName}\nobject ${dimensionName}:"
     val objectBody = dimension.attributes
       .zip(dimension.attributes.tail)
       .map((current, parent) => (sanitise(current), sanitise(parent)))
       .map((current, parent) =>
-        s"case class ${current}(value: String, parent: ${parent}) extends ${sanitised}Dimension"
+        s"case class ${current}(value: String, parent: ${parent}) extends ${dimensionName}"
       )
       .map(indent(_, 2))
       .mkString("\n")
     val lastLevelName = sanitise(dimension.attributes.last)
     val lastLevel = indent(
-      s"case class ${lastLevelName}(value: String) extends ${sanitised}Dimension",
+      s"case class ${lastLevelName}(value: String) extends ${dimensionName}",
       2
     )
 
