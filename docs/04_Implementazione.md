@@ -3,7 +3,8 @@
 È stato realizzato un Domain-Specific Language (DSL) per consentire all’utente la definizione di eventi in modo semplice e leggibile.
 
 
-# Measure DSL
+# Measure DSL 
+
 
 
 Per poter costruire un DSL per la definizione degli eventi, è stato necessario realizzare un DSL specifico per la definizione delle measure. A tal fine, è stato creato l’oggetto MeasureDSL che consente di definire il nome e la tipologia della misura che si desidera creare.
