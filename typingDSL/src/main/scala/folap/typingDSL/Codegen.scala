@@ -7,7 +7,7 @@ object Codegen:
   def generate(dimension: Dimension): String =
     val dimensionName = s"${{ sanitise(dimension.name) }}Dimension"
     val traitAndObjectHead =
-      s"sealed trait ${dimensionName}\nobject ${dimensionName}:"
+      s"sealed trait ${dimensionName} extends Dimension\nobject ${dimensionName}:"
     val objectBody = dimension.attributes
       .zip(dimension.attributes.tail)
       .map((current, parent) => (sanitise(current), sanitise(parent)))

@@ -16,7 +16,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val attributes = "town" --> "province" --> "region" --> "country"
     val geoMeasure = "geo" dimension attributes
     generate(geoMeasure) should startWith(
-      "sealed trait GeoDimension\nobject GeoDimension:"
+      "sealed trait GeoDimension extends Dimension\nobject GeoDimension:"
     )
 
   it should "generate a case class for each attribute" in:
