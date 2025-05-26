@@ -63,4 +63,4 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate a case class for each measure contained in the event" in:
     val m = measure named "test" as Int
     val e = event named "test" having m
-    generate(e) should include(generate(m))
+    generate(e) should include(indent(2, generate(m)))
