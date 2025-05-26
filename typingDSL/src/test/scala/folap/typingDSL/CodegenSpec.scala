@@ -22,6 +22,6 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     generate(geoMeasure) should endWith(
       """  case class Town(value: String, parent: Province)
   case class Province(value: String, parent: Region)
-  case class Region(value: String, parent: Contry)
+  case class Region(value: String, parent: Country)
   case class Country(value: String)"""
     )
