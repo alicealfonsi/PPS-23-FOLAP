@@ -12,11 +12,14 @@ object Codegen:
       .zip(dimension.attributes.tail)
       .map((current, parent) => (sanitise(current), sanitise(parent)))
       .map((current, parent) =>
-        s"case class ${current}(value: String, parent: ${parent})"
+        s"case class ${current}(value: String, parent: ${parent}) extends ${sanitised}Dimension"
       )
       .map(indent(_, 2))
       .mkString("\n")
     val lastLevelName = sanitise(dimension.attributes.last)
-    val lastLevel = indent(s"case class ${lastLevelName}(value: String)", 2)
+    val lastLevel = indent(
+      s"case class ${lastLevelName}(value: String) extends ${sanitised}Dimension",
+      2
+    )
 
     s"${traitAndObjectHead}\n${objectBody}\n${lastLevel}"
