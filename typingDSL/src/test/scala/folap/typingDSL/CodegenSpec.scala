@@ -26,3 +26,9 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   case class Region(value: String, parent: Country) extends GeoDimension
   case class Country(value: String) extends GeoDimension"""
     )
+
+  it should "generate a single attribute without parent for single level hierarchies" in:
+    val geoDimension = "geo" dimension "shop"
+    generate(geoDimension) should endWith(
+      "case class Shop(value: String) extends GeoDimension"
+    )
