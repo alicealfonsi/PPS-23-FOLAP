@@ -11,7 +11,7 @@ package folap.typingDSL
 case class Event(
     name: String,
     dimensions: Seq[Dimension],
-    measures: Seq[Measure[_]]
+    measures: Seq[Measure]
 ):
   /** Sets a property of an empty Event
     * @param property
@@ -19,9 +19,9 @@ case class Event(
     * @return
     *   a new Event with the property
     */
-  def having(property: Dimension | Measure[_]): Event = property match
-    case d: Dimension  => Event(name, dimensions :+ d, measures)
-    case m: Measure[_] => Event(name, dimensions, measures :+ m)
+  def having(property: Dimension | Measure): Event = property match
+    case d: Dimension => Event(name, dimensions :+ d, measures)
+    case m: Measure   => Event(name, dimensions, measures :+ m)
 
   /** Appends a property of an Event to its sequence of properties of the same
     * type
@@ -30,7 +30,7 @@ case class Event(
     * @return
     *   a new Event with the property
     */
-  def and(property: Dimension | Measure[_]): Event = having(property)
+  def and(property: Dimension | Measure): Event = having(property)
 
 /** Builder of an Event
   */
