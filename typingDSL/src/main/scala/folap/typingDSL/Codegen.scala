@@ -46,4 +46,19 @@ object Codegen:
       .map(generate(_))
       .map(indent(_, 4))
       .mkString("\n")
-    s"object ${name}:\n${measures}\n  sealed trait Dimension\n  object Dimension:\n${dimensions}"
+
+    val measureFields = e.measures
+      .map(x => sanitise(x.name))
+      .map(x => s"${{ x.toLowerCase() }}: ${x}")
+      .mkString(", ")
+
+    val dimensionFields = e.dimensions
+      .map(x => sanitise(x.name))
+      .map(x => s"${{ x.toLowerCase() }}: Dimension.${x}Dimension")
+      .mkString(", ")
+
+    val fields = Seq(measureFields, dimensionFields).mkString(", ")
+
+    val event =
+      s"  case class ${name}(${fields})"
+    s"object ${name}:\n${measures}\n  sealed trait Dimension\n  object Dimension:\n${dimensions}\n${event}"
