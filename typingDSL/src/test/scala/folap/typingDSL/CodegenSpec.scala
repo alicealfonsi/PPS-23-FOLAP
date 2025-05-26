@@ -9,6 +9,7 @@ import DimensionBuilder.dimension
 import EventBuilder.event
 import Codegen.generate
 import folap.typingDSL.MeasureDSL.measure
+import folap.typingDSL.DSLUtils.indent
 
 class CodegenSpec extends AnyFlatSpec with should.Matchers:
   "Code generation" should "generate a trait for a dimension" in:
@@ -58,3 +59,8 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate an object for an event" in:
     val e = event named "test"
     generate(e) should startWith("object Test:")
+
+  it should "generate a case class for each measure contained in the event" in:
+    val m = measure named "test" as Int
+    val e = event named "test" having m
+    generate(e) should include(generate(m))

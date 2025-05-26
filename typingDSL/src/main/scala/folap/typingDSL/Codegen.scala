@@ -38,4 +38,8 @@ object Codegen:
 
   def generate(e: Event): String =
     val name = sanitise(e.name)
-    s"object ${name}:"
+    val measures = e.measures
+      .map(generate(_))
+      .map(indent(_, 2))
+      .mkString("\n")
+    s"object ${name}:\n${measures}"
