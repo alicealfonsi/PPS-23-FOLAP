@@ -14,7 +14,7 @@ class EventBuilderSpec extends AnyFlatSpec with should.Matchers:
   val m1: Measure[_] = "" measure "measure1" as "Int"
   val m2: Measure[_] = "" measure "measure2" as "Int"
 
-  "An EventBuilder" should "build an Event from a name with the word named" in:
+  "An EventBuilder" should "build an empty Event from a name with the word named" in:
     val e = event named eventName
     e shouldEqual Event("TestEvent", Seq(), Seq())
 
