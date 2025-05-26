@@ -1,8 +1,7 @@
 package folap.typingDSL
+import folap.typingDSL.MeasureDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-
-import folap.typingDSL.MeasureDSL._
 
 class MeasureBuilderSpec extends AnyFlatSpec with Matchers:
 
