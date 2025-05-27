@@ -14,7 +14,7 @@ class SliceAndDiceSpec
     with should.Matchers
     with BeforeAndAfterEach:
   trait SalesAttribute extends Attribute
-  trait SalesMeasure[T] extends EventMeasure[T]
+  trait SalesMeasure[T] extends Measure[T]
   case class NationAttribute(
       override val value: String,
       override val parent: Option[TopAttribute]

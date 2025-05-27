@@ -8,7 +8,7 @@ import matchers._
 
 class MeasureSpec extends AnyFlatSpec with should.Matchers:
   private case class ExampleMeasure[T: Numeric](override val value: T)
-      extends EventMeasure[T]:
+      extends Measure[T]:
     override def fromRaw(value: T): Measure[T] = ExampleMeasure(value)
 
   "A Measure" should "have a name equal to the class name" in:

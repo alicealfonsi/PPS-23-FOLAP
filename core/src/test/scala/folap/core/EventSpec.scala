@@ -7,7 +7,7 @@ import flatspec._
 import matchers._
 
 trait ExampleEventAttribute extends Attribute
-trait ExampleEventMeasure[T] extends EventMeasure[T]
+trait ExampleEventMeasure[T] extends Measure[T]
 private case class DimensionExampleAttribute(
     override val parent: Option[TopAttribute],
     override val value: String

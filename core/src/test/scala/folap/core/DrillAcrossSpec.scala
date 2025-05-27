@@ -17,9 +17,9 @@ class DrillAcrossSpec
   trait SalesAttribute extends Attribute
   trait ProfitsAttribute extends Attribute
   trait CustomerAttribute extends Attribute
-  trait SalesMeasure[T] extends EventMeasure[T]
-  trait ProfitsMeasure[T] extends EventMeasure[T]
-  trait CustomerMeasure[T] extends EventMeasure[T]
+  trait SalesMeasure[T] extends Measure[T]
+  trait ProfitsMeasure[T] extends Measure[T]
+  trait CustomerMeasure[T] extends Measure[T]
 
   case class NationAttribute(
       override val value: String,
@@ -67,7 +67,7 @@ class DrillAcrossSpec
       override val dimensions: Iterable[CustomerAttribute],
       override val measures: Iterable[CustomerMeasure[_]]
   ) extends Event[CustomerAttribute, CustomerMeasure[_]]
-  case class ResultEvent[A <: Attribute, M <: EventMeasure[_]](
+  case class ResultEvent[A <: Attribute, M <: Measure[_]](
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
@@ -109,7 +109,7 @@ class DrillAcrossSpec
   val eventsB = Seq(event4, event5)
   val eventsC = Seq(event6)
 
-  def createEvent[A <: Attribute, M <: EventMeasure[_]]
+  def createEvent[A <: Attribute, M <: Measure[_]]
       : EventConstructor[A, M] =
     (
         attributes: Iterable[A],
