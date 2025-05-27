@@ -1,3 +1,5 @@
+package folap.core
+
 /** A Cube stores events related to the same fact
   * @tparam A
   *   the type of events attributes

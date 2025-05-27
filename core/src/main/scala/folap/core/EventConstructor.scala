@@ -1,3 +1,5 @@
+package folap.core
+
 /** A type alias for a function to construct an Event given its dimensions and
   * measures
   */

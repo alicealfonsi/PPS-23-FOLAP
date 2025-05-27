@@ -1,5 +1,5 @@
 # Sprint Backlogs
-## Sprint Backlog 0 (start on 31/03/2025)
+## Sprint Backlog 0 (start on 31/03/2025, deadline 11/04/2025)
 | **Product Backlog Item**                               | **Sprint Task**                                       | **Volunteer** | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
 |--------------------------------------------------------|-------------------------------------------------------|---------------|------------------------------------|-------------------------|----------------------------------------------|
 | Identificazione elementi base del processo di sviluppo | Assegnazione dei ruoli                                | Team          | 0.25                               | 0.25                    | 0                                            |
@@ -26,3 +26,50 @@ Il team si è dovuto soffermare su aspetti di dominio essenziali per la modellaz
 previsto per essere approfonditi.
 La valutazione dei vantaggi e degli svantaggi delle varie soluzioni individuate si è rivelata lunga ed è stato difficile
 convergere verso la scelta finale.
+
+
+## Sprint Backlog 1 (start on 12/04/2025, deadline 29/04/2025)
+| **Product Backlog Item**           | **Sprint Task**                                       | **Volunteer**  | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
+|------------------------------------|-------------------------------------------------------|----------------|------------------------------------|-------------------------|----------------------------------------------|
+| Definizione cubo multidimensionale | Definizione specifiche cubo                           | Team           | 3                                  | 3                       | 0                                            |
+| Implementazione Event              |                                                       | Eugenio, Alice | 1                                  | 1 + 3                   | 0.5                                          |
+| Implementazione Attribute          |                                                       | Eugenio, Alice | 1                                  | 0.5 + 1                 | 0.25                                         |
+| Implementazione Measure            |                                                       | Eugenio, Alice | 1                                  | 0.5 + 0.5               | 0.25                                         |
+| Implementazione Cube               |                                                       | Alice          | 1                                  | 0.5                     | 0.25                                         |
+| Implementazione EventConstructor   |                                                       | Alice, Claudia | 1                                  | 1                       | 0.5                                          |
+| Implementazione EventAttribute     |                                                       | Alice          | 2                                  | 3                       | 0.5                                          |
+| Implementazione EventMeasure       |                                                       | Alice          | 1                                  | 1                       | 0.25                                         |
+| Definizione operatori OLAP         | Definizione specifiche operatori OLAP                 | Team           | 3                                  | 3                       | 0                                            |
+| Implementazione roll-up            |                                                       | Alice          | 10                                 | 6                       | 4                                            |
+| Implementazione drill-down         |                                                       | Eugenio        | 3                                  | 0                       | 3                                            |
+| Implementazione slice-and-dice     |                                                       | Claudia        | 7                                  | 7                       | 1                                            |
+| Implementazione drill-across       |                                                       | Claudia        | 7                                  | 9                       | 1                                            |
+| Design di dettaglio                | Identificazione entità del sistema e loro interazioni | Team           | 2                                  | 1                       | 1                                            |
+| Design di dettaglio                | Organizzazione del codice                             | Team           | 1                                  | 0.5                     | 0.5                                          |
+| Design di dettaglio                | Diagrammi UML                                         | Team           | 1                                  | 0                       | 1                                            |
+
+### Sprint retrospective 1
+Le dipendenze fra i task hanno rallentato, soprattutto nella fase iniziale dello sprint, il lavoro del team.
+
+
+## Sprint Backlog 2 (start on 05/05/2025, deadline 16/05/2025)
+| **Product Backlog Item**               | **Sprint Task**                                           | **Volunteer**           | **Initial Estimate of Effort (h)** | **Measured effort (h)** | **Remaining effort for the next sprint (h)** |
+|----------------------------------------|-----------------------------------------------------------|-------------------------|------------------------------------|-------------------------|----------------------------------------------|
+| Implementazione Event                  | Relazione                                                 | Eugenio, Alice          | 0.5                                |                         |                                              |
+| Implementazione Attribute              | Relazione                                                 | Eugenio, Alice          | 0.25                               |                         |                                              |
+| Implementazione Measure                | Relazione                                                 | Eugenio, Alice          | 0.25                               |                         |                                              |
+| Implementazione Cube                   | Relazione                                                 | Alice                   | 0.25                               |                         |                                              |
+| Implementazione EventConstructor       | Relazione                                                 | Alice, Claudia          | 0.5                                |                         |                                              |
+| Implementazione EventAttribute         | Relazione                                                 | Alice                   | 0.5                                |                         |                                              |
+| Implementazione EventMeasure           | Relazione                                                 | Alice                   | 0.25                               |                         |                                              |
+| Implementazione roll-up                | Aggregazione misure, group-by su più attributi, relazione | Alice                   | 4                                  |                         |                                              |
+| Implementazione drill-down             | Implementazione, relazione                                | Eugenio                 | 3                                  |                         |                                              |
+| Implementazione slice-and-dice         | Relazione                                                 | Claudia                 | 1                                  |                         |                                              |
+| Implementazione drill-across           | Relazione                                                 | Claudia                 | 1                                  |                         |                                              |
+| Design di dettaglio                    | Relazione                                                 | Team                    | 1                                  |                         |                                              |
+| Design di dettaglio                    | Organizzazione del codice                                 | Team                    | 0.5                                |                         |                                              |
+| Design di dettaglio                    | Diagrammi UML                                             | Team                    | 1                                  |                         |                                              |
+| Refactoring operatori                  |                                                           | Eugenio                 | 3                                  |                         |                                              |
+| Studio di fattibilità delle macro      |                                                           | Eugenio                 | 3                                  |                         |                                              |
+| Definizione DSL per definizione DW     |                                                           | Team                    | 2                                  |                         |                                              |
+| Implementazione DSL per definizione DW |                                                           | Eugenio, Alice, Claudia | 15                                 |                         |                                              |

@@ -1,3 +1,5 @@
+package folap.core
+
 /** The model for representing and querying data in a DW
   */
 object MultidimensionalModel:
