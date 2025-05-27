@@ -46,3 +46,6 @@ object AttributeDSL:
     */
   def apply(baseName: String): AttributeDSL =
     new AttributeDSL(baseName + "Attribute", "")
+
+  def apply(attribute: AttributeDSL, value: String): AttributeDSL =
+    new AttributeDSL(attribute.name, value)

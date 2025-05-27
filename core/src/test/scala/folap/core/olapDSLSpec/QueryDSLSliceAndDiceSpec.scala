@@ -50,11 +50,14 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
   val Sales = QueryDSL(events)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
-    val filtered = Sales where ("Nation" is "Italy")
+    val Nation = "Nation"
+    val filtered = Sales where (Nation is "Italy")
     filtered.cube should contain theSameElementsAs Seq(event1, event3)
 
   it should "filter events by multiple attributes (dice)" in:
-    val filtered = Sales where ("Nation" is "Italy" and ("Year" is "2024"))
+    val Nation = "Nation"
+    val Year = "Year"
+    val filtered = Sales where (Nation is "Italy" and (Year is "2024"))
     filtered.cube shouldEqual Seq(event1)
 
   it should "return all events when no filter is provided" in:
@@ -62,5 +65,6 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
     filtered.cube should contain theSameElementsAs events
 
   it should "return an empty result when no event matches the filter" in:
-    val filtered = Sales where ("Nation" is "Germany")
+    val Nation = "Nation"
+    val filtered = Sales where (Nation is "Germany")
     filtered.cube shouldBe empty
