@@ -25,3 +25,9 @@ trait Event[A <: EventAttribute, M <: EventMeasure[_]]:
     *   the list of Event measures
     */
   def measures: Iterable[M]
+
+  /** Returns the top attribute in the hierarchies of this event
+    * @return
+    *   the hierarchies top attribute
+    */
+  def topAttribute: A = dimensions.head.hierarchy.asInstanceOf[Iterable[A]].last

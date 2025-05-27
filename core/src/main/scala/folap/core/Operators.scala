@@ -87,33 +87,57 @@ object Operators:
   def rollUp[A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
   )(
-      groupBy: String
+      groupBySet: Iterable[String]
   )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
-    if events.matchAttribute(groupBy)
+    if groupBySet.exists(name => events.matchAttributeByName(name))
     then
-      val groupByMap: Map[Iterable[String], Iterable[Event[A, M]]] =
-        events.groupBy(_.findAttributeByName(groupBy).map(_.value))
-      var newDimensions: Iterable[A] = List()
-      groupByMap.values.foreach(v =>
-        newDimensions = newDimensions ++ v.head.findAttributeByName(groupBy)
-      )
-      var aggregatedEvents: Iterable[Event[A, M]] = List()
-      for d <- newDimensions do
-        val aggregatedEvent: Iterable[Event[A, M]] = List(
-          createEvent(List(d), List())
+      val groupByAttributesNames =
+        groupBySet.filter(name => events.matchAttributeByName(name))
+      val groupByMap =
+        events.groupBy(
+          _.findAttributesByNames(groupByAttributesNames).map(_.value)
         )
-        aggregatedEvents = aggregatedEvents ++ aggregatedEvent
-      aggregatedEvents
+      val groupByDimensions = groupByMap.values.map(
+        _.head.findAttributesByNames(groupByAttributesNames)
+      )
+      val otherDimensions =
+        groupByMap.values.head.head.dimensions
+          .filter(
+            _.hierarchy.forall(a =>
+              groupByAttributesNames.forall(
+                _ != a.name
+              )
+            )
+          )
+          .map(_ => events.head.topAttribute)
+      groupByDimensions
+        .map(d => d ++ otherDimensions)
+        .map(dimensions => createEvent(dimensions, List()))
     else events
   extension [A <: EventAttribute, M <: EventMeasure[_]](event: Event[A, M])
-    private def findAttributeByName(attribute: String): Iterable[A] =
-      event.attributes.filter(_.name == attribute)
+    /** Finds the attributes of this event whose name is equal to one of the
+      * specified names
+      * @param names
+      *   the names of the attributes to be found
+      * @return
+      *   a new iterable collection containing the found attributes
+      */
+    private def findAttributesByNames(names: Iterable[String]): Iterable[A] =
+      names.flatMap(name => event.attributes.filter(_.name == name))
   extension [A <: EventAttribute, M <: EventMeasure[_]](
       events: Iterable[Event[A, M]]
   )
-    private def matchAttribute(groupBy: String): Boolean =
+    /** Tests whether all these events have an attribute whose name is equal to
+      * the specified name
+      * @param name
+      *   the attribute name to be matched
+      * @return
+      *   true if all these events have an attribute whose name matches the
+      *   specified name; false otherwise
+      */
+    private def matchAttributeByName(name: String): Boolean =
       events.forall(e =>
         e.attributes.exists(
-          _.name == groupBy
+          _.name == name
         )
       )
