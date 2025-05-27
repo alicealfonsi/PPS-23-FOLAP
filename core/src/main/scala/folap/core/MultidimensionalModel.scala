@@ -1,5 +1,7 @@
 package folap.core
 
+import scala.annotation.tailrec
+
 /** The model for representing and querying data in a DW
   */
 object MultidimensionalModel:
@@ -18,6 +20,47 @@ object MultidimensionalModel:
       *   the attribute value
       */
     def value: String
+
+    /** The attribute that precedes this attribute in the hierarchy
+      * @return
+      *   the parent attribute
+      */
+    def parent: Option[Attribute]
+
+    /** The hierarchy rooted in this attribute
+      * @return
+      *   the list of attributes in the hierarchy in ascending order of
+      *   aggregation
+      */
+    def hierarchy: Iterable[Attribute] =
+      @tailrec
+      def recursiveHierarchy(
+          attribute: Attribute,
+          acc: Iterable[Attribute]
+      ): Iterable[Attribute] = attribute.parent match
+        case None => acc
+        case _ =>
+          recursiveHierarchy(
+            attribute.parent.get,
+            acc ++ List(attribute.parent.get)
+          )
+      recursiveHierarchy(this, List(this))
+
+    /** Indicates whether this attribute is "equal to" the other attribute
+      * @param other
+      *   the attribute with which to compare
+      * @return
+      *   true if this attribute has the same name and value as the other; false
+      *   otherwise
+      */
+    def equals(other: Attribute): Boolean =
+      name == other.name && value == other.value
+
+  /** The top attribute in the hierarchy
+    */
+  case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
 
   /** A Measure represents a numeric value associated with an Event
     * @tparam T

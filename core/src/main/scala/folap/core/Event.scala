@@ -1,12 +1,14 @@
 package folap.core
 
+import MultidimensionalModel.Attribute
+
 /** An Event is an instance of a fact that occurred in the business domain
   * @tparam A
   *   the type of the Event attributes
   * @tparam M
   *   the type of the Event measures
   */
-trait Event[A <: EventAttribute, M <: EventMeasure[_]]:
+trait Event[A <: Attribute, M <: EventMeasure[_]]:
   /** The dimensions that describe the Event
     * @return
     *   the list of Event dimensions

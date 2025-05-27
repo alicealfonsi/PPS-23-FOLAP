@@ -3,26 +3,27 @@ import org.scalatest._
 
 import flatspec._
 import matchers._
+import MultidimensionalModel._
 
 class EventAttributeSpec extends AnyFlatSpec with should.Matchers:
   private case class ParentAttribute(
-      override val parent: Option[EventAttribute],
+      override val parent: Option[Attribute],
       override val value: String
-  ) extends EventAttribute
+  ) extends Attribute
   private case class DimensionAttribute(
-      override val parent: Option[EventAttribute],
+      override val parent: Option[Attribute],
       override val value: String
-  ) extends EventAttribute
-  val parent: EventAttribute = ParentAttribute(Some(TopAttribute()), "")
-  val dim: EventAttribute = DimensionAttribute(Some(parent), "")
+  ) extends Attribute
+  val parent: Attribute = ParentAttribute(Some(TopAttribute()), "")
+  val dim: Attribute = DimensionAttribute(Some(parent), "")
 
-  "An EventAttribute" should "have an optional parent" in:
+  "An Attribute" should "have an optional parent" in:
     parent.parent shouldEqual Some(TopAttribute())
 
   it should "have a hierarchy" in:
     dim.hierarchy shouldEqual List(dim, parent, TopAttribute())
 
   it should "be comparable: equal to" in:
-    val anotherDim: EventAttribute =
+    val anotherDim: Attribute =
       DimensionAttribute(Some(TopAttribute()), "")
     dim.equals(anotherDim) shouldBe true

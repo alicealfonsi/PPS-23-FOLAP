@@ -4,6 +4,7 @@ import org.scalatest._
 
 import scala.language.postfixOps
 
+import MultidimensionalModel._
 import Operators.drillAcross
 import flatspec._
 import matchers._
@@ -13,9 +14,9 @@ class DrillAcrossSpec
     with should.Matchers
     with BeforeAndAfterEach:
 
-  trait SalesAttribute extends EventAttribute
-  trait ProfitsAttribute extends EventAttribute
-  trait CustomerAttribute extends EventAttribute
+  trait SalesAttribute extends Attribute
+  trait ProfitsAttribute extends Attribute
+  trait CustomerAttribute extends Attribute
   trait SalesMeasure[T] extends EventMeasure[T]
   trait ProfitsMeasure[T] extends EventMeasure[T]
   trait CustomerMeasure[T] extends EventMeasure[T]
@@ -66,7 +67,7 @@ class DrillAcrossSpec
       override val dimensions: Iterable[CustomerAttribute],
       override val measures: Iterable[CustomerMeasure[_]]
   ) extends Event[CustomerAttribute, CustomerMeasure[_]]
-  case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
+  case class ResultEvent[A <: Attribute, M <: EventMeasure[_]](
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
@@ -108,7 +109,7 @@ class DrillAcrossSpec
   val eventsB = Seq(event4, event5)
   val eventsC = Seq(event6)
 
-  def createEvent[A <: EventAttribute, M <: EventMeasure[_]]
+  def createEvent[A <: Attribute, M <: EventMeasure[_]]
       : EventConstructor[A, M] =
     (
         attributes: Iterable[A],

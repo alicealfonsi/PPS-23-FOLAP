@@ -4,6 +4,7 @@ import org.scalatest._
 
 import scala.language.postfixOps
 
+import MultidimensionalModel._
 import Operators.sliceAndDice
 import flatspec._
 import matchers._
@@ -12,7 +13,7 @@ class SliceAndDiceSpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
-  trait SalesAttribute extends EventAttribute
+  trait SalesAttribute extends Attribute
   trait SalesMeasure[T] extends EventMeasure[T]
   case class NationAttribute(
       override val value: String,
