@@ -98,9 +98,3 @@ object MultidimensionalModel:
       *   a Measure
       */
     def fromRaw(value: T): Measure[T]
-
-    def +(other: Measure[T]): Measure[T] =
-      fromRaw(value + other.value)
-
-    def -(other: Measure[T]): Measure[T] =
-      fromRaw(value - other.value)
