@@ -10,10 +10,31 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
   private case class ExampleAttribute() extends Attribute:
     override val parent: Option[Attribute] = None
     override val value: String = ""
+  private case class ParentAttribute(
+      override val parent: Option[Attribute],
+      override val value: String
+  ) extends Attribute
+  private case class DimensionAttribute(
+      override val parent: Option[Attribute],
+      override val value: String
+  ) extends Attribute
   val attribute: Attribute = ExampleAttribute()
+  val parent: Attribute = ParentAttribute(Some(TopAttribute()), "")
+  val dim: Attribute = DimensionAttribute(Some(parent), "")
 
   "An Attribute" should "have a name equal to the class name" in:
     attribute.name shouldEqual "ExampleAttribute"
 
   it should "have a descriptive value" in:
     attribute.value shouldEqual ""
+
+  it should "have an optional parent" in:
+    parent.parent shouldEqual Some(TopAttribute())
+
+  it should "have a hierarchy" in:
+    dim.hierarchy shouldEqual List(dim, parent, TopAttribute())
+
+  it should "be comparable: equal to" in:
+    val other: Attribute =
+      DimensionAttribute(Some(TopAttribute()), "")
+    dim.equals(other) shouldBe true
