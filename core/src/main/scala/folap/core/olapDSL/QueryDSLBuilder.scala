@@ -21,46 +21,41 @@ case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
   * syntax such as max of, min of, avg of, and sum of."
   *
   * @param op
-  *   name of the operation as a string ("sum", "max", "min", "avg")
+  *   operation to be applied (max, min, avg, sum)
   */
-case class OpWord[A <: EventAttribute, M <: EventMeasure[_]](op: String):
+case class OpWord[A <: EventAttribute, M <: EventMeasure[_]](op: RollupOp):
   /** produce a QueryWithOp.
     *
     * @param q
-    *   queryDSL (cube) to which the operation should be applied.
+    *   queryDSL (cube) to which the operation should be applied
     * @return
-    *   a QueryWithOp containing the query and the parsed operation.
+    *   a QueryWithOp containing the query and the parsed operation
     */
   def of(q: QueryDSL[A, M]): QueryWithOp[A, M] =
-    val rollupOp = op match
-      case "max" => RollupOp.Max
-      case "min" => RollupOp.Min
-      case "avg" => RollupOp.Avg
-      case "sum" => RollupOp.Sum
-    QueryWithOp(q, rollupOp)
+    QueryWithOp(q, op)
 
 /** DSL builder object for OLAP queries. Provides natural syntax for olap
-  * operations
+  * operations.
   */
 object QueryDSLBuilder:
-  /** Initiates a roll up operation with operator "max" on a query (cube). */
+  /** Initiates a roll up operation with operator Max on a query (cube). */
   def max[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    "max"
+    RollupOp.Max
   )
 
-  /** Initiates a roll up operation with operator "min" on a query (cube). */
+  /** Initiates a roll up operation with operator Min on a query (cube). */
   def min[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    "min"
+    RollupOp.Min
   )
 
-  /** Initiates a roll up operation with operator "avg" on a query (cube). */
+  /** Initiates a roll up operation with operator Avg on a query (cube). */
   def avg[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    "avg"
+    RollupOp.Avg
   )
 
-  /** Initiates a roll up operation with operator "sum" on a query (cube). */
+  /** Initiates a roll up operation with operator Sum on a query (cube). */
   def sum[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    "sum"
+    RollupOp.Sum
   )
 
   /** Extension methods for QueryDSL to support slice and dice and drill across
