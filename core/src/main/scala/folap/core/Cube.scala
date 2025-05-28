@@ -1,5 +1,7 @@
 package folap.core
 
+import MultidimensionalModel._
+
 /** A Cube stores events related to the same fact
   * @tparam A
   *   the type of events attributes
@@ -8,7 +10,7 @@ package folap.core
   * @tparam E
   *   the type of events
   */
-trait Cube[A <: EventAttribute, M <: EventMeasure[_], E <: Event[A, M]]:
+trait Cube[A <: Attribute, M <: Measure, E <: Event[A, M]]:
   /** The events stored in the Cube
     * @return
     *   the list of Cube events

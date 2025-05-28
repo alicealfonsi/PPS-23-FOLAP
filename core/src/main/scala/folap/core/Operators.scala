@@ -1,5 +1,7 @@
 package folap.core
 
+import MultidimensionalModel._
+
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
   */
@@ -28,10 +30,10 @@ object Operators:
     *   both sets
     */
   def drillAcross[
-      A1 <: EventAttribute,
-      M1 <: EventMeasure[_],
-      A2 <: EventAttribute,
-      M2 <: EventMeasure[_]
+      A1 <: Attribute,
+      M1 <: Measure,
+      A2 <: Attribute,
+      M2 <: Measure
   ](
       events: Iterable[Event[A1, M1]],
       otherEvents: Iterable[Event[A2, M2]],
@@ -71,9 +73,9 @@ object Operators:
     *   events that match all filters
     */
 
-  def sliceAndDice[A <: EventAttribute, M <: EventMeasure[_]](
+  def sliceAndDice[A <: Attribute, M <: Measure](
       events: Iterable[Event[A, M]],
-      filters: Iterable[EventAttribute]
+      filters: Iterable[Attribute]
   ): Iterable[Event[A, M]] =
     events.filter { event =>
       filters.forall { filter =>
@@ -84,7 +86,7 @@ object Operators:
 
     }
 
-  def rollUp[A <: EventAttribute, M <: EventMeasure[_]](
+  def rollUp[A <: Attribute, M <: Measure](
       events: Iterable[Event[A, M]]
   )(
       groupBySet: Iterable[String]
@@ -114,7 +116,7 @@ object Operators:
         .map(d => d ++ otherDimensions)
         .map(dimensions => createEvent(dimensions, List()))
     else events
-  extension [A <: EventAttribute, M <: EventMeasure[_]](event: Event[A, M])
+  extension [A <: Attribute, M <: Measure](event: Event[A, M])
     /** Finds the attributes of this event whose name is equal to one of the
       * specified names
       * @param names
@@ -124,7 +126,7 @@ object Operators:
       */
     private def findAttributesByNames(names: Iterable[String]): Iterable[A] =
       names.flatMap(name => event.attributes.filter(_.name == name))
-  extension [A <: EventAttribute, M <: EventMeasure[_]](
+  extension [A <: Attribute, M <: Measure](
       events: Iterable[Event[A, M]]
   )
     /** Tests whether all these events have an attribute whose name is equal to
