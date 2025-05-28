@@ -39,10 +39,10 @@ object MultidimensionalModel:
           acc: Iterable[Attribute]
       ): Iterable[Attribute] = attribute.parent match
         case None => acc
-        case _ =>
+        case Some(p) =>
           recursiveHierarchy(
-            attribute.parent.get,
-            acc ++ List(attribute.parent.get)
+            p,
+            acc ++ List(p)
           )
       recursiveHierarchy(this, List(this))
 
