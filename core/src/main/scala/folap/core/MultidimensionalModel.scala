@@ -63,14 +63,11 @@ object MultidimensionalModel:
     override val value: String = ""
 
   /** A Measure represents a numeric value associated with an Event
-    * @tparam T
-    *   the measure type
     */
-  trait Measure[T](implicit num: Numeric[T])
-      extends Equiv[Measure[T]]
-      with Comparable[Measure[T]]:
-
-    import scala.math.Numeric.Implicits.infixNumericOps
+  trait Measure:
+    /** Abstract type member representing the type of the Measure
+      */
+    type T <: MeasureType
 
     /** The name of the measure
       * @return
@@ -84,17 +81,10 @@ object MultidimensionalModel:
       */
     def value: T
 
-    override def equiv(x: Measure[T], y: Measure[T]): Boolean =
-      x.value == y.value
-
-    override def compareTo(o: Measure[T]): Int =
-      import scala.math.Ordered.orderingToOrdered
-      value.compare(o.value)
-
     /** Create a Measure from the raw value
       * @param value
       *   the raw value
       * @return
       *   a Measure
       */
-    def fromRaw(value: T): Measure[T]
+    def fromRaw(value: T): Measure
