@@ -9,7 +9,7 @@ import matchers._
 
 class RollUpSpec extends AnyFlatSpec with should.Matchers:
   trait SalesAttribute extends Attribute
-  trait SalesMeasure[T] extends Measure[T]
+  trait SalesMeasure extends Measure
   case class TopAttribute() extends SalesAttribute:
     override val parent: Option[SalesAttribute] = None
     override val value: String = ""
@@ -37,12 +37,16 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       override val parent: Option[TypeAttribute],
       override val value: String
   ) extends SalesAttribute
-  private case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
-    override def fromRaw(value: Int): Measure[Int] = QuantitySoldMeasure(value)
+  private case class QuantitySoldMeasure(override val value: Int)
+      extends SalesMeasure:
+    type T = Int
+    override def fromRaw(value: Int): QuantitySoldMeasure = QuantitySoldMeasure(
+      value
+    )
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
-      override val measures: Iterable[SalesMeasure[_]]
-  ) extends Event[SalesAttribute, SalesMeasure[_]]
+      override val measures: Iterable[SalesMeasure]
+  ) extends Event[SalesAttribute, SalesMeasure]
 
   val nationAttribute12: NationAttribute =
     NationAttribute(Some(TopAttribute()), "Italy")
@@ -88,12 +92,12 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   private case class ResultEvent(
       override val dimensions: Iterable[SalesAttribute],
-      override val measures: Iterable[SalesMeasure[_]]
-  ) extends Event[SalesAttribute, SalesMeasure[_]]
-  private def createEvent: EventConstructor[SalesAttribute, SalesMeasure[_]] =
+      override val measures: Iterable[SalesMeasure]
+  ) extends Event[SalesAttribute, SalesMeasure]
+  private def createEvent: EventConstructor[SalesAttribute, SalesMeasure] =
     (
         dimensions: Iterable[SalesAttribute],
-        measures: Iterable[SalesMeasure[_]]
+        measures: Iterable[SalesMeasure]
     ) => ResultEvent(dimensions, measures)
 
   "RollUp" should "aggregate only if the group-by attribute matches one of the attributes of each event" in:
