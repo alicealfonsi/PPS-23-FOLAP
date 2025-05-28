@@ -8,7 +8,7 @@ import matchers._
 
 class AttributeSpec extends AnyFlatSpec with should.Matchers:
   private case class ExampleAttribute() extends Attribute:
-    override val parent: Option[Attribute] = None
+    override val parent: Option[Attribute] = Some(TopAttribute())
     override val value: String = ""
   private case class ParentAttribute(
       override val parent: Option[Attribute],
