@@ -9,25 +9,26 @@ object MultidimensionalModel:
   /** An Attribute is a finite domain property of an Event
     */
   trait Attribute:
-    /** The name of the attribute
+    /** The name of the Attribute
       * @return
-      *   the attribute name
+      *   the Attribute name
       */
     def name: String = getClass.getSimpleName
 
-    /** The value of the attribute
+    /** The value of the Attribute
       * @return
-      *   the attribute value
+      *   the Attribute value
       */
     def value: String
 
-    /** The attribute that precedes this attribute in the hierarchy
+    /** The Attribute that precedes this Attribute in the hierarchy
       * @return
-      *   the parent attribute
+      *   a Some containing the parent Attribute if this Attribute is not the
+      *   last in the hierarchy; None otherwise
       */
     def parent: Option[Attribute]
 
-    /** The hierarchy rooted in this attribute
+    /** The hierarchy rooted in this Attribute
       * @return
       *   the list of attributes in the hierarchy in ascending order of
       *   aggregation
@@ -46,17 +47,17 @@ object MultidimensionalModel:
           )
       recursiveHierarchy(this, List(this))
 
-    /** Indicates whether this attribute is "equal to" the other attribute
+    /** Indicates whether this Attribute is "equal to" the other Attribute
       * @param other
-      *   the attribute with which to compare
+      *   the Attribute with which to compare
       * @return
-      *   true if this attribute has the same name and value as the other; false
+      *   true if this Attribute has the same name and value as the other; false
       *   otherwise
       */
     def equals(other: Attribute): Boolean =
       name == other.name && value == other.value
 
-  /** The top attribute in the hierarchy
+  /** The top Attribute in the hierarchy
     */
   case class TopAttribute() extends Attribute:
     override val parent: Option[Attribute] = None
@@ -69,22 +70,22 @@ object MultidimensionalModel:
       */
     type T <: MeasureType
 
-    /** The name of the measure
+    /** The name of the Measure
       * @return
-      *   the measure name
+      *   the Measure name
       */
     def name: String = getClass.getSimpleName
 
-    /** The value of the measure
+    /** The value of the Measure
       * @return
-      *   the measure value
+      *   the Measure value
       */
     def value: T
 
-    /** Create a Measure from the raw value
+    /** Creates a Measure from the raw value
       * @param value
       *   the raw value
       * @return
-      *   a Measure
+      *   the Measure containing the value
       */
     def fromRaw(value: T): Measure
