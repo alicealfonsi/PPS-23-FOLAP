@@ -72,6 +72,8 @@ object QueryDSLBuilder:
       */
     infix def union[A2 <: Attribute, M2 <: Measure](
         other: QueryDSL[A2, M2]
-    )(using constructor: EventConstructor[Attribute, M | M2]): QueryDSL[Attribute, M | M2] =
+    )(using
+        constructor: EventConstructor[Attribute, M | M2]
+    ): QueryDSL[Attribute, M | M2] =
       val drilled = drillAcross(q.cube, other.cube, constructor)
       QueryDSL(drilled)

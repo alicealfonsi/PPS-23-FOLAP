@@ -2,31 +2,32 @@ package folap.core
 
 import MultidimensionalModel._
 
-  /** Performs a drill across operation that combines events from two cubes
-    * when they share at least one common leaf attribute.
-    *
-    * The resulting events will include:
-    *   - The shared leaf attributes
-    *   - All measures from matching events
-    *
-    * @param events
-    *   the first collection of events
-    * @param otherEvents
-    *   the second collection of events to be combined
-    * @param createEvent
-    *   a constructor function used to build the resulting events from attributes and measures
-    * @tparam A1
-    *   attribute type of the first set of events
-    * @tparam M1
-    *   measure type of the first set of events
-    * @tparam A2
-    *   attribute type of the second set of events
-    * @tparam M2
-    *   measure type of the second set of events
-    * @return
-    *   a collection of events, each one resulting from the combination of two
-    *   matching events sharing one or more common leaf attributes
-    */
+/** Performs a drill across operation that combines events from two cubes when
+  * they share at least one common leaf attribute.
+  *
+  * The resulting events will include:
+  *   - The shared leaf attributes
+  *   - All measures from matching events
+  *
+  * @param events
+  *   the first collection of events
+  * @param otherEvents
+  *   the second collection of events to be combined
+  * @param createEvent
+  *   a constructor function used to build the resulting events from attributes
+  *   and measures
+  * @tparam A1
+  *   attribute type of the first set of events
+  * @tparam M1
+  *   measure type of the first set of events
+  * @tparam A2
+  *   attribute type of the second set of events
+  * @tparam M2
+  *   measure type of the second set of events
+  * @return
+  *   a collection of events, each one resulting from the combination of two
+  *   matching events sharing one or more common leaf attributes
+  */
 
 object Operators:
 
