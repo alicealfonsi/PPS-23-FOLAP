@@ -1,5 +1,7 @@
 package folap.core.olapDSL
 import folap.core._
+import folap.core.MultidimensionalModel._
+
 
 /** Represents a collection of OLAP events (cube)
   *
@@ -12,6 +14,6 @@ import folap.core._
   *
   * This class serves as the entry point for DSL-based operations
   */
-case class QueryDSL[A <: EventAttribute, M <: EventMeasure[_]](
+case class QueryDSL[A <: Attribute, M <: Measure](
     cube: Iterable[Event[A, M]]
 )

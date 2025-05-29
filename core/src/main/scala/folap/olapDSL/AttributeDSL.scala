@@ -1,6 +1,6 @@
 package folap.core.olapDSL
+import folap.core.MultidimensionalModel._
 
-import folap.core.EventAttribute
 
 /** Companion object providing factory methods to create attribute DSL instances
   * for use in the OLAP DSL.
@@ -8,7 +8,7 @@ import folap.core.EventAttribute
   * All attribute names are automatically suffixed with "Attribute".
   */
 object AttributeDSL:
-  trait AttributeDSL extends EventAttribute
+  trait AttributeDSL extends Attribute
 
   /** A concrete implementation of EventAttribute used to define attributes with
     * a value.
@@ -22,7 +22,7 @@ object AttributeDSL:
       override val name: String,
       override val value: String
   ) extends AttributeDSL:
-    override val parent: Option[EventAttribute] = None
+    override val parent: Option[Attribute] = None
 
   /** A concrete implementation of EventAttribute used to define attributes
     * without a value.
@@ -36,7 +36,7 @@ object AttributeDSL:
       override val name: String,
       override val value: String = ""
   ) extends AttributeDSL:
-    override val parent: Option[EventAttribute] = None
+    override val parent: Option[Attribute] = None
 
   /** Creates an AttributeDSLWithValue with the specified base name and value.
     *

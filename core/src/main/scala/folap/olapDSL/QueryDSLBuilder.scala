@@ -5,6 +5,7 @@ import folap.core.Operators.rollUp
 import folap.core.Operators.sliceAndDice
 import folap.core._
 import folap.core.olapDSL.AttributeDSL.AttributeDSL
+import folap.core.MultidimensionalModel._
 
 /** Wraps a QueryDSL (cube) and a roll-up operation (sum, max, min, avg).
   *
@@ -13,7 +14,7 @@ import folap.core.olapDSL.AttributeDSL.AttributeDSL
   * @param op
   *   roll-up operation to apply
   */
-case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
+case class QueryWithOp[A <: Attribute, M <: Measure](
     query: QueryDSL[A, M],
     op: AggregationOp
 )
@@ -25,7 +26,7 @@ object QueryDSLBuilder:
 
   /** Extension methods for AggregationOp.
     */
-  extension [A <: EventAttribute, M <: EventMeasure[_]](op: AggregationOp)
+  extension [A <: Attribute, M <: Measure](op: AggregationOp)
     /** Wraps a cube and a roll-up operation into a QueryWithOp.
       *
       * @param q
@@ -39,7 +40,7 @@ object QueryDSLBuilder:
   /** Extension methods for QueryDSL to support slice and dice and drill across
     * operations.
     */
-  extension [A <: EventAttribute, M <: EventMeasure[_]](q: QueryDSL[A, M])
+  extension [A <: Attribute, M <: Measure](q: QueryDSL[A, M])
     /** Performs the slice and dice
       *
       * @param filters
@@ -47,7 +48,7 @@ object QueryDSLBuilder:
       * @return
       *   a new QueryDSL instance (cube) with filtered events
       */
-    infix def where(filters: Iterable[EventAttribute]): QueryDSL[A, M] =
+    infix def where(filters: Iterable[Attribute]): QueryDSL[A, M] =
       val sliced = sliceAndDice(q.cube, filters)
       QueryDSL(sliced)
 
@@ -58,7 +59,7 @@ object QueryDSLBuilder:
       * @return
       *   a new QueryDSL instance (cube) with filtered events
       */
-    infix def where(filter: EventAttribute): QueryDSL[A, M] =
+    infix def where(filter: Attribute): QueryDSL[A, M] =
       val sliced = sliceAndDice(q.cube, Iterable(filter))
       QueryDSL(sliced)
 
@@ -71,7 +72,7 @@ object QueryDSLBuilder:
       * @return
       *   a new QueryDSL representing the drill-across result
       */
-    infix def union[A2 <: EventAttribute, M2 <: EventMeasure[_]](
+    infix def union[A2 <: Attribute, M2 <: Measure](
         other: QueryDSL[A2, M2]
     )(using constructor: EventConstructor[A, M | M2]): QueryDSL[A, M | M2] =
       val drilled = drillAcross(q.cube, other.cube, constructor)
@@ -79,7 +80,7 @@ object QueryDSLBuilder:
 
   /** Extension method for QueryWithOp to support roll-up operations.
     */
-  extension [A <: EventAttribute, M <: EventMeasure[_], M2 <: EventMeasure[_]](
+  extension [A <: Attribute, M <: Measure, M2 <: Measure](
       qwo: QueryWithOp[A, M]
   )
     /** Aggregates the cube by a set of attributes using the specified roll-up
