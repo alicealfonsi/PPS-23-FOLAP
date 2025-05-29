@@ -1,4 +1,4 @@
 package folap.core
 
-enum RollupOp:
+enum AggregationOp:
   case Max, Min, Avg, Sum

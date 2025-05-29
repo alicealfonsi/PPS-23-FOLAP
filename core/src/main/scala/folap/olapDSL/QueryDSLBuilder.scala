@@ -6,7 +6,6 @@ import folap.core.Operators.sliceAndDice
 import folap.core._
 import folap.core.olapDSL.AttributeDSL.AttributeDSL
 
-
 /** Wraps a QueryDSL (cube) and a roll-up operation (sum, max, min, avg).
   *
   * @param query
@@ -16,27 +15,27 @@ import folap.core.olapDSL.AttributeDSL.AttributeDSL
   */
 case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
     query: QueryDSL[A, M],
-    op: RollupOp
+    op: AggregationOp
 )
-
 
 /** DSL builder object for OLAP queries. Provides natural syntax for olap
   * operations.
   */
 object QueryDSLBuilder:
 
-/** Extension methods for RollupOp.
+  /** Extension methods for RollupOp.
     */
-  extension [A <: EventAttribute, M <: EventMeasure[_]](op: RollupOp)
-  /** Wraps a cube and a roll-up operation into a QueryWithOp.
-    *
-    * @param q
-    *   the query (cube) to which the operation will be applied
-    * @return
-    *   a QueryWithOp with the cube and operation
-    */
+  extension [A <: EventAttribute, M <: EventMeasure[_]](op: AggregationOp)
+    /** Wraps a cube and a roll-up operation into a QueryWithOp.
+      *
+      * @param q
+      *   the query (cube) to which the operation will be applied
+      * @return
+      *   a QueryWithOp with the cube and operation
+      */
     infix def of(q: QueryDSL[A, M]): QueryWithOp[A, M] =
-     QueryWithOp(q, op)
+      QueryWithOp(q, op)
+
   /** Extension methods for QueryDSL to support slice and dice and drill across
     * operations.
     */

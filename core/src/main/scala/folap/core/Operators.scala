@@ -87,7 +87,7 @@ object Operators:
   def rollUp[A <: EventAttribute, M <: EventMeasure[_], M2 <: EventMeasure[_]](
       events: Iterable[Event[A, M]],
       attributes: Iterable[EventAttribute],
-      op: RollupOp,
+      op: AggregationOp,
       createEvent: EventConstructor[A, M | M2]
   ): Iterable[Event[A, M]] =
     events

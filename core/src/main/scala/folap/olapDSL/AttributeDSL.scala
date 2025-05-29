@@ -9,27 +9,30 @@ import folap.core.EventAttribute
   */
 object AttributeDSL:
   trait AttributeDSL extends EventAttribute
-  /** A concrete implementation of EventAttribute used to define attributes with a value.
+
+  /** A concrete implementation of EventAttribute used to define attributes with
+    * a value.
     *
     * @param name
     *   name of the attribute
     * @param value
     *   value of the attribute
     */
-  case class AttributeDSLWithValue (
+  case class AttributeDSLWithValue(
       override val name: String,
       override val value: String
   ) extends AttributeDSL:
     override val parent: Option[EventAttribute] = None
 
-  /** A concrete implementation of EventAttribute used to define attributes without a value.
+  /** A concrete implementation of EventAttribute used to define attributes
+    * without a value.
     *
     * The value is always the empty string.
     *
     * @param name
     *   name of the attribute
     */
-  case class AttributeDSLWithoutValue (
+  case class AttributeDSLWithoutValue(
       override val name: String,
       override val value: String = ""
   ) extends AttributeDSL:
@@ -56,5 +59,3 @@ object AttributeDSL:
     */
   def apply(baseName: String): AttributeDSLWithoutValue =
     AttributeDSLWithoutValue(baseName + "Attribute")
-
-

@@ -1,7 +1,6 @@
 package folap.core.olapDSL
 import folap.core.olapDSL.AttributeDSL.AttributeDSL
 
-
 /** Provides a simple and readable DSL for creating AttributeDSL instances.
   */
 object AttributeDSLBuilder:

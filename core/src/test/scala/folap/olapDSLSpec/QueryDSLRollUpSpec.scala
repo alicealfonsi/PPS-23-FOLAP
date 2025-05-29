@@ -8,7 +8,8 @@ import folap.core.olapDSL.QueryDSLBuilder.of
 import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import RollupOp._
+
+import AggregationOp._
 
 class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 
