@@ -20,4 +20,4 @@ class QuerySpec
   "Performing a roll up" should "add the attributes to the group by set" in:
     val attribute = "a"
     val resultingQuery = q.rollUp(attribute)
-    resultingQuery.groupBySet should contain attribute
+    resultingQuery.groupBySet should contain(attribute)
