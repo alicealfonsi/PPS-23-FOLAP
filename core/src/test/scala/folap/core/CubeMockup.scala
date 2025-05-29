@@ -3,6 +3,21 @@ package folap.core
 import MultidimensionalModel._
 
 trait SalesAttribute extends Attribute
+trait GeographicAttribute extends SalesAttribute
+object GeographicAttribute:
+  case class TopAttribute() extends GeographicAttribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
+  case class Nation(
+      override val parent: Option[TopAttribute],
+      override val value: String
+  ) extends GeographicAttribute
+  case class City(
+      override val parent: Option[Nation],
+      override val value: String
+  ) extends GeographicAttribute
+  case class Shop(override val parent: Option[City], override val value: String)
+      extends GeographicAttribute
 
 type SalesMeasure = QuantitySold
 
@@ -16,9 +31,9 @@ given Computable[QuantitySold] with
       q.value + other.value
     )
 
-case class SalesEvent(quantity: QuantitySold)
+case class SalesEvent(where: GeographicAttribute, quantity: QuantitySold)
     extends Event[SalesAttribute, SalesMeasure]:
-  override def dimensions: Iterable[SalesAttribute] = List()
+  override def dimensions: Iterable[SalesAttribute] = List(where)
   override def measures: Iterable[SalesMeasure] = List(quantity)
 
 val quantitySoldValue1: Int = 1
