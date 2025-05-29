@@ -12,14 +12,18 @@ object Codegen:
     val objectBody = dimension.attributes
       .zip(dimension.attributes.tail)
       .map((current, parent) => (sanitise(current), sanitise(parent)))
-      .map((current, parent) =>
-        s"case class ${current}(value: String, ${{ { toCamelCase(parent) } }}: ${parent}) extends ${dimensionName}"
+      .map((current, parent) => (current, parent, toCamelCase(parent)))
+      .map((current, parent, parentCamelCase) =>
+        Seq(
+          s"case class ${current}(value: String, ${parentCamelCase}: ${parent}) extends ${dimensionName}:",
+          s"  def parent = Some(${parentCamelCase})"
+        ).mkString("\n")
       )
       .map(indent(_, 2))
       .mkString("\n")
     val lastLevelName = sanitise(dimension.attributes.last)
     val lastLevel = indent(
-      s"case class ${lastLevelName}(value: String) extends ${dimensionName}",
+      s"case class ${lastLevelName}(value: String) extends ${dimensionName}:\n  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())",
       2
     )
 

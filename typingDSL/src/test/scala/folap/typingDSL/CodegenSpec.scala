@@ -23,13 +23,16 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val attributes = "town" --> "province" --> "region" --> "country"
     val geoMeasure = "geo" dimension attributes
     generate(geoMeasure) should endWith(
-      "  case class Town(value: String, province: Province) extends GeoDimension\n  case class Province(value: String, region: Region) extends GeoDimension\n  case class Region(value: String, country: Country) extends GeoDimension\n  case class Country(value: String) extends GeoDimension"
+      "  case class Town(value: String, province: Province) extends GeoDimension:\n    def parent = Some(province)\n  case class Province(value: String, region: Region) extends GeoDimension:\n    def parent = Some(region)\n  case class Region(value: String, country: Country) extends GeoDimension:\n    def parent = Some(country)\n  case class Country(value: String) extends GeoDimension:\n    def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
     )
 
   it should "generate a single attribute without parent for single level hierarchies" in:
     val geoDimension = "geo" dimension "shop"
     generate(geoDimension) should endWith(
-      "case class Shop(value: String) extends GeoDimension"
+      indent(
+        "case class Shop(value: String) extends GeoDimension:\n  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())",
+        2
+      )
     )
 
   it should "generate the correct type string for ints" in:
