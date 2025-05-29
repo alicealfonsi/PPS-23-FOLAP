@@ -36,7 +36,24 @@ case class SalesEvent(where: GeographicAttribute, quantity: QuantitySold)
   override def dimensions: Iterable[SalesAttribute] = List(where)
   override def measures: Iterable[SalesMeasure] = List(quantity)
 
+given Operational[SalesEvent] with
+  extension (e: SalesEvent)
+    def sum(other: SalesEvent)(groupByAttribute: String): SalesEvent =
+      SalesEvent(
+        e.where.upToLevel(groupByAttribute),
+        e.quantity sum other.quantity
+      )
+
+import GeographicAttribute.*
+val nation12: Nation = Nation(Some(GeographicAttribute.TopAttribute()), "Italy")
+val city1: City = City(Some(nation12), "Bologna")
+val shop1: Shop = Shop(Some(city1), "Shop1")
 val quantitySoldValue1: Int = 1
 val quantitySold1: QuantitySold = QuantitySold(quantitySoldValue1)
+val city2: City = City(Some(nation12), "Cesena")
+val shop2: Shop = Shop(Some(city2), "Shop2")
 val quantitySoldValue2: Int = 2
 val quantitySold2: QuantitySold = QuantitySold(quantitySoldValue2)
+
+val event1: SalesEvent = SalesEvent(shop1, quantitySold1)
+val event2: SalesEvent = SalesEvent(shop2, quantitySold2)
