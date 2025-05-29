@@ -50,10 +50,14 @@ val city1: City = City(Some(nation12), "Bologna")
 val shop1: Shop = Shop(Some(city1), "Shop1")
 val quantitySoldValue1: Int = 1
 val quantitySold1: QuantitySold = QuantitySold(quantitySoldValue1)
-val city2: City = City(Some(nation12), "Cesena")
-val shop2: Shop = Shop(Some(city2), "Shop2")
+val city23: City = City(Some(nation12), "Cesena")
+val shop2: Shop = Shop(Some(city23), "Shop2")
 val quantitySoldValue2: Int = 2
 val quantitySold2: QuantitySold = QuantitySold(quantitySoldValue2)
+val shop3: Shop = Shop(Some(city23), "Shop3")
+val quantitySoldValue3: Int = 7
+val quantitySold3: QuantitySold = QuantitySold(quantitySoldValue3)
 
 val event1: SalesEvent = SalesEvent(shop1, quantitySold1)
 val event2: SalesEvent = SalesEvent(shop2, quantitySold2)
+val event3: SalesEvent = SalesEvent(shop3, quantitySold3)

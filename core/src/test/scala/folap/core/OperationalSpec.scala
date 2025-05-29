@@ -12,3 +12,11 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       Nation(Some(TopAttribute()), "Italy"),
       QuantitySold(3)
     )
+
+  "Operational[SalesEvent]" should "return the correct aggregation by sum of SalesEvent" in:
+    List(event1, event2, event3).aggregateBySum(
+      "Nation"
+    ) shouldEqual SalesEvent(
+      Nation(Some(TopAttribute()), "Italy"),
+      QuantitySold(10)
+    )
