@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 /** This object contains utility functions for the DSL
   */

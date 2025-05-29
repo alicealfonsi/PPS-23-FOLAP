@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 object SeqBuilder:
   trait ToSeq[T]:

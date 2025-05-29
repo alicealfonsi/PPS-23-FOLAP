@@ -1,7 +1,7 @@
-package folap.typingDSL
+package folap.modelDefinition
 
-import folap.typingDSL.DSLUtils.indent
-import folap.typingDSL.MeasureDSL.measure
+import folap.modelDefinition.DSLUtils.indent
+import folap.modelDefinition.MeasureDSL.measure
 import org.scalatest._
 
 import flatspec._

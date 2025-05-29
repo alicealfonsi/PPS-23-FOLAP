@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 /** A union type representing the allowed numeric types for a Measure.
   *

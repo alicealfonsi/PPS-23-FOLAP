@@ -1,8 +1,8 @@
-package folap.typingDSL
+package folap.modelDefinition
 
-import folap.typingDSL.DSLUtils.indent
-import folap.typingDSL.DSLUtils.sanitise
-import folap.typingDSL.DSLUtils.toCamelCase
+import folap.modelDefinition.DSLUtils.indent
+import folap.modelDefinition.DSLUtils.sanitise
+import folap.modelDefinition.DSLUtils.toCamelCase
 
 object Codegen:
   def generate(dimension: Dimension): String =
