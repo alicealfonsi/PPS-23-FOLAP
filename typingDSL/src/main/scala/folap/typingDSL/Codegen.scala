@@ -2,6 +2,7 @@ package folap.typingDSL
 
 import folap.typingDSL.DSLUtils.indent
 import folap.typingDSL.DSLUtils.sanitise
+import folap.typingDSL.DSLUtils.toCamelCase
 
 object Codegen:
   def generate(dimension: Dimension): String =
@@ -12,7 +13,7 @@ object Codegen:
       .zip(dimension.attributes.tail)
       .map((current, parent) => (sanitise(current), sanitise(parent)))
       .map((current, parent) =>
-        s"case class ${current}(value: String, parent: ${parent}) extends ${dimensionName}"
+        s"case class ${current}(value: String, ${{ { toCamelCase(parent) } }}: ${parent}) extends ${dimensionName}"
       )
       .map(indent(_, 2))
       .mkString("\n")
