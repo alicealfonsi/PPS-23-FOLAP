@@ -126,3 +126,15 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val generated = generate(e)
 
     generated should endWith(expectedEnding)
+
+  it should "generate a union type for all attributes contained in the event" in:
+    val geoMeasure =
+      "geo" dimension "town" --> "province"
+    val dateTimeMeasure = "date and time" dimension "hour" --> "day" --> "month"
+    val e = event named "test" having geoMeasure and dateTimeMeasure
+
+    val expected =
+      "type Attributes = GeoDimension.Town | GeoDimension.Province | DateAndTimeDimension.Hour | DateAndTimeDimension.Day | DateAndTimeDimension.Month"
+    val generated = generate(e)
+
+    generated should include(expected)

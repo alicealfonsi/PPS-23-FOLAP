@@ -88,6 +88,12 @@ object Codegen:
       .map(x => toCamelCase(x))
       .mkString(", ")
 
+    val allDimensionAttributes = e.dimensions
+      .flatMap((d) => d.attributes.map((d, _)))
+      .map((d, a) => (sanitise(d.name), sanitise(a)))
+      .map((d, a) => s"${d}Dimension.${a}")
+      .mkString(" | ")
+
     val event =
       indent(
         Seq(
@@ -104,5 +110,6 @@ object Codegen:
       "  sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute",
       "  object Dimension:",
       s"${dimensions}",
+      indent(s"type Attributes = ${allDimensionAttributes}", 4),
       s"${event}"
     ).mkString("\n")
