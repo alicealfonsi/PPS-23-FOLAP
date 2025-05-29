@@ -4,10 +4,11 @@ import folap.core._
 import folap.core.olapDSL.AttributeDSLBuilder._
 import folap.core.olapDSL.AttributeSeqBuilder._
 import folap.core.olapDSL.QueryDSLBuilder.by
-import folap.core.olapDSL.QueryDSLBuilder.max
+import folap.core.olapDSL.QueryDSLBuilder.of
 import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import RollupOp._
 
 class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 
@@ -63,10 +64,10 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
   "The rollUp DSL" should "work with more attributes" in:
     val Client = "Client"
     val Year = "Year"
-    val result = max of Sales by (Client and Year)
+    val result = Max of Sales by (Client and Year)
     result.cube shouldEqual Seq(event1, event2)
 
   it should "work with a single attribute" in:
     val Client = "Client"
-    val result = max of Sales by Client
+    val result = Max of Sales by Client
     result.cube shouldEqual Seq(event1, event2)

@@ -19,47 +19,24 @@ case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
     op: RollupOp
 )
 
-/** Helper class used to begin a roll up operation in the DSL with natural
-  * syntax such as max of, min of, avg of, and sum of."
-  *
-  * @param op
-  *   operation to be applied (max, min, avg, sum)
-  */
-case class OpWord[A <: EventAttribute, M <: EventMeasure[_]](op: RollupOp):
-  /** produce a QueryWithOp.
-    *
-    * @param q
-    *   queryDSL (cube) to which the operation should be applied
-    * @return
-    *   a QueryWithOp containing the query and the parsed operation
-    */
-  def of(q: QueryDSL[A, M]): QueryWithOp[A, M] =
-    QueryWithOp(q, op)
 
 /** DSL builder object for OLAP queries. Provides natural syntax for olap
   * operations.
   */
 object QueryDSLBuilder:
-  /** Initiates a roll up operation with operator Max on a query (cube). */
-  def max[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    RollupOp.Max
-  )
 
-  /** Initiates a roll up operation with operator Min on a query (cube). */
-  def min[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    RollupOp.Min
-  )
-
-  /** Initiates a roll up operation with operator Avg on a query (cube). */
-  def avg[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    RollupOp.Avg
-  )
-
-  /** Initiates a roll up operation with operator Sum on a query (cube). */
-  def sum[A <: EventAttribute, M <: EventMeasure[_]]: OpWord[A, M] = OpWord(
-    RollupOp.Sum
-  )
-
+/** Extension methods for RollupOp.
+    */
+  extension [A <: EventAttribute, M <: EventMeasure[_]](op: RollupOp)
+  /** Wraps a cube and a roll-up operation into a QueryWithOp.
+    *
+    * @param q
+    *   the query (cube) to which the operation will be applied
+    * @return
+    *   a QueryWithOp with the cube and operation
+    */
+    infix def of(q: QueryDSL[A, M]): QueryWithOp[A, M] =
+     QueryWithOp(q, op)
   /** Extension methods for QueryDSL to support slice and dice and drill across
     * operations.
     */
