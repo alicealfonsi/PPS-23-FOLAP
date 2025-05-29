@@ -1,7 +1,6 @@
 package folap.olapDSL
 
 import folap.olapDSL.AttributeSeqBuilder._
-import folap.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

@@ -75,5 +75,3 @@ object QueryDSLBuilder:
     )(using constructor: EventConstructor[A, M | M2]): QueryDSL[A, M | M2] =
       val drilled = drillAcross(q.cube, other.cube, constructor)
       QueryDSL(drilled)
-
-  

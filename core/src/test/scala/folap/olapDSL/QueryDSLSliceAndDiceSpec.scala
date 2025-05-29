@@ -5,7 +5,6 @@ import folap.core._
 import folap.olapDSL.AttributeDSLBuilder._
 import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSLBuilder._
-import folap.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

@@ -142,4 +142,3 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       ResultEvent(List(typeAttribute5, nationAttribute12), List()),
       ResultEvent(List(typeAttribute12, nationAttribute12), List())
     )
-    
