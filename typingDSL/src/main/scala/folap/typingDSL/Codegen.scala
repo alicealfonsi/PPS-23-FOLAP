@@ -74,4 +74,11 @@ object Codegen:
 
     val event =
       s"  case class ${name}(${fields})"
-    s"object ${name}:\n${measures}\n  sealed trait Dimension\n  object Dimension:\n${dimensions}\n${event}"
+    Seq(
+      s"object ${name}:",
+      s"${measures}",
+      "  sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute",
+      "  object Dimension:",
+      s"${dimensions}",
+      s"${event}"
+    ).mkString("\n")

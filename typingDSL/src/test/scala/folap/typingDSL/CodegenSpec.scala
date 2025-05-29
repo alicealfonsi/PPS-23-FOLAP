@@ -89,12 +89,17 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate an object containing the event dimensions" in:
     val geoDimension = "geo" dimension "shop"
     val e = event named "test" having geoDimension
-    generate(e) should include(
-      "  sealed trait Dimension\n  object Dimension:\n" + indent(
-        generate(geoDimension),
-        4
-      )
+    val expectedInclude = indent(
+      Seq(
+        "sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute",
+        "object Dimension:",
+        indent(generate(geoDimension), 2)
+      ).mkString("\n"),
+      2
     )
+    val generated = generate(e)
+
+    generated should include(expectedInclude)
 
   it should "generate an event as a case class with all of its measures and dimensions as fields" in:
     val geoDimension = "geographic" dimension "shop" --> "town"
