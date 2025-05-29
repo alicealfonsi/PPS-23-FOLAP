@@ -53,7 +53,14 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
 
   it should "generate a case class for a measure" in:
     val m = measure named "test" as Int
-    generate(m) shouldEqual "case class Test(value: Int)"
+    val expected = Seq(
+      "case class Test(value: Int) extends folap.core.MultidimensionalModel.Measure:",
+      "  type T = Int",
+      "  override def fromRaw(value: Int): folap.core.MultidimensionalModel.Measure =",
+      "    Test(value)"
+    ).mkString("\n")
+    val generated = generate(m)
+    generated shouldEqual expected
 
   it should "generate an object for an event" in:
     val e = event named "test"
