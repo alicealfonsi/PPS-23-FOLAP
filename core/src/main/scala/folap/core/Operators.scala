@@ -2,33 +2,34 @@ package folap.core
 
 import MultidimensionalModel._
 
-/** Operators for querying and manipulating events of a multidimensional data
-  * warehouse
-  */
-object Operators:
-
-  /** "Drill across" operation used to combine events from different cubes that
-    * share common attribute names and values.
+  /** Performs a drill across operation that combines events from two cubes
+    * when they share at least one common leaf attribute.
+    *
+    * The resulting events will include:
+    *   - The shared leaf attributes
+    *   - All measures from matching events
     *
     * @param events
-    *   first set of events
+    *   the first collection of events
     * @param otherEvents
-    *   second set of events to combine with
+    *   the second collection of events to be combined
     * @param createEvent
-    *   function to construct a new event from shared attributes and combined
-    *   measures
+    *   a constructor function used to build the resulting events from attributes and measures
     * @tparam A1
-    *   the type of attributes in the first set of events
+    *   attribute type of the first set of events
     * @tparam M1
-    *   the type of measures in the first set of events
+    *   measure type of the first set of events
     * @tparam A2
-    *   the type of attributes in the second set of events
+    *   attribute type of the second set of events
     * @tparam M2
-    *   the type of measures in the second set of events
+    *   measure type of the second set of events
     * @return
-    *   set of events resulting from the combination of matching events from
-    *   both sets
+    *   a collection of events, each one resulting from the combination of two
+    *   matching events sharing one or more common leaf attributes
     */
+
+object Operators:
+
   def drillAcross[
       A1 <: Attribute,
       M1 <: Measure,
@@ -37,20 +38,29 @@ object Operators:
   ](
       events: Iterable[Event[A1, M1]],
       otherEvents: Iterable[Event[A2, M2]],
-      createEvent: EventConstructor[A1, M1 | M2]
-  ): Iterable[Event[A1, M1 | M2]] = {
+      createEvent: EventConstructor[Attribute, M1 | M2]
+  ): Iterable[Event[Attribute, M1 | M2]] = {
+
+    def leafAttributes(attrs: Iterable[Attribute]): Iterable[Attribute] =
+      val allParents = attrs.flatMap(_.parent)
+      attrs.filterNot(a => allParents.exists(_ == a))
+
     events.flatMap { eventA =>
+      val leavesA = leafAttributes(eventA.attributes)
+
       otherEvents.flatMap { eventB =>
-        val commonAttributes = eventA.attributes.filter { attrA =>
-          eventB.attributes.exists(attrB =>
-            attrB.name == attrA.name && attrB.value == attrA.value
+        val leavesB = leafAttributes(eventB.attributes)
+
+        val commonLeaves = leavesA.filter { attrA =>
+          leavesB.exists(attrB =>
+            attrA.name == attrB.name && attrA.value == attrB.value
           )
         }
 
-        if (commonAttributes.nonEmpty) {
+        if (commonLeaves.nonEmpty) {
           val combinedMeasures: Iterable[M1 | M2] =
             eventA.measures ++ eventB.measures
-          Seq(createEvent(commonAttributes, combinedMeasures))
+          Seq(createEvent(commonLeaves, combinedMeasures))
         } else {
           Nil
         }
