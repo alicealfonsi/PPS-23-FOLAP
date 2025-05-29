@@ -105,7 +105,14 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val geoDimension = "geographic" dimension "shop" --> "town"
     val quantity = measure named "quantity" as Int
     val e = event named "sales" having geoDimension and quantity
-
-    generate(e) should endWith(
-      "  case class Sales(quantity: Quantity, geographic: Dimension.GeographicDimension)"
+    val expectedEnding = indent(
+      Seq(
+        "case class Sales(quantity: Quantity, geographic: Dimension.GeographicDimension) extends folap.core.Event[Dimension, Measures]:",
+        "  def dimensions: Iterable[Dimension] = Seq(geographic)",
+        "  def measures: Iterable[Measures] = Seq(quantity)"
+      ).mkString("\n"),
+      2
     )
+    val generated = generate(e)
+
+    generated should endWith(expectedEnding)

@@ -62,18 +62,39 @@ object Codegen:
 
     val measureFields = e.measures
       .map(x => sanitise(x.name))
-      .map(x => s"${{ x.toLowerCase() }}: ${x}")
+      .map(x => (toCamelCase(x), x))
+      .map((name, t) => s"${name}: ${t}")
       .mkString(", ")
 
     val dimensionFields = e.dimensions
       .map(x => sanitise(x.name))
-      .map(x => s"${{ x.toLowerCase() }}: Dimension.${x}Dimension")
+      .map(x => (toCamelCase(x), x))
+      .map((name, t) => s"${name}: Dimension.${t}Dimension")
       .mkString(", ")
 
     val fields = Seq(measureFields, dimensionFields).mkString(", ")
 
+    val allDimensions =
+      e.dimensions
+        .map(x => sanitise(x.name))
+        .map(x => toCamelCase(x))
+        .mkString(", ")
+
+    val allMeasures =
+      e.measures
+        .map(x => sanitise(x.name))
+        .map(x => toCamelCase(x))
+        .mkString(", ")
+
     val event =
-      s"  case class ${name}(${fields})"
+      indent(
+        Seq(
+          s"case class ${name}(${fields}) extends folap.core.Event[Dimension, Measures]:",
+          s"  def dimensions: Iterable[Dimension] = Seq(${allDimensions})",
+          s"  def measures: Iterable[Measures] = Seq(${allMeasures})"
+        ).mkString("\n"),
+        2
+      )
     Seq(
       s"object ${name}:",
       s"${measures}",
