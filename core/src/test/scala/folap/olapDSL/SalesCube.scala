@@ -1,13 +1,14 @@
 package folap.olapDSL
 
-import folap.core.MultidimensionalModel._
+import folap.core.AggregationOp._
 import folap.core.Event
-import folap.olapDSL.QueryDSLBuilder._
+import folap.core.EventConstructor
+import folap.core.MultidimensionalModel._
 import folap.olapDSL.AttributeDSLBuilder._
 import folap.olapDSL.AttributeSeqBuilder._
-import folap.core.EventConstructor
-import folap.core.AggregationOp._
+import folap.olapDSL.QueryDSLBuilder._
 
+import scala.reflect.Selectable.reflectiveSelectable
 
 trait Dimension extends Attribute
 trait DateDimension extends Dimension
@@ -99,12 +100,16 @@ val countryItaly = CountryAttribute(Some(regionEurope), "Italy")
 val cityMilan = CityAttribute(Some(countryItaly), "Milan")
 
 val categoryElectronics = CategoryAttribute(Some(TopAttribute()), "Electronics")
-val subCategorySmartphones = SubCategoryAttribute(Some(categoryElectronics), "Smartphones")
+val subCategorySmartphones =
+  SubCategoryAttribute(Some(categoryElectronics), "Smartphones")
 val productIPhone = ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
-val categoryHomeAppliances = CategoryAttribute(Some(TopAttribute()), "Home Appliances")
-val subCategoryKitchen = SubCategoryAttribute(Some(categoryHomeAppliances), "Kitchen")
+val categoryHomeAppliances =
+  CategoryAttribute(Some(TopAttribute()), "Home Appliances")
+val subCategoryKitchen =
+  SubCategoryAttribute(Some(categoryHomeAppliances), "Kitchen")
 val productBlender = ProductAttribute(Some(subCategoryKitchen), "Blender")
-val subCategoryLaptops = SubCategoryAttribute(Some(categoryElectronics), "Laptops")
+val subCategoryLaptops =
+  SubCategoryAttribute(Some(categoryElectronics), "Laptops")
 val productMacbook = ProductAttribute(Some(subCategoryLaptops), "MacBook Air")
 
 val valueQuantity = 10
@@ -119,7 +124,6 @@ val salesEvent1 = SalesEvent(
   revenueAmount
 )
 
-
 val quantity2 = QuantitySold(5)
 val revenue2 = RevenueAmount(250.0)
 val salesEvent2 = SalesEvent(
@@ -129,7 +133,6 @@ val salesEvent2 = SalesEvent(
   quantity2,
   revenue2
 )
-
 
 val quantity3 = QuantitySold(2)
 val revenue3 = RevenueAmount(2400.0)
@@ -141,8 +144,8 @@ val salesEvent3 = SalesEvent(
   revenue3
 )
 
-
-val productIPhone14 = ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
+val productIPhone14 =
+  ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
 val quantity4 = QuantitySold(3)
 val revenue4 = RevenueAmount(3600.0)
 val salesEvent4 = SalesEvent(
@@ -157,46 +160,80 @@ val Sales: QueryDSL[Dimension, Measures] = QueryDSL(events)
 
 case class SatisfactionScore(value: Double) extends Measure:
   type T = Double
-  override def fromRaw(value: Double): SatisfactionScore = SatisfactionScore(value)
-
+  override def fromRaw(value: Double): SatisfactionScore = SatisfactionScore(
+    value
+  )
 
 type CareMeasures = SatisfactionScore
 
 case class CustomerCareEvent(
     location: GeographicDimension,
-    date: DateDimension,
     satisfaction: SatisfactionScore
 ) extends Event[Dimension, CareMeasures]:
-  def dimensions: Iterable[Dimension] = Seq(location, date)
+  def dimensions: Iterable[Dimension] = Seq(location)
   def measures: Iterable[CareMeasures] = Seq(satisfaction)
 
 val careEvent1 = CustomerCareEvent(
   cityBerlin,
-  monthJanuary_2024,
   SatisfactionScore(4.5)
 )
 
 val careEvent2 = CustomerCareEvent(
   cityMilan,
-  monthJanuary_2024,
   SatisfactionScore(3.8)
 )
 case class ResultEvent[A <: Attribute, M <: Measure](
-      override val dimensions: Iterable[A],
-      override val measures: Iterable[M]
-  ) extends Event[A, M]
+    override val dimensions: Iterable[A],
+    override val measures: Iterable[M]
+) extends Event[A, M]
 given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
-    (
-        attributes: Iterable[A],
-        measures: Iterable[M]
-    ) => ResultEvent(attributes, measures)
+  (
+      attributes: Iterable[A],
+      measures: Iterable[M]
+  ) => ResultEvent(attributes, measures)
 
 val careEvents = Iterable(careEvent1, careEvent2)
 val CustomerCare = QueryDSL(careEvents)
 
-@main def main(): Unit = 
- val filtered = Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
- //println(filtered.cube)
- val union = Sales union CustomerCare
- println(union.cube)
- val rollUp = Max of Sales //by ("City" and "Product")
+def extractAllDimensions(attr: Attribute): List[Attribute] =
+  attr match
+    case TopAttribute() => Nil
+    case a =>
+      a.parent.toList.flatMap(extractAllDimensions) ++ List(a)
+
+def visualizeCube(events: Iterable[Event[_, _]]): Unit =
+  println("===== Cube Result =====")
+  events.zipWithIndex.foreach { (event, idx) =>
+    println(s"--- Event ${idx + 1} ---")
+
+    val expanded = event.dimensions
+      .flatMap(extractAllDimensions)
+      .filter(_ != TopAttribute())
+
+    val seen = scala.collection.mutable.LinkedHashSet[String]()
+    val orderedDims = expanded.filter { a =>
+      val key = a.getClass.getName + ":" + a.value
+      if seen.contains(key) then false else { seen += key; true }
+    }
+
+    orderedDims.foreach { attr =>
+      val name = attr.getClass.getSimpleName.replace("Attribute", "")
+      println(s"$name: ${attr.value}")
+    }
+
+    event.measures.foreach { m =>
+      val name = m.getClass.getSimpleName
+      val value = m.asInstanceOf[{ def value: Any }].value
+      println(s"$name: $value")
+    }
+
+    println()
+  }
+
+@main def main(): Unit =
+  Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
+
+  // visualizeCube(filtered.cube)
+  val union = Sales union CustomerCare
+  visualizeCube(union.cube)
+  Max of Sales
