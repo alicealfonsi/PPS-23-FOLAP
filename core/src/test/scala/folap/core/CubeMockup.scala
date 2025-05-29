@@ -2,62 +2,66 @@ package folap.core
 
 import MultidimensionalModel._
 
-trait SalesAttribute extends Attribute
-trait GeographicAttribute extends SalesAttribute
-object GeographicAttribute:
-  case class TopAttribute() extends GeographicAttribute:
-    override val parent: Option[Attribute] = None
-    override val value: String = ""
-  case class Nation(
-      override val parent: Option[TopAttribute],
-      override val value: String
-  ) extends GeographicAttribute
-  case class City(
-      override val parent: Option[Nation],
-      override val value: String
-  ) extends GeographicAttribute
-  case class Shop(override val parent: Option[City], override val value: String)
-      extends GeographicAttribute
+object CubeMockup:
+  trait SalesAttribute extends Attribute
+  trait GeographicAttribute extends SalesAttribute
+  object GeographicAttribute:
+    case class TopAttribute() extends GeographicAttribute:
+      override val parent: Option[Attribute] = None
+      override val value: String = ""
+    case class Nation(
+        override val parent: Option[TopAttribute],
+        override val value: String
+    ) extends GeographicAttribute
+    case class City(
+        override val parent: Option[Nation],
+        override val value: String
+    ) extends GeographicAttribute
+    case class Shop(
+        override val parent: Option[City],
+        override val value: String
+    ) extends GeographicAttribute
 
-type SalesMeasure = QuantitySold
+  type SalesMeasure = QuantitySold
 
-case class QuantitySold(override val value: Int) extends Measure:
-  type T = Int
-  override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
+  case class QuantitySold(override val value: Int) extends Measure:
+    type T = Int
+    override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
 
-given Computable[QuantitySold] with
-  extension (q: QuantitySold)
-    def sum(other: QuantitySold): QuantitySold = QuantitySold(
-      q.value + other.value
-    )
-
-case class SalesEvent(where: GeographicAttribute, quantity: QuantitySold)
-    extends Event[SalesAttribute, SalesMeasure]:
-  override def dimensions: Iterable[SalesAttribute] = List(where)
-  override def measures: Iterable[SalesMeasure] = List(quantity)
-
-given Operational[SalesEvent] with
-  extension (e: SalesEvent)
-    def sum(other: SalesEvent)(groupByAttribute: String): SalesEvent =
-      SalesEvent(
-        e.where.upToLevel(groupByAttribute),
-        e.quantity sum other.quantity
+  given Computable[QuantitySold] with
+    extension (q: QuantitySold)
+      def sum(other: QuantitySold): QuantitySold = QuantitySold(
+        q.value + other.value
       )
 
-import GeographicAttribute.*
-val nation12: Nation = Nation(Some(GeographicAttribute.TopAttribute()), "Italy")
-val city1: City = City(Some(nation12), "Bologna")
-val shop1: Shop = Shop(Some(city1), "Shop1")
-val quantitySoldValue1: Int = 1
-val quantitySold1: QuantitySold = QuantitySold(quantitySoldValue1)
-val city23: City = City(Some(nation12), "Cesena")
-val shop2: Shop = Shop(Some(city23), "Shop2")
-val quantitySoldValue2: Int = 2
-val quantitySold2: QuantitySold = QuantitySold(quantitySoldValue2)
-val shop3: Shop = Shop(Some(city23), "Shop3")
-val quantitySoldValue3: Int = 7
-val quantitySold3: QuantitySold = QuantitySold(quantitySoldValue3)
+  case class SalesEvent(where: GeographicAttribute, quantity: QuantitySold)
+      extends Event[SalesAttribute, SalesMeasure]:
+    override def dimensions: Iterable[SalesAttribute] = List(where)
+    override def measures: Iterable[SalesMeasure] = List(quantity)
 
-val event1: SalesEvent = SalesEvent(shop1, quantitySold1)
-val event2: SalesEvent = SalesEvent(shop2, quantitySold2)
-val event3: SalesEvent = SalesEvent(shop3, quantitySold3)
+  given Operational[SalesEvent] with
+    extension (e: SalesEvent)
+      def sum(other: SalesEvent)(groupByAttribute: String): SalesEvent =
+        SalesEvent(
+          e.where.upToLevel(groupByAttribute),
+          e.quantity sum other.quantity
+        )
+
+  import GeographicAttribute.*
+  val nation12: Nation =
+    Nation(Some(GeographicAttribute.TopAttribute()), "Italy")
+  val city1: City = City(Some(nation12), "Bologna")
+  val shop1: Shop = Shop(Some(city1), "Shop1")
+  val quantitySoldValue1: Int = 1
+  val quantitySold1: QuantitySold = QuantitySold(quantitySoldValue1)
+  val city23: City = City(Some(nation12), "Cesena")
+  val shop2: Shop = Shop(Some(city23), "Shop2")
+  val quantitySoldValue2: Int = 2
+  val quantitySold2: QuantitySold = QuantitySold(quantitySoldValue2)
+  val shop3: Shop = Shop(Some(city23), "Shop3")
+  val quantitySoldValue3: Int = 7
+  val quantitySold3: QuantitySold = QuantitySold(quantitySoldValue3)
+
+  val event1: SalesEvent = SalesEvent(shop1, quantitySold1)
+  val event2: SalesEvent = SalesEvent(shop2, quantitySold2)
+  val event3: SalesEvent = SalesEvent(shop3, quantitySold3)

@@ -1,8 +1,9 @@
 package folap.core
 
-import folap.core.GeographicAttribute._
+import folap.core.CubeMockup._
 import org.scalatest._
 
+import GeographicAttribute._
 import flatspec._
 import matchers._
 
