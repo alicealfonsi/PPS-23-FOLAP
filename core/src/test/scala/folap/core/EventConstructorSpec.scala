@@ -8,20 +8,20 @@ import matchers._
 class EventConstructorSpec extends AnyFlatSpec with should.Matchers:
   private case class ResultEvent(
       override val dimensions: Iterable[ExampleEventAttribute],
-      override val measures: Iterable[ExampleEventMeasure[_]]
-  ) extends Event[ExampleEventAttribute, ExampleEventMeasure[_]]
+      override val measures: Iterable[ExampleEventMeasure]
+  ) extends Event[ExampleEventAttribute, ExampleEventMeasure]
   val dimensions: Iterable[ExampleEventAttribute] = List(
     DimensionExampleAttribute(None, "")
   )
   val measureValue: Int = 10
-  val measures: Iterable[ExampleEventMeasure[_]] = List(
+  val measures: Iterable[ExampleEventMeasure] = List(
     QuantityExampleMeasure(measureValue)
   )
   private def createEvent
-      : EventConstructor[ExampleEventAttribute, ExampleEventMeasure[_]] =
+      : EventConstructor[ExampleEventAttribute, ExampleEventMeasure] =
     (
         dimensions: Iterable[ExampleEventAttribute],
-        measures: Iterable[ExampleEventMeasure[_]]
+        measures: Iterable[ExampleEventMeasure]
     ) => ResultEvent(dimensions, measures)
 
   "An EventConstructor" should "create an Event with given dimensions and measures" in:
