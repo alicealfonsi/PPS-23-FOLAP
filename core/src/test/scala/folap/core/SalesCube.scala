@@ -7,7 +7,6 @@ trait GeographicDimension extends Dimension
 trait ProductDimension extends Dimension
 type Measures = RevenueAmount | QuantitySold
 
-
 private case class YearAttribute(
     override val parent: Option[TopAttribute],
     override val value: String
@@ -54,22 +53,22 @@ private case class ProductAttribute(
 ) extends ProductDimension
 
 case class RevenueAmount(val value: Double) extends Measure:
-    type T = Double
-    override def fromRaw(value: Double): RevenueAmount = RevenueAmount(value)
+  type T = Double
+  override def fromRaw(value: Double): RevenueAmount = RevenueAmount(value)
 
 case class QuantitySold(val value: Int) extends Measure:
-    type T = Int
-    override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
+  type T = Int
+  override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
 
-case class SalesEvent(  
-    geographic: GeographicDimension, 
+case class SalesEvent(
+    geographic: GeographicDimension,
     product: ProductDimension,
-    date: DateDimension ,
+    date: DateDimension,
     quantity: QuantitySold,
-    revenue: RevenueAmount    
-  ) extends Event[Dimension, Measures]:
-      def dimensions: Iterable[Dimension] = Seq(geographic, product, date)
-      def measures: Iterable[Measures] = Seq(revenue, quantity)
+    revenue: RevenueAmount
+) extends Event[Dimension, Measures]:
+  def dimensions: Iterable[Dimension] = Seq(geographic, product, date)
+  def measures: Iterable[Measures] = Seq(revenue, quantity)
 
 val year2023 = YearAttribute(Some(TopAttribute()), "2023")
 val quarterQ1 = QuarterAttribute(Some(year2023), "Q1")
@@ -78,12 +77,16 @@ val regionNorthAmerica = RegionAttribute(Some(TopAttribute()), "North America")
 val countryUSA = CountryAttribute(Some(regionNorthAmerica), "USA")
 val cityNewYork = CityAttribute(Some(countryUSA), "New York")
 val categoryElectronics = CategoryAttribute(Some(TopAttribute()), "Electronics")
-val subCategorySmartphones = SubCategoryAttribute(Some(categoryElectronics), "Smartphones")
+val subCategorySmartphones =
+  SubCategoryAttribute(Some(categoryElectronics), "Smartphones")
 val productIPhone = ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
 val value = 10
 val quantitySold = QuantitySold(value)
 val revenueAmount = RevenueAmount(12000.0)
-val event1 = SalesEvent(cityNewYork, productIPhone, monthJanuary, quantitySold, revenueAmount)
-
-
-
+val event1 = SalesEvent(
+  cityNewYork,
+  productIPhone,
+  monthJanuary,
+  quantitySold,
+  revenueAmount
+)
