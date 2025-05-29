@@ -23,7 +23,7 @@ case class QueryWithOp[A <: EventAttribute, M <: EventMeasure[_]](
   */
 object QueryDSLBuilder:
 
-  /** Extension methods for RollupOp.
+  /** Extension methods for AggregationOp.
     */
   extension [A <: EventAttribute, M <: EventMeasure[_]](op: AggregationOp)
     /** Wraps a cube and a roll-up operation into a QueryWithOp.
