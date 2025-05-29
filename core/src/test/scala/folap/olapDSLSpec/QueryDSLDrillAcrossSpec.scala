@@ -1,7 +1,6 @@
 package folap.core.olapDSLSpec
 import folap.core.MultidimensionalModel._
 import folap.core._
-import folap.core.olapDSL.QueryDSL._
 import folap.core.olapDSL.QueryDSLBuilder.union
 import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
