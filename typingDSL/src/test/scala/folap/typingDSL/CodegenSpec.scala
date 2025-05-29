@@ -22,18 +22,33 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate a case class for each attribute" in:
     val attributes = "town" --> "province" --> "region" --> "country"
     val geoMeasure = "geo" dimension attributes
-    generate(geoMeasure) should endWith(
-      "  case class Town(value: String, province: Province) extends GeoDimension:\n    def parent = Some(province)\n  case class Province(value: String, region: Region) extends GeoDimension:\n    def parent = Some(region)\n  case class Region(value: String, country: Country) extends GeoDimension:\n    def parent = Some(country)\n  case class Country(value: String) extends GeoDimension:\n    def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
+    val expectedEnding = indent(
+      Seq(
+        "case class Town(value: String, province: Province) extends GeoDimension:",
+        "  def parent = Some(province)",
+        "case class Province(value: String, region: Region) extends GeoDimension:",
+        "  def parent = Some(region)",
+        "case class Region(value: String, country: Country) extends GeoDimension:",
+        "  def parent = Some(country)",
+        "case class Country(value: String) extends GeoDimension:",
+        "  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
+      ).mkString("\n"),
+      2
     )
+    val generated = generate(geoMeasure)
+    generated should endWith(expectedEnding)
 
   it should "generate a single attribute without parent for single level hierarchies" in:
     val geoDimension = "geo" dimension "shop"
-    generate(geoDimension) should endWith(
-      indent(
-        "case class Shop(value: String) extends GeoDimension:\n  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())",
-        2
-      )
+    val expectedEnding = indent(
+      Seq(
+        "case class Shop(value: String) extends GeoDimension:",
+        "  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
+      ).mkString("\n"),
+      2
     )
+    val generated = generate(geoDimension)
+    generated should endWith(expectedEnding)
 
   it should "generate the correct type string for ints" in:
     val t: MeasureType = Int
