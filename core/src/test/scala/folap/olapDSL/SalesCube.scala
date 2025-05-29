@@ -1,5 +1,13 @@
-package folap.core
-import MultidimensionalModel._
+package folap.olapDSL
+
+import folap.core.MultidimensionalModel._
+import folap.core.Event
+import folap.olapDSL.QueryDSLBuilder._
+import folap.olapDSL.AttributeDSLBuilder._
+import folap.olapDSL.AttributeSeqBuilder._
+import folap.core.EventConstructor
+import folap.core.AggregationOp._
+
 
 trait Dimension extends Attribute
 trait DateDimension extends Dimension
@@ -60,7 +68,7 @@ case class QuantitySold(val value: Int) extends Measure:
   type T = Int
   override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
 
-case class Sales(
+case class SalesEvent(
     geographic: GeographicDimension,
     product: ProductDimension,
     date: DateDimension,
@@ -68,7 +76,7 @@ case class Sales(
     revenue: RevenueAmount
 ) extends Event[Dimension, Measures]:
   def dimensions: Iterable[Dimension] = Seq(geographic, product, date)
-  def measures: Iterable[Measures] = Seq(revenue, quantity)
+  def measures: Iterable[Measures] = Seq(quantity, revenue)
 
 val year2023 = YearAttribute(Some(TopAttribute()), "2023")
 val year2024 = YearAttribute(Some(TopAttribute()), "2024")
@@ -103,7 +111,7 @@ val valueQuantity = 10
 val quantitySold = QuantitySold(valueQuantity)
 val valueRevenue = 12000.0
 val revenueAmount = RevenueAmount(valueRevenue)
-val event1 = Sales(
+val salesEvent1 = SalesEvent(
   cityNewYork,
   productIPhone,
   monthJanuary_2023,
@@ -114,7 +122,7 @@ val event1 = Sales(
 
 val quantity2 = QuantitySold(5)
 val revenue2 = RevenueAmount(250.0)
-val event2 = Sales(
+val salesEvent2 = SalesEvent(
   cityBerlin,
   productBlender,
   monthApril_2023,
@@ -125,7 +133,7 @@ val event2 = Sales(
 
 val quantity3 = QuantitySold(2)
 val revenue3 = RevenueAmount(2400.0)
-val event3 = Sales(
+val salesEvent3 = SalesEvent(
   cityMilan,
   productMacbook,
   monthJanuary_2024,
@@ -137,18 +145,58 @@ val event3 = Sales(
 val productIPhone14 = ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
 val quantity4 = QuantitySold(3)
 val revenue4 = RevenueAmount(3600.0)
-val event4 = Sales(
+val salesEvent4 = SalesEvent(
   cityBerlin,
   productIPhone14,
   monthJanuary_2024,
   quantity4,
   revenue4
 )
+val events = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
+val Sales: QueryDSL[Dimension, Measures] = QueryDSL(events)
 
-val filtered = Sales where (
-  ("Product" is "iPhone 14") and
-  ("Month" is "January") and
-  ("Year" is "2024") and
-  ("Region" is "Europe")
+case class SatisfactionScore(value: Double) extends Measure:
+  type T = Double
+  override def fromRaw(value: Double): SatisfactionScore = SatisfactionScore(value)
+
+
+type CareMeasures = SatisfactionScore
+
+case class CustomerCareEvent(
+    location: GeographicDimension,
+    date: DateDimension,
+    satisfaction: SatisfactionScore
+) extends Event[Dimension, CareMeasures]:
+  def dimensions: Iterable[Dimension] = Seq(location, date)
+  def measures: Iterable[CareMeasures] = Seq(satisfaction)
+
+val careEvent1 = CustomerCareEvent(
+  cityBerlin,
+  monthJanuary_2024,
+  SatisfactionScore(4.5)
 )
 
+val careEvent2 = CustomerCareEvent(
+  cityMilan,
+  monthJanuary_2024,
+  SatisfactionScore(3.8)
+)
+case class ResultEvent[A <: Attribute, M <: Measure](
+      override val dimensions: Iterable[A],
+      override val measures: Iterable[M]
+  ) extends Event[A, M]
+given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
+    (
+        attributes: Iterable[A],
+        measures: Iterable[M]
+    ) => ResultEvent(attributes, measures)
+
+val careEvents = Iterable(careEvent1, careEvent2)
+val CustomerCare = QueryDSL(careEvents)
+
+@main def main(): Unit = 
+ val filtered = Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
+ //println(filtered.cube)
+ val union = Sales union CustomerCare
+ println(union.cube)
+ val rollUp = Max of Sales //by ("City" and "Product")
