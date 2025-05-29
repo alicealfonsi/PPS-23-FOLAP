@@ -100,6 +100,7 @@ object Codegen:
     Seq(
       s"object ${name}:",
       s"${measures}",
+      indent("type Measures = " + allMeasureTypes.mkString(" | "), 2),
       "  sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute",
       "  object Dimension:",
       s"${dimensions}",

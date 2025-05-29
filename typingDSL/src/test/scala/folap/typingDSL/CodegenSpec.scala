@@ -86,6 +86,16 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val e = event named "test" having m
     generate(e) should include(indent(generate(m), 2))
 
+  it should "generate a union type for all measures contained in the event" in:
+    val m1 = measure named "test" as Int
+    val m2 = measure named "another test" as Double
+    val e = event named "test" having m1 and m2
+
+    val expected = "type Measures = Test | AnotherTest"
+    val generated = generate(e)
+
+    generated should include(expected)
+
   it should "generate an object containing the event dimensions" in:
     val geoDimension = "geo" dimension "shop"
     val e = event named "test" having geoDimension
