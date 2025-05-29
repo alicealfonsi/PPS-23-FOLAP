@@ -20,7 +20,7 @@ trait Event[A <: Attribute, M <: Measure]:
     *   the list of Event attributes
     */
   def attributes: Iterable[A] =
-    dimensions.flatMap(_.hierarchy.asInstanceOf[Iterable[A]])
+    dimensions.flatMap(_.hierarchy)
 
   /** The measures that quantify the Event
     * @return
@@ -32,4 +32,4 @@ trait Event[A <: Attribute, M <: Measure]:
     * @return
     *   the hierarchies top attribute
     */
-  def topAttribute: A = dimensions.head.hierarchy.asInstanceOf[Iterable[A]].last
+  def topAttribute: A = dimensions.head.hierarchy.last

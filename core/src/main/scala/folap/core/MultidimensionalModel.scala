@@ -28,25 +28,6 @@ object MultidimensionalModel:
       */
     def parent: Option[Attribute]
 
-    /** The hierarchy rooted in this Attribute
-      * @return
-      *   the list of attributes in the hierarchy in ascending order of
-      *   aggregation
-      */
-    def hierarchy: Iterable[Attribute] =
-      @tailrec
-      def recursiveHierarchy(
-          attribute: Attribute,
-          acc: Iterable[Attribute]
-      ): Iterable[Attribute] = attribute.parent match
-        case None => acc
-        case Some(p) =>
-          recursiveHierarchy(
-            p,
-            acc ++ List(p)
-          )
-      recursiveHierarchy(this, List(this))
-
     /** Indicates whether this Attribute is "equal to" the other Attribute
       * @param other
       *   the Attribute with which to compare
@@ -56,6 +37,34 @@ object MultidimensionalModel:
       */
     def equals(other: Attribute): Boolean =
       name == other.name && value == other.value
+
+  object Attribute:
+    extension [A <: Attribute](a: A)
+      /** The hierarchy rooted in this Attribute
+        * @return
+        *   the list of attributes in the hierarchy in ascending order of
+        *   aggregation
+        */
+      def hierarchy: Iterable[A] =
+        @tailrec
+        def recursiveHierarchy(attribute: A, acc: Iterable[A]): Iterable[A] =
+          attribute.parent match
+            case None => acc
+            case Some(p) =>
+              recursiveHierarchy(
+                p.asInstanceOf[A],
+                acc ++ List(p.asInstanceOf[A])
+              )
+        recursiveHierarchy(a, List(a))
+
+      /** Finds the Attribute in the hierarchy whose name matches the specified
+        * one
+        * @param level
+        *   the name of the Attribute to match
+        * @return
+        *   the Attribute whose name matches the one specified
+        */
+      def upToLevel(level: String): A = hierarchy.find(_.name == level).get
 
   /** The top Attribute in the hierarchy
     */
