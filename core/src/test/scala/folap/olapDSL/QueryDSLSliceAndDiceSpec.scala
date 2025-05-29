@@ -1,11 +1,11 @@
-package folap.core.olapDSLSpec
+package folap.olapDSL
 
 import folap.core.MultidimensionalModel._
 import folap.core._
-import folap.core.olapDSL.AttributeDSLBuilder._
-import folap.core.olapDSL.AttributeSeqBuilder._
-import folap.core.olapDSL.QueryDSLBuilder._
-import folap.core.olapDSL._
+import folap.olapDSL.AttributeDSLBuilder._
+import folap.olapDSL.AttributeSeqBuilder._
+import folap.olapDSL.QueryDSLBuilder._
+import folap.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
