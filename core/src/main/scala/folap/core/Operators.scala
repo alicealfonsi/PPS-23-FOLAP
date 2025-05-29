@@ -86,7 +86,6 @@ object Operators:
 
     }
 
-
   def rollUp[A <: Attribute, M <: Measure](
       events: Iterable[Event[A, M]]
   )(
@@ -144,4 +143,3 @@ object Operators:
           _.name == name
         )
       )
-

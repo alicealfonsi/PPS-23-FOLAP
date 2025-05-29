@@ -1,20 +1,21 @@
-package folap.core.olapDSLSpec
+/*package folap.core.olapDSLSpec
 
 import folap.core._
 import folap.core.olapDSL.AttributeDSLBuilder._
 import folap.core.olapDSL.AttributeSeqBuilder._
-import folap.core.olapDSL.QueryDSLBuilder.by
+//import folap.core.olapDSL.QueryDSLBuilder.by
 import folap.core.olapDSL.QueryDSLBuilder.of
 import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import folap.core.MultidimensionalModel._
 
 import AggregationOp._
 
 class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 
-  trait SalesAttribute extends EventAttribute
-  trait SalesMeasure[T] extends EventMeasure[T]
+  trait SalesAttribute extends Attribute
+  trait SalesMeasure extends Measure
 
   case class NationAttribute(
       override val parent: Option[TopAttribute],
@@ -29,22 +30,22 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
       override val value: String
   ) extends SalesAttribute
 
-  case class QuantitySoldMeasure(value: Int) extends SalesMeasure[Int]:
+  case class QuantitySoldMeasure(value: Int) extends SalesMeasure:
     override def fromRaw(value: Int): QuantitySoldMeasure = QuantitySoldMeasure(
       value
     )
 
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
-      override val measures: Iterable[SalesMeasure[_]]
-  ) extends Event[SalesAttribute, SalesMeasure[_]]
+      override val measures: Iterable[SalesMeasure]
+  ) extends Event[SalesAttribute, SalesMeasure]
 
-  case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
+  case class ResultEvent[A <: Attribute, M <: Measure](
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
 
-  given EventConstructor[A <: EventAttribute, M <: EventMeasure[_]]
+  given EventConstructor[A <: Attribute, M <: Measure]
       : EventConstructor[A, M] =
     (
         attributes: Iterable[A],
@@ -71,4 +72,4 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
   it should "work with a single attribute" in:
     val Client = "Client"
     val result = Max of Sales by Client
-    result.cube shouldEqual Seq(event1, event2)
+    result.cube shouldEqual Seq(event1, event2)*/

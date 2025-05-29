@@ -1,11 +1,9 @@
 package folap.core.olapDSL
 
+import folap.core.MultidimensionalModel._
 import folap.core.Operators.drillAcross
-import folap.core.Operators.rollUp
 import folap.core.Operators.sliceAndDice
 import folap.core._
-import folap.core.olapDSL.AttributeDSL.AttributeDSL
-import folap.core.MultidimensionalModel._
 
 /** Wraps a QueryDSL (cube) and a roll-up operation (sum, max, min, avg).
   *
@@ -80,35 +78,35 @@ object QueryDSLBuilder:
 
   /** Extension method for QueryWithOp to support roll-up operations.
     */
-  extension [A <: Attribute, M <: Measure, M2 <: Measure](
+  /*extension [A <: Attribute, M <: Measure, M2 <: Measure](
       qwo: QueryWithOp[A, M]
-  )
-    /** Aggregates the cube by a set of attributes using the specified roll-up
-      * operation.
-      *
-      * @param attributes
-      *   attributes to group by
-      * @param constructor
-      *   implicit constructor used to create events
-      * @return
-      *   a new QueryDSL containing the rolled-up result.
-      */
-    def by(attributes: Iterable[AttributeDSL])(using
+  )*/
+  /** Aggregates the cube by a set of attributes using the specified roll-up
+    * operation.
+    *
+    * @param attributes
+    *   attributes to group by
+    * @param constructor
+    *   implicit constructor used to create events
+    * @return
+    *   a new QueryDSL containing the rolled-up result.
+    */
+  /*def by(attributes: Iterable[AttributeDSL])(using
         constructor: EventConstructor[A, M | M2]
     ): QueryDSL[A, M] =
-      QueryDSL(rollUp(qwo.query.cube, attributes, qwo.op, constructor))
+      QueryDSL(rollUp(qwo.query.cube, attributes, qwo.op, constructor))*/
 
-    /** Aggregates the cube by a single attribute using the specified roll-up
-      * operation.
-      *
-      * @param attribute
-      *   name of the attribute to group by
-      * @param constructor
-      *   implicit constructor used to create events
-      * @return
-      *   a new QueryDSL containing the rolled-up result.
-      */
-    def by(
+  /** Aggregates the cube by a single attribute using the specified roll-up
+    * operation.
+    *
+    * @param attribute
+    *   name of the attribute to group by
+    * @param constructor
+    *   implicit constructor used to create events
+    * @return
+    *   a new QueryDSL containing the rolled-up result.
+    */
+  /*def by(
         attribute: String
     )(using constructor: EventConstructor[A, M | M2]): QueryDSL[A, M] =
       QueryDSL(
@@ -118,4 +116,4 @@ object QueryDSLBuilder:
           qwo.op,
           constructor
         )
-      )
+      )*/

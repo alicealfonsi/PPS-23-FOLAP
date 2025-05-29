@@ -1,4 +1,5 @@
 package folap.typingDSL
+
 /** A class representing a DSL Measure.
   *
   * Each Measure is defined by a name and a typology that restricts it to one of

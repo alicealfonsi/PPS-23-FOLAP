@@ -1,4 +1,5 @@
 package folap.core.olapDSLSpec
+import folap.core.MultidimensionalModel._
 import folap.core._
 import folap.core.olapDSL.QueryDSL._
 import folap.core.olapDSL.QueryDSLBuilder.union
@@ -6,12 +7,12 @@ import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
-  trait SalesAttribute extends EventAttribute
-  trait ProfitsAttribute extends EventAttribute
-  trait CustomerAttribute extends EventAttribute
-  trait SalesMeasure[T] extends EventMeasure[T]
-  trait ProfitsMeasure[T] extends EventMeasure[T]
-  trait CustomerMeasure[T] extends EventMeasure[T]
+  trait SalesAttribute extends Attribute
+  trait ProfitsAttribute extends Attribute
+  trait CustomerAttribute extends Attribute
+  trait SalesMeasure extends Measure
+  trait ProfitsMeasure extends Measure
+  trait CustomerMeasure extends Measure
   case class NationAttribute(
       override val value: String,
       override val parent: Option[TopAttribute]
@@ -32,33 +33,34 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
       override val parent: Option[TopAttribute]
   ) extends CustomerAttribute
 
-  case class TotSalesMeasure[T: Numeric](val value: T) extends SalesMeasure[T]:
-    override def fromRaw(value: T): TotSalesMeasure[T] = TotSalesMeasure(value)
-  case class TotProfitsMeasure[T: Numeric](val value: T)
-      extends ProfitsMeasure[T]:
-    override def fromRaw(value: T): TotProfitsMeasure[T] = TotProfitsMeasure(
+  case class TotSalesMeasure(val value: Int) extends SalesMeasure:
+    type T = Int
+    override def fromRaw(value: Int): TotSalesMeasure = TotSalesMeasure(value)
+  case class TotProfitsMeasure(val value: Int) extends ProfitsMeasure:
+    type T = Int
+    override def fromRaw(value: Int): TotProfitsMeasure = TotProfitsMeasure(
       value
     )
-  case class TotPurchasesMeasure[T: Numeric](val value: T)
-      extends CustomerMeasure[T]:
-    override def fromRaw(value: T): TotPurchasesMeasure[T] =
+  case class TotPurchasesMeasure(val value: Int) extends CustomerMeasure:
+    type T = Int
+    override def fromRaw(value: Int): TotPurchasesMeasure =
       TotPurchasesMeasure(
         value
       )
 
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
-      override val measures: Iterable[SalesMeasure[_]]
-  ) extends Event[SalesAttribute, SalesMeasure[_]]
+      override val measures: Iterable[SalesMeasure]
+  ) extends Event[SalesAttribute, SalesMeasure]
   case class ProfitsEvent(
       override val dimensions: Iterable[ProfitsAttribute],
-      override val measures: Iterable[ProfitsMeasure[_]]
-  ) extends Event[ProfitsAttribute, ProfitsMeasure[_]]
+      override val measures: Iterable[ProfitsMeasure]
+  ) extends Event[ProfitsAttribute, ProfitsMeasure]
   case class CustomerEvent(
       override val dimensions: Iterable[CustomerAttribute],
-      override val measures: Iterable[CustomerMeasure[_]]
-  ) extends Event[CustomerAttribute, CustomerMeasure[_]]
-  case class ResultEvent[A <: EventAttribute, M <: EventMeasure[_]](
+      override val measures: Iterable[CustomerMeasure]
+  ) extends Event[CustomerAttribute, CustomerMeasure]
+  case class ResultEvent[A <: Attribute, M <: Measure](
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
@@ -99,8 +101,7 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
   val eventsB = Seq(event4, event5)
   val eventsC = Seq(event6)
 
-  given EventConstructor[A <: EventAttribute, M <: EventMeasure[_]]
-      : EventConstructor[A, M] =
+  given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]

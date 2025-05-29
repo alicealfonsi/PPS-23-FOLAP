@@ -1,4 +1,5 @@
 package folap.typingDSL
+
 /** A domain-specific language (DSL) for creating Measures
   *
   * This DSL enforces type safety by accepting only specific numeric types
@@ -42,7 +43,6 @@ object MeasureDSL:
     * @return
     *   a Measure instance with the specified name and typology
     */
-   extension (m: MeasureName)
+  extension (m: MeasureName)
     infix def as(typology: MeasureType): Measure =
       Measure(m.name, typology)
-
