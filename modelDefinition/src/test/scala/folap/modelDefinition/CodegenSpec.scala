@@ -31,6 +31,8 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
         "case class Region(value: String, country: Country) extends GeoDimension:",
         "  def parent = Some(country)",
         "case class Country(value: String) extends GeoDimension:",
+        "  def parent = Some(Top())",
+        "case class Top() extends GeoDimension:",
         "  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
       ).mkString("\n"),
       2
@@ -43,6 +45,8 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val expectedEnding = indent(
       Seq(
         "case class Shop(value: String) extends GeoDimension:",
+        "  def parent = Some(Top())",
+        "case class Top() extends GeoDimension:",
         "  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
       ).mkString("\n"),
       2

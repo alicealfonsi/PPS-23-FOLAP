@@ -23,7 +23,12 @@ object Codegen:
       .mkString("\n")
     val lastLevelName = sanitise(dimension.attributes.last)
     val lastLevel = indent(
-      s"case class ${lastLevelName}(value: String) extends ${dimensionName}:\n  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())",
+      Seq(
+        s"case class ${lastLevelName}(value: String) extends ${dimensionName}:",
+        "  def parent = Some(Top())",
+        s"case class Top() extends ${dimensionName}:",
+        "  def parent = Some(folap.core.MultidimensionalModel.TopAttribute())"
+      ).mkString("\n"),
       2
     )
 
