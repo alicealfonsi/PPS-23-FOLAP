@@ -6,6 +6,8 @@ import folap.core.olapDSL.AttributeSeqBuilder._
 import folap.core.olapDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import folap.core.olapDSL.AttributeDSL.AttributeDSL
+
 
 class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
 
@@ -35,6 +37,6 @@ class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
     val Year = "Year"
     val attributes = Region and Year
     attributes shouldEqual Seq(
-      AttributeDSL(Region, ""),
-      AttributeDSL(Year, "")
+      AttributeDSL(Region),
+      AttributeDSL(Year)
     )

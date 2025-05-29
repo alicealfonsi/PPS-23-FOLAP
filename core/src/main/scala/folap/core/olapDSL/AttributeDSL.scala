@@ -2,50 +2,59 @@ package folap.core.olapDSL
 
 import folap.core.EventAttribute
 
-/** A concrete implementation of EventAttribute used to define attributes in the
-  * OLAP DSL.
+/** Companion object providing factory methods to create attribute DSL instances
+  * for use in the OLAP DSL.
   *
-  * The parent is always set to None, as hierarchical relationships between
-  * attributes are not relevant in this context.
-  *
-  * @param name
-  *   name of the attribute (automatically suffixed with "Attribute")
-  * @param value
-  *   value associated with the attribute
-  */
-case class AttributeDSL private (
-    override val name: String,
-    override val value: String
-) extends EventAttribute:
-  override val parent: Option[EventAttribute] = None
-
-/** Companion object providing factory methods to create AttributeDSL instances.
-  *
-  * Adds the suffix "Attribute" to the provided base name automatically.
+  * All attribute names are automatically suffixed with "Attribute".
   */
 object AttributeDSL:
-  /** Creates an AttributeDSL with a specified name and value.
+  trait AttributeDSL extends EventAttribute
+  /** A concrete implementation of EventAttribute used to define attributes with a value.
+    *
+    * @param name
+    *   name of the attribute
+    * @param value
+    *   value of the attribute
+    */
+  case class AttributeDSLWithValue (
+      override val name: String,
+      override val value: String
+  ) extends AttributeDSL:
+    override val parent: Option[EventAttribute] = None
+
+  /** A concrete implementation of EventAttribute used to define attributes without a value.
+    *
+    * The value is always the empty string.
+    *
+    * @param name
+    *   name of the attribute
+    */
+  case class AttributeDSLWithoutValue (
+      override val name: String,
+      override val value: String = ""
+  ) extends AttributeDSL:
+    override val parent: Option[EventAttribute] = None
+
+  /** Creates an AttributeDSLWithValue with the specified base name and value.
     *
     * @param baseName
     *   base name of the attribute; "Attribute" is appended automatically
     * @param value
     *   value of the attribute
     * @return
-    *   attributeDSL instance.
+    *   an instance of AttributeDSLWithValue
     */
-  def apply(baseName: String, value: String): AttributeDSL =
-    new AttributeDSL(baseName + "Attribute", value)
+  def apply(baseName: String, value: String): AttributeDSLWithValue =
+    AttributeDSLWithValue(baseName + "Attribute", value)
 
-  /** Creates an AttributeDSL with a specified name and an empty string as
-    * value.
+  /** Creates an AttributeDSLWithoutValue with the specified base name.
     *
     * @param baseName
     *   base name of the attribute; "Attribute" is appended automatically
     * @return
-    *   an AttributeDSL instance with an empty value.
+    *   an instance of AttributeDSLWithoutValue with empty value
     */
-  def apply(baseName: String): AttributeDSL =
-    new AttributeDSL(baseName + "Attribute", "")
+  def apply(baseName: String): AttributeDSLWithoutValue =
+    AttributeDSLWithoutValue(baseName + "Attribute")
 
-  def apply(attribute: AttributeDSL, value: String): AttributeDSL =
-    new AttributeDSL(attribute.name, value)
+

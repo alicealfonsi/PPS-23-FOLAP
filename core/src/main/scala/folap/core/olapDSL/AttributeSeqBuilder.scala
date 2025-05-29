@@ -1,4 +1,6 @@
 package folap.core.olapDSL
+import folap.core.olapDSL.AttributeDSL.AttributeDSL
+
 
 /** Provides a DSL for building sequences of AttributeDSL objects using
   * intuitive and readable syntax with the infix `and` keyword.
