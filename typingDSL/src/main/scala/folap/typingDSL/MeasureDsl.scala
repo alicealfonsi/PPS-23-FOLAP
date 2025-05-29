@@ -1,10 +1,13 @@
 package folap.typingDSL
-
-/** Represents a measure in the DSL.
+/** A class representing a DSL Measure.
+  *
+  * Each Measure is defined by a name and a typology that restricts it to one of
+  * the allowed numeric types defined in MeasureType.
+  *
   * @param name
-  *   name of the measure, expressed as a string
+  *   the name of the measure
+  *
   * @param typology
-  *   type of the measure ("Int", "Double", "Float", "Long"), expressed as a
-  *   string
+  *   the numeric type of the measure (must be one of: Int, Long, Float, Double)
   */
-case class Measure(name: String, typology: String)
+case class Measure(name: String, typology: MeasureType)

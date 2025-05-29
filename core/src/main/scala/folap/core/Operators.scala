@@ -1,5 +1,7 @@
 package folap.core
 
+import MultidimensionalModel._
+
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
   */
@@ -28,10 +30,10 @@ object Operators:
     *   both sets
     */
   def drillAcross[
-      A1 <: EventAttribute,
-      M1 <: EventMeasure[_],
-      A2 <: EventAttribute,
-      M2 <: EventMeasure[_]
+      A1 <: Attribute,
+      M1 <: Measure,
+      A2 <: Attribute,
+      M2 <: Measure
   ](
       events: Iterable[Event[A1, M1]],
       otherEvents: Iterable[Event[A2, M2]],
@@ -71,9 +73,9 @@ object Operators:
     *   events that match all filters
     */
 
-  def sliceAndDice[A <: EventAttribute, M <: EventMeasure[_]](
+  def sliceAndDice[A <: Attribute, M <: Measure](
       events: Iterable[Event[A, M]],
-      filters: Iterable[EventAttribute]
+      filters: Iterable[Attribute]
   ): Iterable[Event[A, M]] =
     events.filter { event =>
       filters.forall { filter =>
@@ -84,10 +86,62 @@ object Operators:
 
     }
 
-  def rollUp[A <: EventAttribute, M <: EventMeasure[_], M2 <: EventMeasure[_]](
-      events: Iterable[Event[A, M]],
-      attributes: Iterable[EventAttribute],
-      op: AggregationOp,
-      createEvent: EventConstructor[A, M | M2]
-  ): Iterable[Event[A, M]] =
-    events
+
+  def rollUp[A <: Attribute, M <: Measure](
+      events: Iterable[Event[A, M]]
+  )(
+      groupBySet: Iterable[String]
+  )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
+    if groupBySet.exists(name => events.matchAttributeByName(name))
+    then
+      val groupByAttributesNames =
+        groupBySet.filter(name => events.matchAttributeByName(name))
+      val groupByMap =
+        events.groupBy(
+          _.findAttributesByNames(groupByAttributesNames).map(_.value)
+        )
+      val groupByDimensions = groupByMap.values.map(
+        _.head.findAttributesByNames(groupByAttributesNames)
+      )
+      val otherDimensions =
+        groupByMap.values.head.head.dimensions
+          .filter(
+            _.hierarchy.forall(a =>
+              groupByAttributesNames.forall(
+                _ != a.name
+              )
+            )
+          )
+          .map(_ => events.head.topAttribute)
+      groupByDimensions
+        .map(d => d ++ otherDimensions)
+        .map(dimensions => createEvent(dimensions, List()))
+    else events
+  extension [A <: Attribute, M <: Measure](event: Event[A, M])
+    /** Finds the attributes of this event whose name is equal to one of the
+      * specified names
+      * @param names
+      *   the names of the attributes to be found
+      * @return
+      *   a new iterable collection containing the found attributes
+      */
+    private def findAttributesByNames(names: Iterable[String]): Iterable[A] =
+      names.flatMap(name => event.attributes.filter(_.name == name))
+  extension [A <: Attribute, M <: Measure](
+      events: Iterable[Event[A, M]]
+  )
+    /** Tests whether all these events have an attribute whose name is equal to
+      * the specified name
+      * @param name
+      *   the attribute name to be matched
+      * @return
+      *   true if all these events have an attribute whose name matches the
+      *   specified name; false otherwise
+      */
+    private def matchAttributeByName(name: String): Boolean =
+      events.forall(e =>
+        e.attributes.exists(
+          _.name == name
+        )
+      )
+

@@ -1,48 +1,48 @@
 package folap.typingDSL
-
-/** A domain-specific language (DSL) to simplify the creation of a measure using
-  * a natural, readable syntax*
+/** A domain-specific language (DSL) for creating Measures
+  *
+  * This DSL enforces type safety by accepting only specific numeric types
+  * defined in MeasureType.
   */
 object MeasureDSL:
-
-  /** Wrapper class representing the name of a measure
+  /** Intermediate representation of a measure's name.
     *
     * @param name
-    *   name of the measure
+    *   the name assigned to the measure
     */
   class MeasureName(val name: String)
 
-  /** Helper class used to begin a measure definition in the DSL.
+  /** Class that provides the `named` infix method to specify a measure name.
     */
   case class MeasureWord():
-    /** Starts the measure definition by specifying its name using the keyword
-      * "measure named"
+    /** Associates a name to a Measure.
       *
       * @param name
-      *   The name of the measure
+      *   the name of the measure
       * @return
-      *   A MeasureName instance
+      *   a MeasureName wrapping the provided name
       */
-    def named(name: String): MeasureName = MeasureName(name)
+    infix def named(name: String): MeasureName = MeasureName(name)
 
-  /** Entry point to the DSL for creating measures.
+  /** DSL initializer.
+    *
+    * Starts the construction of a Measure using the
+    * `measure named "..." as Type` syntax.
     *
     * @return
-    *   a MeasureWord instance that allows chaining with `named`
+    *   a MeasureWord instance
     */
-  def measure: MeasureWord = MeasureWord()
+  def measure = MeasureWord()
 
-  /** Extension method that completes a measure definition by specifying its
-    * type using the infix `as` keyword.
+  /** Extension method to complete a Measure definition by assigning its
+    * typology.
     *
-    * @param m
-    *   A MeasureName instance
     * @param typology
-    *   The type of the measure as a string ("Int", "Double", "Float", "Long")
+    *   the static type of the measure (e.g., Int, Long, Float, Double)
     * @return
-    *   An Option containing the Measure if the type is recognized; otherwise
-    *   None.
+    *   a Measure instance with the specified name and typology
     */
-  extension (m: MeasureName)
-    infix def as(typology: String): Option[Measure] =
-      TypeFromString.resolve(m.name, typology)
+   extension (m: MeasureName)
+    infix def as(typology: MeasureType): Measure =
+      Measure(m.name, typology)
+
