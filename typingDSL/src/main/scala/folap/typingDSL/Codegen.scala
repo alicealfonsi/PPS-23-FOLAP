@@ -80,11 +80,13 @@ object Codegen:
         .map(x => toCamelCase(x))
         .mkString(", ")
 
-    val allMeasures =
+    val allMeasureTypes =
       e.measures
         .map(x => sanitise(x.name))
-        .map(x => toCamelCase(x))
-        .mkString(", ")
+
+    val allMeasures = allMeasureTypes
+      .map(x => toCamelCase(x))
+      .mkString(", ")
 
     val event =
       indent(
