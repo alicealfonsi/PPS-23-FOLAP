@@ -17,3 +17,6 @@ object DSLUtils:
       .split("\n")
       .map(" ".repeat(spaces) + _)
       .mkString("\n")
+
+  def toCamelCase(input: String): String =
+    Seq(input.head.toLower, input.tail).mkString("")

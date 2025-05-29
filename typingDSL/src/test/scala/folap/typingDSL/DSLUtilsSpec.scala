@@ -28,3 +28,8 @@ class DSLUtilsSpec extends AnyFlatSpec with should.Matchers:
     val input = "test\n    data"
     val indented = DSLUtils.indent(input, 4)
     indented shouldEqual "    test\n        data"
+
+  it should "transform a string from PascalCase to camelCase" in:
+    val pascalCase = "TestString"
+    val camelCase = DSLUtils.toCamelCase(pascalCase)
+    camelCase shouldEqual "testString"
