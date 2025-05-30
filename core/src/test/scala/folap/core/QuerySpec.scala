@@ -4,7 +4,7 @@ import org.scalatest._
 
 import flatspec._
 import matchers._
-import folap.core.MultidimensionalModel.Attribute
+import TestAttribute._
 
 class QuerySpec
     extends AnyFlatSpec
@@ -19,6 +19,12 @@ class QuerySpec
     groupBySet shouldBe empty
 
   "Performing a roll up" should "add the attributes to the group by set" in:
-    val attribute = TestAttribute.Day
+    val attribute = Day
     val resultingQuery = q.rollUp(attribute)
     resultingQuery.groupBySet should contain(attribute)
+
+  it should "leave the group-by set unchanged when the attribute is lower than the attributes already in the group-by set" in:
+    val resultingQuery = q
+      .rollUp(Day)
+      .rollUp(Hour)
+    resultingQuery.groupBySet shouldBe Set(Day)
