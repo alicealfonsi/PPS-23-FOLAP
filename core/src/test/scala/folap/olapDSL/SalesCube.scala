@@ -9,8 +9,6 @@ import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSLBuilder._
 import folap.utils.visualize
 
-
-
 trait Dimension extends Attribute
 trait DateDimension extends Dimension
 trait GeographicDimension extends Dimension
@@ -196,12 +194,10 @@ given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
 val careEvents = Iterable(careEvent1, careEvent2)
 val CustomerCare = QueryDSL(careEvents)
 
-
-
 @main def main(): Unit =
   val filtered = Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
   visualize(filtered.cube)
   // visualizeCube(filtered.cube)
   val union = Sales union CustomerCare
   visualize(union.cube)
-  val aggregation = Max of Sales
+  Max of Sales
