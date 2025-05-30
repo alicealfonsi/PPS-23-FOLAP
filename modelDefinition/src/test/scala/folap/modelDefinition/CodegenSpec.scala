@@ -77,7 +77,10 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
       "case class Test(value: Int) extends folap.core.MultidimensionalModel.Measure:",
       "  type T = Int",
       "  override def fromRaw(value: Int): folap.core.MultidimensionalModel.Measure =",
-      "    Test(value)"
+      "    Test(value)",
+      "given folap.core.Computable[Test] with",
+      "  extension (m: Test)",
+      "    def sum(other: Test) = Test(m.value + other.value)"
     ).mkString("\n")
     val generated = generate(m)
     generated shouldEqual expected
