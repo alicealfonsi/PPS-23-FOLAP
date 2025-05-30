@@ -2,7 +2,9 @@ package folap.core
 
 import MultidimensionalModel._
 
-/** Performs a drill across operation that combines events from two cubes when
+
+object Operators:
+  /** Performs a drill across operation that combines events from two cubes when
   * they share at least one common leaf attribute.
   *
   * The resulting events will include:
@@ -29,7 +31,6 @@ import MultidimensionalModel._
   *   matching events sharing one or more common leaf attributes
   */
 
-object Operators:
 
   def drillAcross[
       A1 <: Attribute,
