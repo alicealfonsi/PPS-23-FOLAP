@@ -61,9 +61,12 @@ object CubeMockup:
 
   given Operational[SalesEvent] with
     extension (e: SalesEvent)
-      def sum(other: SalesEvent)(groupByAttribute: String): SalesEvent =
+      def sum(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         SalesEvent(
-          e.where.upToLevel(groupByAttribute),
+          e.where.upToLevel(
+            e.where.searchCorrespondingAttributeName(groupBySet)
+          ),
+          e.what.upToLevel(e.what.searchCorrespondingAttributeName(groupBySet)),
           e.quantity sum other.quantity
         )
 

@@ -8,9 +8,10 @@ import flatspec._
 import matchers._
 
 class OperationalSpec extends AnyFlatSpec with should.Matchers:
-  "Operational[SalesEvent]" should "return the correct sum of SalesEvent" in:
-    event1.sum(event2)("Nation") shouldEqual SalesEvent(
+  "Operational[SalesEvent]" should "return the correct sum of SalesEvents based on the specified group-by set" in:
+    event1.sum(event2)(List("Nation", "Category")) shouldEqual SalesEvent(
       Nation(Some(TopAttribute()), "Italy"),
+      Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
       QuantitySold(3)
     )
 
