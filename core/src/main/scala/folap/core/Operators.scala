@@ -116,20 +116,3 @@ object Operators:
         .map(d => d ++ otherDimensions)
         .map(dimensions => createEvent(dimensions, List()))
     else events
-  extension [A <: Attribute, M <: Measure](
-      events: Iterable[Event[A, M]]
-  )
-    /** Tests whether all these events have an attribute whose name is equal to
-      * the specified name
-      * @param name
-      *   the attribute name to be matched
-      * @return
-      *   true if all these events have an attribute whose name matches the
-      *   specified name; false otherwise
-      */
-    private def matchAttributeByName(name: String): Boolean =
-      events.forall(e =>
-        e.attributes.exists(
-          _.name == name
-        )
-      )
