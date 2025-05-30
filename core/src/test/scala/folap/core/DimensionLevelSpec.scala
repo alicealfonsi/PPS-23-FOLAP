@@ -27,3 +27,7 @@ class DimensionLevelSpec
   it should "know whether another attribute is its parent (directly above)" in:
     val a = Day
     a.isChildrenOf(Month) shouldBe true
+
+  it should "know whether another attribute is its parent" in:
+    val a = Day
+    a.isChildrenOf(Quarter) shouldBe true
