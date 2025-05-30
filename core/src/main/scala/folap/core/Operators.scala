@@ -37,20 +37,29 @@ object Operators:
   ](
       events: Iterable[Event[A1, M1]],
       otherEvents: Iterable[Event[A2, M2]],
-      createEvent: EventConstructor[A1, M1 | M2]
-  ): Iterable[Event[A1, M1 | M2]] = {
+      createEvent: EventConstructor[Attribute, M1 | M2]
+  ): Iterable[Event[Attribute, M1 | M2]] = {
+
+    def leafAttributes(attrs: Iterable[Attribute]): Iterable[Attribute] =
+      val allParents = attrs.flatMap(_.parent)
+      attrs.filterNot(a => allParents.exists(_ == a))
+
     events.flatMap { eventA =>
+      val leavesA = leafAttributes(eventA.attributes)
+
       otherEvents.flatMap { eventB =>
-        val commonAttributes = eventA.attributes.filter { attrA =>
-          eventB.attributes.exists(attrB =>
-            attrB.name == attrA.name && attrB.value == attrA.value
+        val leavesB = leafAttributes(eventB.attributes)
+
+        val commonLeaves = leavesA.filter { attrA =>
+          leavesB.exists(attrB =>
+            attrA.name == attrB.name && attrA.value == attrB.value
           )
         }
 
-        if (commonAttributes.nonEmpty) {
+        if (commonLeaves.nonEmpty) {
           val combinedMeasures: Iterable[M1 | M2] =
             eventA.measures ++ eventB.measures
-          Seq(createEvent(commonAttributes, combinedMeasures))
+          Seq(createEvent(commonLeaves, combinedMeasures))
         } else {
           Nil
         }
