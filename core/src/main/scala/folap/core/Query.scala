@@ -15,6 +15,7 @@ final case class Query[A <: DimensionLevel](groupBySet: Set[A]):
   def drillDown(attribute: A) =
     findParentAndChildren(attribute) match
       case (_, Some(children)) => this
+      case (Some(parent), _)   => Query(groupBySet - parent + attribute)
       case (None, None)        => Query(groupBySet + attribute)
 
 object Query {

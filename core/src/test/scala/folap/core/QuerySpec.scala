@@ -46,3 +46,10 @@ class QuerySpec
       .drillDown(Day)
 
     resultingQuery.groupBySet shouldBe Set(Hour)
+
+  it should "replace the attribute already in the group-by when aggregating further down" in:
+    val resultingQuery = q
+      .drillDown(Day)
+      .drillDown(Hour)
+
+    resultingQuery.groupBySet shouldBe Set(Hour)
