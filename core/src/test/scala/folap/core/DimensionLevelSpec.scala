@@ -4,7 +4,7 @@ import org.scalatest._
 
 import flatspec._
 import matchers._
-import folap.core.TestAttribute.{Month, Quarter}
+import TestAttribute._
 
 private enum TestAttribute extends DimensionLevel:
   case Hour
@@ -24,3 +24,6 @@ class DimensionLevelSpec
   "A DimensionLevel" should "have an optional parent" in:
     val a: DimensionLevel = Month
     a.parent should be equals (Some(Quarter))
+  it should "know whether another attribute is its parent (directly above)" in:
+    val a = Day
+    a.isChildrenOf(Month) shouldBe true
