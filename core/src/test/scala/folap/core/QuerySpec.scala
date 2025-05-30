@@ -28,3 +28,9 @@ class QuerySpec
       .rollUp(Day)
       .rollUp(Hour)
     resultingQuery.groupBySet shouldBe Set(Day)
+
+  it should "replace the attribute when requesting aggregation by parent" in:
+    val resultingQuery = q
+      .rollUp(Hour)
+      .rollUp(Day)
+    resultingQuery.groupBySet shouldBe Set(Day)
