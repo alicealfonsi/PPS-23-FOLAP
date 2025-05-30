@@ -146,3 +146,23 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val generated = generate(e)
 
     generated should include(expected)
+
+  it should "generate Event givens" in:
+    val geoDimension = "geographic" dimension "shop"
+    val quantity = measure named "test" as Int
+    val e = event named "example" having geoDimension and quantity
+    val expectedEnding = indent(
+      Seq(
+        "given folap.core.Operational[Dimension, Measures, Example] with",
+        "  extension (e: Example)",
+        "    override def aggregate(groupBySet: Iterable[String]): Example =",
+        "      Example(e.test, e.geographic.upToLevel(e.geographic.searchCorrespondingAttributeName(groupBySet)))",
+        "    override def sum(other: Example)(groupBySet: Iterable[String]): Example =",
+        "      val aggregated = e.aggregate(groupBySet)",
+        "      Example(aggregated.test.sum(other.test), aggregated.geographic)"
+      ).mkString("\n"),
+      2
+    )
+    val generated = generate(e)
+
+    generated should include(expectedEnding)

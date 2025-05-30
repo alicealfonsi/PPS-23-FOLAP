@@ -58,6 +58,44 @@ object Codegen:
       s"    def sum(other: ${name}) = ${name}(m.value + other.value)"
     ).mkString("\n")
 
+  private def generateGiven(e: Event): String =
+    val name = sanitise(e.name)
+    val measures = e.measures
+      .map(_.name)
+      .map(sanitise(_))
+      .map(toCamelCase(_))
+
+    val dimensions = e.dimensions
+      .map(_.name)
+      .map(sanitise(_))
+      .map(toCamelCase(_))
+
+    val sourceMeasures = measures.map(x => s"e.${x}")
+    val mappedDimensions = dimensions
+      .map(x =>
+        s"e.${x}.upToLevel(e.${x}.searchCorrespondingAttributeName(groupBySet))"
+      )
+
+    val summedMeasures = measures.map(x => s"aggregated.${x}.sum(other.${x})")
+    val aggregatedDimensions = dimensions.map(x => s"aggregated.${x}")
+
+    Seq(
+      s"given folap.core.Operational[Dimension, Measures, ${name}] with",
+      s"  extension (e: ${name})",
+      s"    override def aggregate(groupBySet: Iterable[String]): ${name} =",
+      indent(
+        (sourceMeasures ++ mappedDimensions)
+          .mkString(s"${name}(", ", ", ")"),
+        6
+      ),
+      s"    override def sum(other: ${name})(groupBySet: Iterable[String]): ${name} =",
+      "      val aggregated = e.aggregate(groupBySet)",
+      indent(
+        (summedMeasures ++ aggregatedDimensions)
+          .mkString(s"${name}(", ", ", ")"),
+        6
+      )
+    ).mkString("\n")
   def generate(e: Event): String =
     val name = sanitise(e.name)
     val measures = e.measures
@@ -120,5 +158,6 @@ object Codegen:
       "  object Dimension:",
       s"${dimensions}",
       indent(s"type Attributes = ${allDimensionAttributes}", 4),
-      s"${event}"
+      s"${event}",
+      indent(generateGiven(e), 2)
     ).mkString("\n")
