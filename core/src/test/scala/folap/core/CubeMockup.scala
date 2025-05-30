@@ -5,6 +5,7 @@ import MultidimensionalModel._
 object CubeMockup:
   trait SalesAttribute extends Attribute
   trait GeographicAttribute extends SalesAttribute
+  trait ProductAttribute extends SalesAttribute
   object GeographicAttribute:
     case class TopAttribute() extends GeographicAttribute:
       override val parent: Option[Attribute] = None
@@ -21,6 +22,22 @@ object CubeMockup:
         override val parent: Option[City],
         override val value: String
     ) extends GeographicAttribute
+  object ProductAttribute:
+    case class TopAttribute() extends ProductAttribute:
+      override val parent: Option[Attribute] = None
+      override val value: String = ""
+    case class Category(
+        override val parent: Option[TopAttribute],
+        override val value: String
+    ) extends ProductAttribute
+    case class Type(
+        override val parent: Option[Category],
+        override val value: String
+    ) extends ProductAttribute
+    case class Product(
+        override val parent: Option[Type],
+        override val value: String
+    ) extends ProductAttribute
 
   type SalesMeasure = QuantitySold
 
@@ -34,9 +51,12 @@ object CubeMockup:
         q.value + other.value
       )
 
-  case class SalesEvent(where: GeographicAttribute, quantity: QuantitySold)
-      extends Event[SalesAttribute, SalesMeasure]:
-    override def dimensions: Iterable[SalesAttribute] = List(where)
+  case class SalesEvent(
+      where: GeographicAttribute,
+      what: ProductAttribute,
+      quantity: QuantitySold
+  ) extends Event[SalesAttribute, SalesMeasure]:
+    override def dimensions: Iterable[SalesAttribute] = List(where, what)
     override def measures: Iterable[SalesMeasure] = List(quantity)
 
   given Operational[SalesEvent] with
