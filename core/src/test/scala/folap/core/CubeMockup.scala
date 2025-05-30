@@ -69,22 +69,36 @@ object CubeMockup:
           e.what.upToLevel(e.what.searchCorrespondingAttributeName(groupBySet)),
           e.quantity sum other.quantity
         )
+      def aggregate(groupBySet: Iterable[String]): SalesEvent =
+        SalesEvent(
+          e.where.upToLevel(
+            e.where.searchCorrespondingAttributeName(groupBySet)
+          ),
+          e.what.upToLevel(e.what.searchCorrespondingAttributeName(groupBySet)),
+          e.quantity
+        )
 
-  import GeographicAttribute.*
-  val nation12: Nation =
+  import GeographicAttribute.*, ProductAttribute.*
+  val nation123: Nation =
     Nation(Some(GeographicAttribute.TopAttribute()), "Italy")
-  val city1: City = City(Some(nation12), "Bologna")
+  val city1: City = City(Some(nation123), "Bologna")
   val shop1: Shop = Shop(Some(city1), "Shop1")
+  val category123: Category =
+    Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+  val type12: Type = Type(Some(category123), "Drink")
+  val product12: ProductAttribute = Product(Some(type12), "Drink1")
   val quantitySoldValue1: Int = 1
   val quantitySold1: QuantitySold = QuantitySold(quantitySoldValue1)
-  val city23: City = City(Some(nation12), "Cesena")
+  val city23: City = City(Some(nation123), "Cesena")
   val shop2: Shop = Shop(Some(city23), "Shop2")
   val quantitySoldValue2: Int = 2
   val quantitySold2: QuantitySold = QuantitySold(quantitySoldValue2)
   val shop3: Shop = Shop(Some(city23), "Shop3")
+  val type3: Type = Type(Some(category123), "Food")
+  val product3: ProductAttribute = Product(Some(type3), "Food1")
   val quantitySoldValue3: Int = 7
   val quantitySold3: QuantitySold = QuantitySold(quantitySoldValue3)
 
-  val event1: SalesEvent = SalesEvent(shop1, quantitySold1)
-  val event2: SalesEvent = SalesEvent(shop2, quantitySold2)
-  val event3: SalesEvent = SalesEvent(shop3, quantitySold3)
+  val event1: SalesEvent = SalesEvent(shop1, product12, quantitySold1)
+  val event2: SalesEvent = SalesEvent(shop2, product12, quantitySold2)
+  val event3: SalesEvent = SalesEvent(shop3, product3, quantitySold3)

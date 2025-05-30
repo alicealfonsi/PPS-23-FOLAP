@@ -42,5 +42,4 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
     ) shouldEqual "City"
 
   it should "move up the hierarchy to the specified level" in:
-    import CubeMockup.*, GeographicAttribute.*
-    shop1.upToLevel("City") shouldEqual City(Some(nation12), "Bologna")
+    shop.upToLevel("City") shouldEqual City(Some(nation123), "Bologna")
