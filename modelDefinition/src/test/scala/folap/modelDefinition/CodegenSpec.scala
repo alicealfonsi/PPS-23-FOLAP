@@ -41,7 +41,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val generated = generate(geoMeasure)
     generated should endWith(expectedEnding)
 
-  it should "generate a single attribute without parent for single level hierarchies" in:
+  it should "generate a single attribute with a top attribute as a parent for single level hierarchies" in:
     val geoDimension = "geo" dimension "shop"
     val expectedEnding = indent(
       Seq(
