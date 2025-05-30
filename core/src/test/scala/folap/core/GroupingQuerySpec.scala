@@ -6,13 +6,13 @@ import flatspec._
 import matchers._
 import TestAttribute._
 
-class QuerySpec
+class GroupingQuerySpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
-  var q: Query[TestAttribute] = Query.create()
+  var q: GroupingQuery[TestAttribute] = GroupingQuery.create()
 
-  override protected def beforeEach(): Unit = q = Query.create()
+  override protected def beforeEach(): Unit = q = GroupingQuery.create()
 
   "A query" should "start with an empty group-by set" in:
     val groupBySet: Set[_] = q.groupBySet
