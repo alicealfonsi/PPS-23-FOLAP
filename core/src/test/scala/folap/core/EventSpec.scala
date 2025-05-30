@@ -50,3 +50,6 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
       QuantityExampleMeasure(10),
       RevenueExampleMeasure(17.5)
     )
+
+  it should "return its attributes given their names" in:
+    event.findAttributesByNames(List("DimensionExampleAttribute"))
