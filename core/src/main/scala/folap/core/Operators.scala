@@ -86,33 +86,23 @@ object Operators:
 
     }
 
-  def rollUp[A <: Attribute, M <: Measure](
-      events: Iterable[Event[A, M]]
-  )(
-      groupBySet: Iterable[String]
-  )(createEvent: EventConstructor[A, M]): Iterable[Event[A, M]] =
-    if groupBySet.exists(name => events.matchAttributeByName(name))
-    then
-      val groupByAttributesNames =
-        groupBySet.filter(name => events.matchAttributeByName(name))
+  import Cube.*
+  import AggregationStrategies.*, AggregationOperator.*
+  def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
+      events: Iterable[E]
+  )(groupBySet: Iterable[String])(aggregationOperator: AggregationOperator)(
+      using operational: Operational[A, M, E]
+  ): Iterable[E] =
+    if groupBySet.exists(name => events.matchAttributeByName(name)) then
       val groupByMap =
         events.groupBy(
-          _.findAttributesByNames(groupByAttributesNames).map(_.value)
+          _.findAttributesByNames(groupBySet).map(_.value)
         )
-      val groupByDimensions = groupByMap.values.map(
-        _.head.findAttributesByNames(groupByAttributesNames)
+      groupByMap.values.map(events =>
+        aggregationOperator match
+          case Sum => events.aggregateBySum(groupBySet)
+          case Avg => ???
+          case Min => ???
+          case Max => ???
       )
-      val otherDimensions =
-        groupByMap.values.head.head.dimensions
-          .filter(
-            _.hierarchy.forall(a =>
-              groupByAttributesNames.forall(
-                _ != a.name
-              )
-            )
-          )
-          .map(_ => events.head.topAttribute)
-      groupByDimensions
-        .map(d => d ++ otherDimensions)
-        .map(dimensions => createEvent(dimensions, List()))
     else events
