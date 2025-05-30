@@ -39,3 +39,10 @@ class QuerySpec
     val attribute = Day
     val resultingQuery = q.drillDown(attribute)
     resultingQuery.groupBySet should contain(attribute)
+
+  it should "leave the group-by set unchanged when the attribute in the group-by set is lower than the requested attribute" in:
+    val resultingQuery = q
+      .drillDown(Hour)
+      .drillDown(Day)
+
+    resultingQuery.groupBySet shouldBe Set(Hour)
