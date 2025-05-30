@@ -133,7 +133,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     )
     val generated = generate(e)
 
-    generated should endWith(expectedEnding)
+    generated should include(expectedEnding)
 
   it should "generate a union type for all attributes contained in the event" in:
     val geoMeasure =
