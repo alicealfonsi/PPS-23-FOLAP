@@ -28,12 +28,6 @@ trait Event[A <: Attribute, M <: Measure]:
     */
   def measures: Iterable[M]
 
-  /** Returns the top attribute in the hierarchies of this event
-    * @return
-    *   the hierarchies top attribute
-    */
-  def topAttribute: A = dimensions.head.hierarchy.last
-
 object Event:
   extension [A <: Attribute, M <: Measure](event: Event[A, M])
     /** Finds the attributes of this Event whose name is equal to one of the
