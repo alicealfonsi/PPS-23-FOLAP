@@ -57,6 +57,29 @@ object MultidimensionalModel:
               )
         recursiveHierarchy(a, List(a))
 
+      /** Searches the Attribute name in the hierarchy that matches one of the
+        * specified names
+        * @param names
+        *   names to search a match with
+        * @return
+        *   the name of the Attribute that matches if this Attribute exists;
+        *   otherwise TopAttribute
+        */
+      def searchCorrespondingAttributeName(names: Iterable[String]): String =
+        @tailrec
+        def searchInTheHierarchy(
+            namesToMatch: Iterable[String],
+            attribute: A
+        ): String =
+          if namesToMatch.isEmpty then "TopAttribute"
+          else
+            a.hierarchy.find(
+              _.name == namesToMatch.head
+            ) match
+              case Some(attr) => attr.name
+              case None => searchInTheHierarchy(namesToMatch.tail, attribute)
+        searchInTheHierarchy(names, a)
+
       /** Finds the Attribute in the hierarchy whose name matches the specified
         * one
         * @param level
