@@ -4,12 +4,13 @@ import org.scalatest._
 
 import flatspec._
 import matchers._
+import folap.core.MultidimensionalModel.Attribute
 
 class QuerySpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
-  var q: Query[String] = Query.create()
+  var q: Query[TestAttribute] = Query.create()
 
   override protected def beforeEach(): Unit = q = Query.create()
 
@@ -18,6 +19,6 @@ class QuerySpec
     groupBySet shouldBe empty
 
   "Performing a roll up" should "add the attributes to the group by set" in:
-    val attribute = "a"
+    val attribute = TestAttribute.Day
     val resultingQuery = q.rollUp(attribute)
     resultingQuery.groupBySet should contain(attribute)
