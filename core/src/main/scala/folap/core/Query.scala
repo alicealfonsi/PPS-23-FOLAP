@@ -10,6 +10,9 @@ final case class Query[A <: DimensionLevel](groupBySet: Set[A]):
       case (_, Some(children)) => Query(groupBySet - children + attribute)
       case (None, None)        => Query(groupBySet + attribute)
 
+  def drillDown(attribute: A) =
+    Query(groupBySet + attribute)
+
 object Query {
   def create[A <: DimensionLevel](): Query[A] =
     Query(Set.empty)

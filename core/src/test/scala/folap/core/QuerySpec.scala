@@ -34,3 +34,8 @@ class QuerySpec
       .rollUp(Hour)
       .rollUp(Day)
     resultingQuery.groupBySet shouldBe Set(Day)
+
+  "Performing a drill down" should "add the attribute to the group-by set" in:
+    val attribute = Day
+    val resultingQuery = q.drillDown(attribute)
+    resultingQuery.groupBySet should contain(attribute)
