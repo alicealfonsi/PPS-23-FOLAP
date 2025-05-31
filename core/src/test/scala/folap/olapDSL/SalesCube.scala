@@ -153,7 +153,7 @@ val salesEvent4 = SalesEvent(
   revenue4
 )
 val events = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
-val Sales: QueryDSL[Dimension, Measures] = QueryDSL(events)
+val Sales = QueryDSL(events)
 
 case class SatisfactionScore(value: Double) extends Measure:
   type T = Double
@@ -180,11 +180,11 @@ case class ResultEvent[A <: Attribute, M <: Measure](
     override val dimensions: Iterable[A],
     override val measures: Iterable[M]
 ) extends Event[A, M]
-given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
+given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]: EventConstructor[A, M, E] =
   (
       attributes: Iterable[A],
       measures: Iterable[M]
-  ) => ResultEvent(attributes, measures)
+  ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
 val careEvents = Iterable(careEvent1, careEvent2)
 val CustomerCare = QueryDSL(careEvents)
