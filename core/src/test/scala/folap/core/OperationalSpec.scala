@@ -81,6 +81,15 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       QuantitySold(3)
     )
 
+  "Operational[SalesEvent]" should "return the correct aggregation by minimum of a SalesEvent based on the specified group-by set" in:
+    List(event3).aggregateByMinimum(
+      List("Nation", "Category")
+    ) shouldEqual SalesEvent(
+      Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+      Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
+      QuantitySold(7)
+    )
+
   "Operational[SalesEvent]" should "return the correct aggregation by minimum of SalesEvents based on the specified group-by set" in:
     List(event1, event2, event3).aggregateByMinimum(
       List("Nation", "Category")
