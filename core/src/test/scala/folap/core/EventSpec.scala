@@ -15,13 +15,11 @@ private case class DimensionExampleAttribute(
 private case class QuantityExampleMeasure(override val value: Int)
     extends ExampleEventMeasure:
   type T = Int
-  override def fromRaw(value: Int): QuantityExampleMeasure =
-    QuantityExampleMeasure(value)
+
 private case class RevenueExampleMeasure(override val value: Double)
     extends ExampleEventMeasure:
   type T = Double
-  override def fromRaw(value: Double): RevenueExampleMeasure =
-    RevenueExampleMeasure(value)
+
 private val valueQ: Int = 10
 private val valueR: Double = 17.5
 private case class ExampleEvent()

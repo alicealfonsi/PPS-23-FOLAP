@@ -43,7 +43,6 @@ object CubeMockup:
 
   case class QuantitySold(override val value: Int) extends Measure:
     type T = Int
-    override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
 
   case class SalesEvent(
       where: GeographicAttribute,
