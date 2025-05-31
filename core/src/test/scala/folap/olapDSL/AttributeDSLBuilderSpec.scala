@@ -13,7 +13,7 @@ class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
     val attribute = Nation is "Italy"
 
     attribute shouldBe a[AttributeDSL]
-    attribute.name shouldEqual "NationAttribute"
+    attribute.name shouldEqual "Nation"
     attribute.value shouldEqual "Italy"
     attribute shouldEqual AttributeDSL(Nation, "Italy")
 
