@@ -102,7 +102,7 @@ object Operators:
         aggregationOperator match
           case Sum => events.aggregateBySum(groupBySet)
           case Avg => events.aggregateByAverage(groupBySet)
-          case Min => ???
+          case Min => events.aggregateByMinimum(groupBySet)
           case Max => ???
       )
     else events
