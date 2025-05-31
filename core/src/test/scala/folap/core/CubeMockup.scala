@@ -50,6 +50,7 @@ object CubeMockup:
       def sum(other: QuantitySold): QuantitySold = QuantitySold(
         q.value + other.value
       )
+      def div(n: Int): QuantitySold = QuantitySold(q.value / n)
 
   case class SalesEvent(
       where: GeographicAttribute,
