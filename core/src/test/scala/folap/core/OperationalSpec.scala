@@ -63,6 +63,15 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
         QuantitySold(7)
       )
 
+  "Operational[SalesEvent]" should "return the correct aggregation by sum of a SalesEvent based on the specified group-by set" in :
+    List(event3).aggregateBySum(
+      List("Nation", "Category")
+    ) shouldEqual SalesEvent(
+      Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+      Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
+      QuantitySold(7)
+    )
+  
   "Operational[SalesEvent]" should "return the correct aggregation by sum of SalesEvents based on the specified group-by set" in:
     List(event1, event2, event3).aggregateBySum(
       List("Nation", "Category")
@@ -70,6 +79,15 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       Nation(Some(TopAttribute()), "Italy"),
       Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
       QuantitySold(10)
+    )
+
+  "Operational[SalesEvent]" should "return the correct aggregation by average of a SalesEvent based on the specified group-by set" in :
+    List(event3).aggregateByAverage(
+      List("Nation", "Category")
+    ) shouldEqual SalesEvent(
+      Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+      Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
+      QuantitySold(7)
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by average of SalesEvents based on the specified group-by set" in:
