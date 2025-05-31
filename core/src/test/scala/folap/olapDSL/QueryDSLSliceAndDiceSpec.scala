@@ -12,11 +12,11 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
 
   trait SalesAttribute extends Attribute
   trait SalesMeasure extends Measure
-  case class NationAttribute(
+  case class Nation(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
-  case class YearAttribute(
+  case class Year(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
@@ -29,25 +29,25 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
   ) extends Event[SalesAttribute, SalesMeasure]
   val event1: SalesEvent = SalesEvent(
     dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
+      Seq(Nation("Italy", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2: SalesEvent = SalesEvent(
     dimensions =
-      Seq(NationAttribute("France", None), YearAttribute("2024", None)),
+      Seq(Nation("France", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3: SalesEvent = SalesEvent(
     dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
+      Seq(Nation("Italy", None), Year("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
   val events: Seq[SalesEvent] = Seq(event1, event2, event3)
 
-  val Sales: QueryDSL[SalesAttribute, SalesMeasure] = QueryDSL(events)
+  val Sales = QueryDSL(events)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
     val Nation = "Nation"
