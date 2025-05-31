@@ -103,6 +103,6 @@ object Operators:
           case Sum => events.aggregateBySum(groupBySet)
           case Avg => events.aggregateByAverage(groupBySet)
           case Min => events.aggregateByMinimum(groupBySet)
-          case Max => ???
+          case Max => events.aggregateByMaximum(groupBySet)
       )
     else events
