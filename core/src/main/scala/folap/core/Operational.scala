@@ -5,6 +5,7 @@ import MultidimensionalModel._
 trait Operational[A <: Attribute, M <: Measure, E <: Event[A, M]]:
   extension (e: E)
     def sum(other: E)(groupBySet: Iterable[String]): E
+    def div(n: Int): E
     def aggregate(groupBySet: Iterable[String]): E
   extension (events: Iterable[E])
     def aggregateBySum(groupBySet: Iterable[String]): E =

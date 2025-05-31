@@ -1,6 +1,7 @@
 package folap.core
 
 import folap.core.CubeMockup.ProductAttribute.Category
+import folap.core.CubeMockup.ProductAttribute.Product
 import folap.core.CubeMockup.ProductAttribute.Type
 import folap.core.CubeMockup._
 import org.scalatest._
@@ -16,6 +17,33 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
       QuantitySold(3)
     )
+
+  "Operational[SalesEvent]" should "return the correct division of a SalesEvent by an integer" in:
+    val n = 3
+    event3 div n shouldEqual
+      SalesEvent(
+        Shop(
+          Some(
+            City(
+              Some(Nation(Some(GeographicAttribute.TopAttribute()), "Italy")),
+              "Cesena"
+            )
+          ),
+          "Shop3"
+        ),
+        Product(
+          Some(
+            Type(
+              Some(
+                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+              ),
+              "Food"
+            )
+          ),
+          "Food1"
+        ),
+        QuantitySold(2)
+      )
 
   "Operational[SalesEvent]" should "return the correct aggregation of a SalesEvent based on the specified group-by set" in:
     event3.aggregate(List("Type", "Nation")) shouldEqual

@@ -69,6 +69,8 @@ object CubeMockup:
           aggregated.what,
           aggregated.quantity sum other.quantity
         )
+      def div(n: Int): SalesEvent =
+        SalesEvent(e.where, e.what, e.quantity div n)
       def aggregate(groupBySet: Iterable[String]): SalesEvent =
         SalesEvent(
           e.where.upToLevel(
