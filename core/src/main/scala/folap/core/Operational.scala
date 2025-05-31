@@ -7,6 +7,7 @@ trait Operational[A <: Attribute, M <: Measure, E <: Event[A, M]]:
     def sum(other: E)(groupBySet: Iterable[String]): E
     def div(n: Int): E
     def min(other: E)(groupBySet: Iterable[String]): E
+    def max(other: E)(groupBySet: Iterable[String]): E
     def aggregate(groupBySet: Iterable[String]): E
   extension (events: Iterable[E])
     def aggregateBySum(groupBySet: Iterable[String]): E =

@@ -52,6 +52,13 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       QuantitySold(1)
     )
 
+  "Operational[SalesEvent]" should "return the correct maximum of SalesEvents based on the specified group-by set" in:
+    event1.max(event2)(List("Nation", "Category")) shouldEqual SalesEvent(
+      Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+      Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
+      QuantitySold(2)
+    )
+
   "Operational[SalesEvent]" should "return the correct aggregation of a SalesEvent based on the specified group-by set" in:
     event3.aggregate(List("Type", "Nation")) shouldEqual
       SalesEvent(
