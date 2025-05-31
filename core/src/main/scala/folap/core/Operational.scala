@@ -20,3 +20,7 @@ trait Operational[A <: Attribute, M <: Measure, E <: Event[A, M]]:
       if events.size == 1 then events.head.aggregate(groupBySet)
       else
         events.tail.foldLeft(events.head)((acc, el) => acc.min(el)(groupBySet))
+    def aggregateByMaximum(groupBySet: Iterable[String]): E =
+      if events.size == 1 then events.head.aggregate(groupBySet)
+      else
+        events.tail.foldLeft(events.head)((acc, el) => acc.max(el)(groupBySet))
