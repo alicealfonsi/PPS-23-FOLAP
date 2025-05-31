@@ -71,6 +71,14 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val t: MeasureType = Double
     generate(t) shouldEqual "Double"
 
+  it should "generate the correct type string for big ints" in:
+    val t: MeasureType = BigInt
+    generate(t) shouldEqual "BigInt"
+
+  it should "generate the correct type string for big decimals" in:
+    val t: MeasureType = BigDecimal
+    generate(t) shouldEqual "BigDecimal"
+
   it should "generate a case class for a measure" in:
     val m = measure named "test" as Int
     val expected = Seq(
