@@ -52,4 +52,27 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
     )
 
   it should "return its attributes given their names" in:
-    event.findAttributesByNames(List("DimensionExampleAttribute"))
+    import CubeMockup.*, GeographicAttribute.*, ProductAttribute.*
+    event1.findAttributesByNames(List("Shop", "Product")) shouldEqual
+      List(
+        Shop(
+          Some(
+            City(
+              Some(Nation(Some(GeographicAttribute.TopAttribute()), "Italy")),
+              "Bologna"
+            )
+          ),
+          "Shop1"
+        ),
+        Product(
+          Some(
+            Type(
+              Some(
+                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+              ),
+              "Drink"
+            )
+          ),
+          "Drink1"
+        )
+      )
