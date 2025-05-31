@@ -70,7 +70,11 @@ object CubeMockup:
         SalesEvent(e.where, e.what, e.quantity div n)
       def min(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
-        SalesEvent(aggregated.where, aggregated.what, QuantitySold(math.min(e.quantity.value, other.quantity.value)))
+        SalesEvent(
+          aggregated.where,
+          aggregated.what,
+          QuantitySold(math.min(e.quantity.value, other.quantity.value))
+        )
       def aggregate(groupBySet: Iterable[String]): SalesEvent =
         SalesEvent(
           e.where.upToLevel(
