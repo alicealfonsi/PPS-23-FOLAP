@@ -5,6 +5,13 @@ import folap.modelDefinition.CodegenUtils.sanitise
 import folap.modelDefinition.CodegenUtils.toCamelCase
 
 object Codegen:
+  /** Generate the Scala code for the given Dimension
+    *
+    * @param dimension
+    *   The dimension to generate
+    * @return
+    *   The generated code
+    */
   def generate(dimension: Dimension): String =
     val dimensionName = s"${{ sanitise(dimension.name) }}Dimension"
     val traitAndObjectHead =
@@ -35,7 +42,7 @@ object Codegen:
 
     s"${traitAndObjectHead}\n${objectBody}\n${lastLevel}"
 
-  def generate(t: MeasureType): String =
+  private def generate(t: MeasureType): String =
     t match
       case Int        => "Int"
       case Long       => "Long"
@@ -44,6 +51,13 @@ object Codegen:
       case BigInt     => "BigInt"
       case BigDecimal => "BigDecimal"
 
+  /** Generate the code for a Measure
+    *
+    * @param m
+    *   the Measure to be generated
+    * @return
+    *   the generated code for the provided Measure
+    */
   def generate(m: Measure): String =
     val name = sanitise(m.name)
     val t = generate(m.typology)
@@ -119,6 +133,13 @@ object Codegen:
       )
     ).mkString("\n")
 
+  /** Generate the code for an Event
+    *
+    * @param e
+    *   the Event to generate
+    * @return
+    *   the generated code for the given Event
+    */
   def generate(e: Event): String =
     val name = sanitise(e.name)
     val measures = e.measures
