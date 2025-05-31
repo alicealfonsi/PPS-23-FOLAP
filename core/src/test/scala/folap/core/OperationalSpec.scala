@@ -61,3 +61,12 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
       QuantitySold(10)
     )
+
+  "Operational[SalesEvent]" should "return the correct aggregation by average of SalesEvents based on the specified group-by set" in:
+    List(event1, event2, event3).aggregateByAverage(
+      List("Nation", "Category")
+    ) shouldEqual SalesEvent(
+      Nation(Some(TopAttribute()), "Italy"),
+      Category(Some(ProductAttribute.TopAttribute()), "Groceries"),
+      QuantitySold(3)
+    )

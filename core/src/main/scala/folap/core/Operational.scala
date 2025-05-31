@@ -12,3 +12,5 @@ trait Operational[A <: Attribute, M <: Measure, E <: Event[A, M]]:
       if events.size == 1 then events.head.aggregate(groupBySet)
       else
         events.tail.foldLeft(events.head)((acc, el) => acc.sum(el)(groupBySet))
+    def aggregateByAverage(groupBySet: Iterable[String]): E =
+      events.aggregateBySum(groupBySet) div events.size
