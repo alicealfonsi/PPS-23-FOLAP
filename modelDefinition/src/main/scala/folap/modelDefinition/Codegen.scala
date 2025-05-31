@@ -77,6 +77,8 @@ object Codegen:
       .map((x, t) => s"${t}(e.${x}.value / n)")
     val minMeasures = measures
       .map((x, t) => s"${t}(aggregated.${x}.value.min(other.${x}.value))")
+    val maxMeasures = measures
+      .map((x, t) => s"${t}(aggregated.${x}.value.max(other.${x}.value))")
     val aggregatedDimensions = dimensions.map(x => s"aggregated.${x}")
 
     Seq(
@@ -105,6 +107,13 @@ object Codegen:
       "      val aggregated = e.aggregate(groupBySet)",
       indent(
         (minMeasures ++ aggregatedDimensions)
+          .mkString(s"${name}(", ", ", ")"),
+        6
+      ),
+      s"    override def max(other: ${name})(groupBySet: Iterable[String]): ${name} =",
+      "      val aggregated = e.aggregate(groupBySet)",
+      indent(
+        (maxMeasures ++ aggregatedDimensions)
           .mkString(s"${name}(", ", ", ")"),
         6
       )

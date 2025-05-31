@@ -168,7 +168,10 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
         "      Example(Test(e.test.value / n), e.geographic)",
         "    override def min(other: Example)(groupBySet: Iterable[String]): Example =",
         "      val aggregated = e.aggregate(groupBySet)",
-        "      Example(Test(aggregated.test.value.min(other.test.value)), aggregated.geographic)"
+        "      Example(Test(aggregated.test.value.min(other.test.value)), aggregated.geographic)",
+        "    override def max(other: Example)(groupBySet: Iterable[String]): Example =",
+        "      val aggregated = e.aggregate(groupBySet)",
+        "      Example(Test(aggregated.test.value.max(other.test.value)), aggregated.geographic)"
       ).mkString("\n"),
       2
     )
