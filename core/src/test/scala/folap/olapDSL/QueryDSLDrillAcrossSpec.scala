@@ -36,7 +36,8 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
     type T = Int
   case class TotProfitsMeasure(override val value: Int) extends ProfitsMeasure:
     type T = Int
-  case class TotPurchasesMeasure(override val value: Int) extends CustomerMeasure:
+  case class TotPurchasesMeasure(override val value: Int)
+      extends CustomerMeasure:
     type T = Int
 
   case class SalesEvent(
@@ -100,7 +101,9 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
 
   val Sales: QueryDSL[SalesAttribute, SalesMeasure] = QueryDSL(eventsA)
   val Profits: QueryDSL[ProfitsAttribute, ProfitsMeasure] = QueryDSL(eventsB)
-  val Customers: QueryDSL[CustomerAttribute, CustomerMeasure] = QueryDSL(eventsC)
+  val Customers: QueryDSL[CustomerAttribute, CustomerMeasure] = QueryDSL(
+    eventsC
+  )
 
   "The DSL union" should "combine events with matching attributes" in:
     val result = Sales union Profits
