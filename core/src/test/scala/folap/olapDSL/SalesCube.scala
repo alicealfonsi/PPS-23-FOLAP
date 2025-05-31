@@ -9,16 +9,19 @@ import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSLBuilder._
 import folap.utils.visualize
 object Sales:
-  case class Revenue(value: Double) extends folap.core.MultidimensionalModel.Measure:
+  case class Revenue(value: Double)
+      extends folap.core.MultidimensionalModel.Measure:
     type T = Double
-  case class Quantity(value: Int) extends folap.core.MultidimensionalModel.Measure:
+  case class Quantity(value: Int)
+      extends folap.core.MultidimensionalModel.Measure:
     type T = Int
   type Measures = Revenue | Quantity
   sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute
   object Dimension:
     sealed trait TemporalDimension extends Dimension
     object TemporalDimension:
-      case class Month(value: String, quarter: Quarter) extends TemporalDimension:
+      case class Month(value: String, quarter: Quarter)
+          extends TemporalDimension:
         def parent = Some(quarter)
       case class Quarter(value: String, year: Year) extends TemporalDimension:
         def parent = Some(year)
@@ -29,9 +32,11 @@ object Sales:
         def value = ""
     sealed trait GeographicDimension extends Dimension
     object GeographicDimension:
-      case class City(value: String, country: Country) extends GeographicDimension:
+      case class City(value: String, country: Country)
+          extends GeographicDimension:
         def parent = Some(country)
-      case class Country(value: String, region: Region) extends GeographicDimension:
+      case class Country(value: String, region: Region)
+          extends GeographicDimension:
         def parent = Some(region)
       case class Region(value: String) extends GeographicDimension:
         def parent = Some(TopAttribute())
@@ -40,43 +45,85 @@ object Sales:
         def value = ""
     sealed trait ProductDimension extends Dimension
     object ProductDimension:
-      case class Product(value: String, subCategory: SubCategory) extends ProductDimension:
+      case class Product(value: String, subCategory: SubCategory)
+          extends ProductDimension:
         def parent = Some(subCategory)
-      case class SubCategory(value: String, category: Category) extends ProductDimension:
+      case class SubCategory(value: String, category: Category)
+          extends ProductDimension:
         def parent = Some(category)
       case class Category(value: String) extends ProductDimension:
         def parent = Some(TopAttribute())
       case class TopAttribute() extends ProductDimension:
         def parent = None
         def value = ""
-    type Attributes = TemporalDimension.Month | TemporalDimension.Quarter | TemporalDimension.Year | GeographicDimension.City | GeographicDimension.Country | GeographicDimension.Region | ProductDimension.Product | ProductDimension.SubCategory | ProductDimension.Category
-  case class Sales(revenue: Revenue, quantity: Quantity, temporal: Dimension.TemporalDimension, geographic: Dimension.GeographicDimension, product: Dimension.ProductDimension) extends folap.core.Event[Dimension, Measures]:
+    type Attributes = TemporalDimension.Month | TemporalDimension.Quarter |
+      TemporalDimension.Year | GeographicDimension.City |
+      GeographicDimension.Country | GeographicDimension.Region |
+      ProductDimension.Product | ProductDimension.SubCategory |
+      ProductDimension.Category
+  case class Sales(
+      revenue: Revenue,
+      quantity: Quantity,
+      temporal: Dimension.TemporalDimension,
+      geographic: Dimension.GeographicDimension,
+      product: Dimension.ProductDimension
+  ) extends folap.core.Event[Dimension, Measures]:
     def dimensions: Iterable[Dimension] = Seq(temporal, geographic, product)
     def measures: Iterable[Measures] = Seq(revenue, quantity)
- 
 
   given folap.core.Operational[Dimension, Measures, Sales] with
     extension (e: Sales)
       override def aggregate(groupBySet: Iterable[String]): Sales =
-        Sales(e.revenue, e.quantity, e.temporal.upToLevel(e.temporal.searchCorrespondingAttributeName(groupBySet)), e.geographic.upToLevel(e.geographic.searchCorrespondingAttributeName(groupBySet)), e.product.upToLevel(e.product.searchCorrespondingAttributeName(groupBySet)))
+        Sales(
+          e.revenue,
+          e.quantity,
+          e.temporal.upToLevel(
+            e.temporal.searchCorrespondingAttributeName(groupBySet)
+          ),
+          e.geographic.upToLevel(
+            e.geographic.searchCorrespondingAttributeName(groupBySet)
+          ),
+          e.product.upToLevel(
+            e.product.searchCorrespondingAttributeName(groupBySet)
+          )
+        )
       override def div(n: Int): Sales =
-        Sales(Revenue(e.revenue.value / n), Quantity(e.quantity.value / n), e.temporal, e.geographic, e.product)
+        Sales(
+          Revenue(e.revenue.value / n),
+          Quantity(e.quantity.value / n),
+          e.temporal,
+          e.geographic,
+          e.product
+        )
       override def min(other: Sales)(groupBySet: Iterable[String]): Sales =
         val aggregated = e.aggregate(groupBySet)
         Sales(
           Revenue(math.min(aggregated.quantity.value, other.quantity.value)),
-          Quantity(math.min(aggregated.quantity.value, other.quantity.value)), 
+          Quantity(math.min(aggregated.quantity.value, other.quantity.value)),
           aggregated.temporal,
           aggregated.geographic,
           aggregated.product
         )
       override def sum(other: Sales)(groupBySet: Iterable[String]): Sales =
         val aggregated = e.aggregate(groupBySet)
-        Sales(Revenue(aggregated.revenue.value + other.revenue.value), Quantity(aggregated.quantity.value + other.quantity.value), aggregated.temporal, aggregated.geographic, aggregated.product)
+        Sales(
+          Revenue(aggregated.revenue.value + other.revenue.value),
+          Quantity(aggregated.quantity.value + other.quantity.value),
+          aggregated.temporal,
+          aggregated.geographic,
+          aggregated.product
+        )
       override def max(other: Sales)(groupBySet: Iterable[String]): Sales =
         val aggregated = e.aggregate(groupBySet)
-        Sales(Revenue(aggregated.revenue.value.max(other.revenue.value)), Quantity(aggregated.quantity.value.max(other.quantity.value)), aggregated.temporal, aggregated.geographic, aggregated.product)
-import Sales._, Dimension._, Dimension.TemporalDimension._, Dimension.GeographicDimension._, Dimension.ProductDimension._, Sales._
+        Sales(
+          Revenue(aggregated.revenue.value.max(other.revenue.value)),
+          Quantity(aggregated.quantity.value.max(other.quantity.value)),
+          aggregated.temporal,
+          aggregated.geographic,
+          aggregated.product
+        )
+import Sales._, Dimension._, Dimension.TemporalDimension._,
+  Dimension.GeographicDimension._, Dimension.ProductDimension._
 val year2023 = Year("2023")
 val year2024 = Year("2024")
 
@@ -120,7 +167,6 @@ val salesEvent1 = Sales.Sales(
   monthJanuary_2023,
   cityNewYork,
   productIPhone
-  
 )
 
 val quantity2 = Quantity(5)
@@ -142,7 +188,6 @@ val salesEvent3 = Sales.Sales(
   cityMilan,
   productMacbook
 )
-
 
 val quantity4 = Quantity(3)
 val revenue4 = Revenue(3600.0)
@@ -181,7 +226,8 @@ case class ResultEvent[A <: Attribute, M <: Measure](
     override val dimensions: Iterable[A],
     override val measures: Iterable[M]
 ) extends Event[A, M]
-given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]: EventConstructor[A, M, E] =
+given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
+    : EventConstructor[A, M, E] =
   (
       attributes: Iterable[A],
       measures: Iterable[M]
@@ -191,11 +237,9 @@ val careEvents = Iterable(careEvent1, careEvent2)
 val CustomerCare = QueryDSL(careEvents)
 
 @main def main(): Unit =
-  //visualize(SalesCube.cube)
-  val attr = "City" is "Berlin"
   val filtered = SalesCube where ("City" is "Berlin" and ("Month" is "January"))
-  //visualize(filtered.cube)
+  visualize(filtered.cube)
   val union = SalesCube union CustomerCare
-  //visualize(union.cube)
+  visualize(union.cube)
   val aggregated = Sum of SalesCube by "City"
   visualize(aggregated.cube)
