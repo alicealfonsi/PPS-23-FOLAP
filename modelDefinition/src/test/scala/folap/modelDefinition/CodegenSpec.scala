@@ -48,7 +48,8 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
         "case class Shop(value: String) extends GeoDimension:",
         "  def parent = Some(TopAttribute())",
         "case class TopAttribute() extends GeoDimension:",
-        "  def parent = None"
+        "  def parent = None",
+        "  def value = \"\""
       ).mkString("\n"),
       2
     )
