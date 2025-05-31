@@ -8,152 +8,153 @@ import folap.olapDSL.AttributeDSLBuilder._
 import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSLBuilder._
 import folap.utils.visualize
+object Sales:
+  case class Revenue(value: Double) extends folap.core.MultidimensionalModel.Measure:
+    type T = Double
+  case class Quantity(value: Int) extends folap.core.MultidimensionalModel.Measure:
+    type T = Int
+  type Measures = Revenue | Quantity
+  sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute
+  object Dimension:
+    sealed trait TemporalDimension extends Dimension
+    object TemporalDimension:
+      case class Month(value: String, quarter: Quarter) extends TemporalDimension:
+        def parent = Some(quarter)
+      case class Quarter(value: String, year: Year) extends TemporalDimension:
+        def parent = Some(year)
+      case class Year(value: String) extends TemporalDimension:
+        def parent = Some(TopAttribute())
+      case class TopAttribute() extends TemporalDimension:
+        def parent = None
+        def value = ""
+    sealed trait GeographicDimension extends Dimension
+    object GeographicDimension:
+      case class City(value: String, country: Country) extends GeographicDimension:
+        def parent = Some(country)
+      case class Country(value: String, region: Region) extends GeographicDimension:
+        def parent = Some(region)
+      case class Region(value: String) extends GeographicDimension:
+        def parent = Some(TopAttribute())
+      case class TopAttribute() extends GeographicDimension:
+        def parent = None
+        def value = ""
+    sealed trait ProductDimension extends Dimension
+    object ProductDimension:
+      case class Product(value: String, subCategory: SubCategory) extends ProductDimension:
+        def parent = Some(subCategory)
+      case class SubCategory(value: String, category: Category) extends ProductDimension:
+        def parent = Some(category)
+      case class Category(value: String) extends ProductDimension:
+        def parent = Some(TopAttribute())
+      case class TopAttribute() extends ProductDimension:
+        def parent = None
+        def value = ""
+    type Attributes = TemporalDimension.Month | TemporalDimension.Quarter | TemporalDimension.Year | GeographicDimension.City | GeographicDimension.Country | GeographicDimension.Region | ProductDimension.Product | ProductDimension.SubCategory | ProductDimension.Category
+  case class Sales(revenue: Revenue, quantity: Quantity, temporal: Dimension.TemporalDimension, geographic: Dimension.GeographicDimension, product: Dimension.ProductDimension) extends folap.core.Event[Dimension, Measures]:
+    def dimensions: Iterable[Dimension] = Seq(temporal, geographic, product)
+    def measures: Iterable[Measures] = Seq(revenue, quantity)
+ 
 
-trait Dimension extends Attribute
-trait DateDimension extends Dimension
-trait GeographicDimension extends Dimension
-trait ProductDimension extends Dimension
-type Measures = RevenueAmount | QuantitySold
+  given folap.core.Operational[Dimension, Measures, Sales] with
+    extension (e: Sales)
+      override def aggregate(groupBySet: Iterable[String]): Sales =
+        Sales(e.revenue, e.quantity, e.temporal.upToLevel(e.temporal.searchCorrespondingAttributeName(groupBySet)), e.geographic.upToLevel(e.geographic.searchCorrespondingAttributeName(groupBySet)), e.product.upToLevel(e.product.searchCorrespondingAttributeName(groupBySet)))
+      override def div(n: Int): Sales =
+        Sales(Revenue(e.revenue.value / n), Quantity(e.quantity.value / n), e.temporal, e.geographic, e.product)
+      override def min(other: Sales)(groupBySet: Iterable[String]): Sales =
+        val aggregated = e.aggregate(groupBySet)
+        Sales(
+          Revenue(math.min(aggregated.quantity.value, other.quantity.value)),
+          Quantity(math.min(aggregated.quantity.value, other.quantity.value)), 
+          aggregated.temporal,
+          aggregated.geographic,
+          aggregated.product
+        )
+      override def sum(other: Sales)(groupBySet: Iterable[String]): Sales =
+        val aggregated = e.aggregate(groupBySet)
+        Sales(Revenue(aggregated.revenue.value + other.revenue.value), Quantity(aggregated.quantity.value + other.quantity.value), aggregated.temporal, aggregated.geographic, aggregated.product)
+      override def max(other: Sales)(groupBySet: Iterable[String]): Sales =
+        val aggregated = e.aggregate(groupBySet)
+        Sales(Revenue(aggregated.revenue.value.max(other.revenue.value)), Quantity(aggregated.quantity.value.max(other.quantity.value)), aggregated.temporal, aggregated.geographic, aggregated.product)
+import Sales._, Dimension._, Dimension.TemporalDimension._, Dimension.GeographicDimension._, Dimension.ProductDimension._, Sales._
+val year2023 = Year("2023")
+val year2024 = Year("2024")
 
-private case class YearAttribute(
-    override val parent: Option[TopAttribute],
-    override val value: String
-) extends DateDimension
+val quarterQ1_2023 = Quarter("Q1", year2023)
+val quarterQ2_2023 = Quarter("Q2", year2023)
+val quarterQ1_2024 = Quarter("Q1", year2024)
 
-private case class QuarterAttribute(
-    override val parent: Option[YearAttribute],
-    override val value: String
-) extends DateDimension
+val monthJanuary_2023 = Month("January", quarterQ1_2023)
+val monthJanuary_2024 = Month("January", quarterQ1_2024)
+val monthApril_2023 = Month("April", quarterQ2_2023)
 
-private case class MonthAttribute(
-    override val parent: Option[QuarterAttribute],
-    override val value: String
-) extends DateDimension
+val regionNorthAmerica = Region("North America")
+val countryUSA = Country("USA", regionNorthAmerica)
+val cityNewYork = City("New York", countryUSA)
+val regionEurope = Region("Europe")
+val countryGermany = Country("Germany", regionEurope)
+val cityBerlin = City("Berlin", countryGermany)
+val countryItaly = Country("Italy", regionEurope)
+val cityMilan = City("Milan", countryItaly)
 
-private case class RegionAttribute(
-    override val parent: Option[TopAttribute],
-    override val value: String
-) extends GeographicDimension
-
-private case class CountryAttribute(
-    override val parent: Option[RegionAttribute],
-    override val value: String
-) extends GeographicDimension
-
-private case class CityAttribute(
-    override val parent: Option[CountryAttribute],
-    override val value: String
-) extends GeographicDimension
-
-private case class CategoryAttribute(
-    override val parent: Option[TopAttribute],
-    override val value: String
-) extends ProductDimension
-
-private case class SubCategoryAttribute(
-    override val parent: Option[CategoryAttribute],
-    override val value: String
-) extends ProductDimension
-
-private case class ProductAttribute(
-    override val parent: Option[SubCategoryAttribute],
-    override val value: String
-) extends ProductDimension
-
-case class RevenueAmount(override val value: Double) extends Measure:
-  type T = Double
-
-case class QuantitySold(override val value: Int) extends Measure:
-  type T = Int
-
-case class SalesEvent(
-    geographic: GeographicDimension,
-    product: ProductDimension,
-    date: DateDimension,
-    quantity: QuantitySold,
-    revenue: RevenueAmount
-) extends Event[Dimension, Measures]:
-  def dimensions: Iterable[Dimension] = Seq(geographic, product, date)
-  def measures: Iterable[Measures] = Seq(quantity, revenue)
-
-val year2023 = YearAttribute(Some(TopAttribute()), "2023")
-val year2024 = YearAttribute(Some(TopAttribute()), "2024")
-
-val quarterQ1_2023 = QuarterAttribute(Some(year2023), "Q1")
-val quarterQ2_2023 = QuarterAttribute(Some(year2023), "Q2")
-val quarterQ1_2024 = QuarterAttribute(Some(year2024), "Q1")
-
-val monthJanuary_2023 = MonthAttribute(Some(quarterQ1_2023), "January")
-val monthJanuary_2024 = MonthAttribute(Some(quarterQ1_2024), "January")
-val monthApril_2023 = MonthAttribute(Some(quarterQ2_2023), "April")
-
-val regionNorthAmerica = RegionAttribute(Some(TopAttribute()), "North America")
-val countryUSA = CountryAttribute(Some(regionNorthAmerica), "USA")
-val cityNewYork = CityAttribute(Some(countryUSA), "New York")
-val regionEurope = RegionAttribute(Some(TopAttribute()), "Europe")
-val countryGermany = CountryAttribute(Some(regionEurope), "Germany")
-val cityBerlin = CityAttribute(Some(countryGermany), "Berlin")
-val countryItaly = CountryAttribute(Some(regionEurope), "Italy")
-val cityMilan = CityAttribute(Some(countryItaly), "Milan")
-
-val categoryElectronics = CategoryAttribute(Some(TopAttribute()), "Electronics")
+val categoryElectronics = Category("Electronics")
 val subCategorySmartphones =
-  SubCategoryAttribute(Some(categoryElectronics), "Smartphones")
-val productIPhone = ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
+  SubCategory("Smartphones", categoryElectronics)
+val productIPhone = Product("iPhone 14", subCategorySmartphones)
 val categoryHomeAppliances =
-  CategoryAttribute(Some(TopAttribute()), "Home Appliances")
+  Category("Home Appliances")
 val subCategoryKitchen =
-  SubCategoryAttribute(Some(categoryHomeAppliances), "Kitchen")
-val productBlender = ProductAttribute(Some(subCategoryKitchen), "Blender")
+  SubCategory("Kitchen", categoryHomeAppliances)
+val productBlender = Product("Blender", subCategoryKitchen)
 val subCategoryLaptops =
-  SubCategoryAttribute(Some(categoryElectronics), "Laptops")
-val productMacbook = ProductAttribute(Some(subCategoryLaptops), "MacBook Air")
+  SubCategory("Laptops", categoryElectronics)
+val productMacbook = Product("MacBook Air", subCategoryLaptops)
 
 val valueQuantity = 10
-val quantitySold = QuantitySold(valueQuantity)
+val quantitySold = Quantity(valueQuantity)
 val valueRevenue = 12000.0
-val revenueAmount = RevenueAmount(valueRevenue)
-val salesEvent1 = SalesEvent(
-  cityNewYork,
-  productIPhone,
-  monthJanuary_2023,
+val revenueAmount = Revenue(valueRevenue)
+val salesEvent1 = Sales.Sales(
+  revenueAmount,
   quantitySold,
-  revenueAmount
+  monthJanuary_2023,
+  cityNewYork,
+  productIPhone
+  
 )
 
-val quantity2 = QuantitySold(5)
-val revenue2 = RevenueAmount(250.0)
-val salesEvent2 = SalesEvent(
-  cityBerlin,
-  productBlender,
-  monthApril_2023,
+val quantity2 = Quantity(5)
+val revenue2 = Revenue(250.0)
+val salesEvent2 = Sales.Sales(
+  revenue2,
   quantity2,
-  revenue2
-)
-
-val quantity3 = QuantitySold(2)
-val revenue3 = RevenueAmount(2400.0)
-val salesEvent3 = SalesEvent(
-  cityMilan,
-  productMacbook,
-  monthJanuary_2024,
-  quantity3,
-  revenue3
-)
-
-val productIPhone14 =
-  ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
-val quantity4 = QuantitySold(3)
-val revenue4 = RevenueAmount(3600.0)
-val salesEvent4 = SalesEvent(
+  monthApril_2023,
   cityBerlin,
-  productIPhone14,
+  productBlender
+)
+
+val quantity3 = Quantity(2)
+val revenue3 = Revenue(2400.0)
+val salesEvent3 = Sales.Sales(
+  revenue3,
+  quantity3,
   monthJanuary_2024,
+  cityMilan,
+  productMacbook
+)
+
+
+val quantity4 = Quantity(3)
+val revenue4 = Revenue(3600.0)
+val salesEvent4 = Sales.Sales(
+  revenue4,
   quantity4,
-  revenue4
+  monthJanuary_2024,
+  cityBerlin,
+  productIPhone
 )
 val events = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
-val Sales = QueryDSL(events)
+val SalesCube = QueryDSL(events)
 
 case class SatisfactionScore(value: Double) extends Measure:
   type T = Double
@@ -180,8 +181,7 @@ case class ResultEvent[A <: Attribute, M <: Measure](
     override val dimensions: Iterable[A],
     override val measures: Iterable[M]
 ) extends Event[A, M]
-given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
-    : EventConstructor[A, M, E] =
+given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]: EventConstructor[A, M, E] =
   (
       attributes: Iterable[A],
       measures: Iterable[M]
@@ -191,8 +191,11 @@ val careEvents = Iterable(careEvent1, careEvent2)
 val CustomerCare = QueryDSL(careEvents)
 
 @main def main(): Unit =
-  val filtered = Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
-  visualize(filtered.cube)
-  val union = Sales union CustomerCare
-  visualize(union.cube)
-  Max of Sales
+  //visualize(SalesCube.cube)
+  val attr = "City" is "Berlin"
+  val filtered = SalesCube where ("City" is "Berlin" and ("Month" is "January"))
+  //visualize(filtered.cube)
+  val union = SalesCube union CustomerCare
+  //visualize(union.cube)
+  val aggregated = Sum of SalesCube by "City"
+  visualize(aggregated.cube)
