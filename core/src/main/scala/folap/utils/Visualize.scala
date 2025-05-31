@@ -15,7 +15,7 @@ def visualize(events: Iterable[Event[_, _]]): Unit =
 
     val expanded = event.dimensions
       .flatMap(extractAllDimensions)
-      .filter(_ != TopAttribute())
+      .filter(_.getClass.getName != "TopAttribute")
 
     val seen = scala.collection.mutable.LinkedHashSet[String]()
     val orderedDims = expanded.filter { a =>
