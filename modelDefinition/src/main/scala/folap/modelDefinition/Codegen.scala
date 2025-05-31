@@ -49,12 +49,7 @@ object Codegen:
     val t = generate(m.typology)
     Seq(
       s"case class ${name}(value: ${t}) extends folap.core.MultidimensionalModel.Measure:",
-      indent(s"type T = ${t}", 2),
-      indent(
-        s"override def fromRaw(value: ${t}): folap.core.MultidimensionalModel.Measure =",
-        2
-      ),
-      indent(s"${name}(value)", 4)
+      indent(s"type T = ${t}", 2)
     ).mkString("\n")
 
   private def generateGiven(e: Event): String =
