@@ -15,3 +15,5 @@ trait Operational[A <: Attribute, M <: Measure, E <: Event[A, M]]:
         events.tail.foldLeft(events.head)((acc, el) => acc.sum(el)(groupBySet))
     def aggregateByAverage(groupBySet: Iterable[String]): E =
       events.aggregateBySum(groupBySet) div events.size
+    def aggregateByMinimum(groupBySet: Iterable[String]): E =
+      events.tail.foldLeft(events.head)((acc, el) => acc.min(el)(groupBySet))
