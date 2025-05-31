@@ -45,10 +45,6 @@ object CubeMockup:
     type T = Int
     override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
 
-  given Computable[QuantitySold] with
-    extension (q: QuantitySold)
-      def div(n: Int): QuantitySold = QuantitySold(q.value / n)
-
   case class SalesEvent(
       where: GeographicAttribute,
       what: ProductAttribute,
@@ -67,7 +63,7 @@ object CubeMockup:
           QuantitySold(aggregated.quantity.value + other.quantity.value)
         )
       def div(n: Int): SalesEvent =
-        SalesEvent(e.where, e.what, e.quantity div n)
+        SalesEvent(e.where, e.what, QuantitySold(e.quantity.value / n))
       def min(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
