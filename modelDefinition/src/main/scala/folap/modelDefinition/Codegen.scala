@@ -64,7 +64,8 @@ object Codegen:
       .map(sanitise(_))
       .map(toCamelCase(_))
 
-    val sourceMeasures = measures.map((x, y) => s"e.${x}")
+    val sourceMeasures = measures.map((x, _) => s"e.${x}")
+    val sourceDimensions = dimensions.map(x => s"e.${x}")
     val mappedDimensions = dimensions
       .map(x =>
         s"e.${x}.upToLevel(e.${x}.searchCorrespondingAttributeName(groupBySet))"
@@ -72,6 +73,8 @@ object Codegen:
 
     val summedMeasures = measures
       .map((x, t) => s"${t}(aggregated.${x}.value + other.${x}.value)")
+    val divvedMeasures = measures
+      .map((x, t) => s"${t}(e.${x}.value / n)")
     val aggregatedDimensions = dimensions.map(x => s"aggregated.${x}")
 
     Seq(
@@ -89,8 +92,15 @@ object Codegen:
         (summedMeasures ++ aggregatedDimensions)
           .mkString(s"${name}(", ", ", ")"),
         6
+      ),
+      s"    override def div(n: Int): ${name} =",
+      indent(
+        (divvedMeasures ++ sourceDimensions)
+          .mkString(s"${name}(", ", ", ")"),
+        6
       )
     ).mkString("\n")
+
   def generate(e: Event): String =
     val name = sanitise(e.name)
     val measures = e.measures
