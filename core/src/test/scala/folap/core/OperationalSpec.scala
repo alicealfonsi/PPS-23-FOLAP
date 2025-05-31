@@ -49,7 +49,10 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     event3.aggregate(List("Type", "Nation")) shouldEqual
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
-        Type(Some(category123), "Food"),
+        Type(
+          Some(Category(Some(ProductAttribute.TopAttribute()), "Groceries")),
+          "Food"
+        ),
         QuantitySold(7)
       )
 
