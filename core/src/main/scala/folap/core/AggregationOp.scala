@@ -1,4 +1,7 @@
 package folap.core
 
 enum AggregationOp:
-  case Max, Min, Avg, Sum
+  case Sum
+  case Avg
+  case Min
+  case Max
