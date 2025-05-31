@@ -165,7 +165,10 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
         "      val aggregated = e.aggregate(groupBySet)",
         "      Example(Test(aggregated.test.value + other.test.value), aggregated.geographic)",
         "    override def div(n: Int): Example =",
-        "      Example(Test(e.test.value / n), e.geographic)"
+        "      Example(Test(e.test.value / n), e.geographic)",
+        "    override def min(other: Example)(groupBySet: Iterable[String]): Example =",
+        "      val aggregated = e.aggregate(groupBySet)",
+        "      Example(Test(aggregated.test.value.min(other.test.value)), aggregated.geographic)"
       ).mkString("\n"),
       2
     )
