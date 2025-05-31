@@ -1,8 +1,8 @@
 package folap.modelDefinition
 
-import folap.modelDefinition.DSLUtils.indent
-import folap.modelDefinition.DSLUtils.sanitise
-import folap.modelDefinition.DSLUtils.toCamelCase
+import folap.modelDefinition.CodegenUtils.indent
+import folap.modelDefinition.CodegenUtils.sanitise
+import folap.modelDefinition.CodegenUtils.toCamelCase
 
 object Codegen:
   def generate(dimension: Dimension): String =

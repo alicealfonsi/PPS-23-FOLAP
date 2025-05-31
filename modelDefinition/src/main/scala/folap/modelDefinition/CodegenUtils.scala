@@ -2,7 +2,7 @@ package folap.modelDefinition
 
 /** This object contains utility functions for the DSL
   */
-object DSLUtils:
+object CodegenUtils:
   /** Transform a string into a valid class name
     * @param input
     *   the untrusted input

@@ -1,6 +1,6 @@
 package folap.modelDefinition
 
-import folap.modelDefinition.DSLUtils.indent
+import folap.modelDefinition.CodegenUtils.indent
 import folap.modelDefinition.MeasureDSL.measure
 import org.scalatest._
 
