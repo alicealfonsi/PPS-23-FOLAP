@@ -5,9 +5,9 @@ import folap.core._
 /** Represents a collection of OLAP events (cube)
   *
   * @tparam A
-  *   type of attribute used in the events, which must extend EventAttribute.
+  *   type of attribute used in the events, which must extend Attribute.
   * @tparam M
-  *   type of measure used in the events, which must extend EventMeasure[_].
+  *   type of measure used in the events, which must extend Measure.
   * @param cube
   *   a collection of events
   *
