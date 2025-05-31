@@ -113,11 +113,3 @@ object MultidimensionalModel:
       *   the Measure value
       */
     def value: T
-
-    /** Creates a Measure from the raw value
-      * @param value
-      *   the raw value
-      * @return
-      *   the Measure containing the value
-      */
-    def fromRaw(value: T): Measure

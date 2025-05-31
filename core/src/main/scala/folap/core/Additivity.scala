@@ -1,6 +1,6 @@
 package folap.core
 
-object AggregationStrategies:
+object Additivity:
   enum AggregationOperator:
     case Sum
     case Avg

@@ -60,13 +60,11 @@ private case class ProductAttribute(
     override val value: String
 ) extends ProductDimension
 
-case class RevenueAmount(val value: Double) extends Measure:
+case class RevenueAmount(override val value: Double) extends Measure:
   type T = Double
-  override def fromRaw(value: Double): RevenueAmount = RevenueAmount(value)
 
-case class QuantitySold(val value: Int) extends Measure:
+case class QuantitySold(override val value: Int) extends Measure:
   type T = Int
-  override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
 
 case class SalesEvent(
     geographic: GeographicDimension,
@@ -159,9 +157,6 @@ val Sales: QueryDSL[Dimension, Measures] = QueryDSL(events)
 
 case class SatisfactionScore(value: Double) extends Measure:
   type T = Double
-  override def fromRaw(value: Double): SatisfactionScore = SatisfactionScore(
-    value
-  )
 
 type CareMeasures = SatisfactionScore
 
@@ -197,7 +192,6 @@ val CustomerCare = QueryDSL(careEvents)
 @main def main(): Unit =
   val filtered = Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
   visualize(filtered.cube)
-  // visualizeCube(filtered.cube)
   val union = Sales union CustomerCare
   visualize(union.cube)
   Max of Sales

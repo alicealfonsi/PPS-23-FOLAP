@@ -101,7 +101,7 @@ object Operators:
     }
 
   import Cube.*
-  import AggregationStrategies.*, AggregationOperator.*
+  import Additivity.*, AggregationOperator.*
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
   )(groupBySet: Iterable[String])(aggregationOperator: AggregationOperator)(
@@ -115,8 +115,8 @@ object Operators:
       groupByMap.values.map(events =>
         aggregationOperator match
           case Sum => events.aggregateBySum(groupBySet)
-          case Avg => ???
-          case Min => ???
-          case Max => ???
+          case Avg => events.aggregateByAverage(groupBySet)
+          case Min => events.aggregateByMinimum(groupBySet)
+          case Max => events.aggregateByMaximum(groupBySet)
       )
     else events

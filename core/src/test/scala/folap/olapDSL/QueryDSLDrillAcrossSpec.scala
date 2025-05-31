@@ -32,20 +32,13 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
       override val parent: Option[TopAttribute]
   ) extends CustomerAttribute
 
-  case class TotSalesMeasure(val value: Int) extends SalesMeasure:
+  case class TotSalesMeasure(override val value: Int) extends SalesMeasure:
     type T = Int
-    override def fromRaw(value: Int): TotSalesMeasure = TotSalesMeasure(value)
-  case class TotProfitsMeasure(val value: Int) extends ProfitsMeasure:
+  case class TotProfitsMeasure(override val value: Int) extends ProfitsMeasure:
     type T = Int
-    override def fromRaw(value: Int): TotProfitsMeasure = TotProfitsMeasure(
-      value
-    )
-  case class TotPurchasesMeasure(val value: Int) extends CustomerMeasure:
+  case class TotPurchasesMeasure(override val value: Int)
+      extends CustomerMeasure:
     type T = Int
-    override def fromRaw(value: Int): TotPurchasesMeasure =
-      TotPurchasesMeasure(
-        value
-      )
 
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
@@ -63,42 +56,42 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
-  val event1 = SalesEvent(
+  val event1: SalesEvent = SalesEvent(
     dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
-  val event2 = SalesEvent(
+  val event2: SalesEvent = SalesEvent(
     dimensions =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
-  val event3 = SalesEvent(
+  val event3: SalesEvent = SalesEvent(
     dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
-  val event4 = ProfitsEvent(
+  val event4: ProfitsEvent = ProfitsEvent(
     dimensions =
       Seq(NationAttribute("Italy", None), CategoryAttribute("shoes", None)),
     measures = Seq(TotProfitsMeasure(30))
   )
-  val event5 = ProfitsEvent(
+  val event5: ProfitsEvent = ProfitsEvent(
     dimensions =
       Seq(NationAttribute("Spain", None), CategoryAttribute("bags", None)),
     measures = Seq(TotProfitsMeasure(40))
   )
-  val event6 = CustomerEvent(
+  val event6: CustomerEvent = CustomerEvent(
     Seq(CustomerNameAttribute("Claudia", None)),
     Seq(TotPurchasesMeasure(5))
   )
 
-  val eventsA = Seq(event1, event2, event3)
-  val eventsB = Seq(event4, event5)
-  val eventsC = Seq(event6)
+  val eventsA: Seq[SalesEvent] = Seq(event1, event2, event3)
+  val eventsB: Seq[ProfitsEvent] = Seq(event4, event5)
+  val eventsC: Seq[CustomerEvent] = Seq(event6)
 
   given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
     (
@@ -106,9 +99,11 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
         measures: Iterable[M]
     ) => ResultEvent(attributes, measures)
 
-  val Sales = QueryDSL(eventsA)
-  val Profits = QueryDSL(eventsB)
-  val Customers = QueryDSL(eventsC)
+  val Sales: QueryDSL[SalesAttribute, SalesMeasure] = QueryDSL(eventsA)
+  val Profits: QueryDSL[ProfitsAttribute, ProfitsMeasure] = QueryDSL(eventsB)
+  val Customers: QueryDSL[CustomerAttribute, CustomerMeasure] = QueryDSL(
+    eventsC
+  )
 
   "The DSL union" should "combine events with matching attributes" in:
     val result = Sales union Profits

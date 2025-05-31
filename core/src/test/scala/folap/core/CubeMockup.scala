@@ -43,13 +43,6 @@ object CubeMockup:
 
   case class QuantitySold(override val value: Int) extends Measure:
     type T = Int
-    override def fromRaw(value: Int): QuantitySold = QuantitySold(value)
-
-  given Computable[QuantitySold] with
-    extension (q: QuantitySold)
-      def sum(other: QuantitySold): QuantitySold = QuantitySold(
-        q.value + other.value
-      )
 
   case class SalesEvent(
       where: GeographicAttribute,
@@ -66,7 +59,23 @@ object CubeMockup:
         SalesEvent(
           aggregated.where,
           aggregated.what,
-          aggregated.quantity sum other.quantity
+          QuantitySold(aggregated.quantity.value + other.quantity.value)
+        )
+      def div(n: Int): SalesEvent =
+        SalesEvent(e.where, e.what, QuantitySold(e.quantity.value / n))
+      def min(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
+        val aggregated = e.aggregate(groupBySet)
+        SalesEvent(
+          aggregated.where,
+          aggregated.what,
+          QuantitySold(math.min(e.quantity.value, other.quantity.value))
+        )
+      def max(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
+        val aggregated = e.aggregate(groupBySet)
+        SalesEvent(
+          aggregated.where,
+          aggregated.what,
+          QuantitySold(math.max(e.quantity.value, other.quantity.value))
         )
       def aggregate(groupBySet: Iterable[String]): SalesEvent =
         SalesEvent(
