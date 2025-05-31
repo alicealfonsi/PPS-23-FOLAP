@@ -47,9 +47,6 @@ object CubeMockup:
 
   given Computable[QuantitySold] with
     extension (q: QuantitySold)
-      def sum(other: QuantitySold): QuantitySold = QuantitySold(
-        q.value + other.value
-      )
       def div(n: Int): QuantitySold = QuantitySold(q.value / n)
 
   case class SalesEvent(
@@ -67,7 +64,7 @@ object CubeMockup:
         SalesEvent(
           aggregated.where,
           aggregated.what,
-          aggregated.quantity sum other.quantity
+          QuantitySold(aggregated.quantity.value + other.quantity.value)
         )
       def div(n: Int): SalesEvent =
         SalesEvent(e.where, e.what, e.quantity div n)
