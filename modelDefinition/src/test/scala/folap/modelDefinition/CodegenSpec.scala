@@ -165,7 +165,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
         "      Example(e.test, e.geographic.upToLevel(e.geographic.searchCorrespondingAttributeName(groupBySet)))",
         "    override def sum(other: Example)(groupBySet: Iterable[String]): Example =",
         "      val aggregated = e.aggregate(groupBySet)",
-        "      Example(aggregated.test.sum(other.test), aggregated.geographic)"
+        "      Example(Test(aggregated.test.value + other.test.value), aggregated.geographic)"
       ).mkString("\n"),
       2
     )

@@ -62,20 +62,21 @@ object Codegen:
     val measures = e.measures
       .map(_.name)
       .map(sanitise(_))
-      .map(toCamelCase(_))
+      .map(x => (toCamelCase(x), x))
 
     val dimensions = e.dimensions
       .map(_.name)
       .map(sanitise(_))
       .map(toCamelCase(_))
 
-    val sourceMeasures = measures.map(x => s"e.${x}")
+    val sourceMeasures = measures.map((x, y) => s"e.${x}")
     val mappedDimensions = dimensions
       .map(x =>
         s"e.${x}.upToLevel(e.${x}.searchCorrespondingAttributeName(groupBySet))"
       )
 
-    val summedMeasures = measures.map(x => s"aggregated.${x}.sum(other.${x})")
+    val summedMeasures = measures
+      .map((x, t) => s"${t}(aggregated.${x}.value + other.${x}.value)")
     val aggregatedDimensions = dimensions.map(x => s"aggregated.${x}")
 
     Seq(
