@@ -57,31 +57,26 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
       override val measures: Iterable[M]
   ) extends Event[A, M]
   val event1: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(Nation("Italy", None), Year("2024", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(Nation("France", None), Year("2024", None)),
+    dimensions = Seq(Nation("France", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(Nation("Italy", None), Year("2023", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
   val event4: ProfitsEvent = ProfitsEvent(
-    dimensions =
-      Seq(Nation("Italy", None), Category("shoes", None)),
+    dimensions = Seq(Nation("Italy", None), Category("shoes", None)),
     measures = Seq(TotProfitsMeasure(30))
   )
   val event5: ProfitsEvent = ProfitsEvent(
-    dimensions =
-      Seq(Nation("Spain", None), Category("bags", None)),
+    dimensions = Seq(Nation("Spain", None), Category("bags", None)),
     measures = Seq(TotProfitsMeasure(40))
   )
   val event6: CustomerEvent = CustomerEvent(
@@ -93,7 +88,8 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
   val eventsB: Seq[ProfitsEvent] = Seq(event4, event5)
   val eventsC: Seq[CustomerEvent] = Seq(event6)
 
-  given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]: EventConstructor[A, M, E] =
+  given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
+      : EventConstructor[A, M, E] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]

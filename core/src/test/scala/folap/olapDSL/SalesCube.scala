@@ -180,7 +180,8 @@ case class ResultEvent[A <: Attribute, M <: Measure](
     override val dimensions: Iterable[A],
     override val measures: Iterable[M]
 ) extends Event[A, M]
-given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]: EventConstructor[A, M, E] =
+given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
+    : EventConstructor[A, M, E] =
   (
       attributes: Iterable[A],
       measures: Iterable[M]

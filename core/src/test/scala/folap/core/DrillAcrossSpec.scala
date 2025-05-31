@@ -106,7 +106,8 @@ class DrillAcrossSpec
   val eventsB: Seq[ProfitsEvent] = Seq(event4, event5)
   val eventsC: Seq[CustomerEvent] = Seq(event6)
 
-  def createEvent[A <: Attribute, M <: Measure, E <: Event[A, M]]: EventConstructor[A, M, E] =
+  def createEvent[A <: Attribute, M <: Measure, E <: Event[A, M]]
+      : EventConstructor[A, M, E] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]

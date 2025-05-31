@@ -1,18 +1,17 @@
 package folap.olapDSL
 
-import folap.core._
-import folap.olapDSL.QueryDSLBuilder._
-import folap.olapDSL.AttributeSeqBuilder._
-import folap.core.CubeMockup._
 import folap.core.AggregationOp._
+import folap.core.CubeMockup._
+import folap.core._
+import folap.olapDSL.AttributeSeqBuilder._
+import folap.olapDSL.QueryDSLBuilder._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+
 import GeographicAttribute._
 import ProductAttribute._
 
-class RollUpDSLSpec extends AnyFlatSpec with Matchers:  
-
-  
+class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 
   "RollUp" should "aggregate only if at least one of the attributes in the group-by set matches all events" in:
     val Sales = QueryDSL(Seq(event1, event2))
@@ -23,7 +22,6 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
     val Sales = QueryDSL(Seq(event1, event2))
     val result = Max of Sales by ("Shop" and "Product")
     result.cube shouldEqual Seq(event1, event2)
-
 
   it should "search for attributes in the group-by set by moving up the attributes hierarchies" in:
     val Sales = QueryDSL(Seq(event1, event2))
@@ -39,7 +37,6 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
         QuantitySold(3)
       )
     )
-    
 
   it should "aggregate along the entire hierarchy for dimensions for which no attribute is specified in the group-by set" in:
     val Sales = QueryDSL(Seq(event1, event2, event3))
@@ -144,9 +141,9 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
       )
     )
   it should "return a set of secondary events resulting from the aggregation using the min operator of multiple primary events according to the attributes in the group-by set" in:
-     val Sales = QueryDSL(Seq(event1, event2, event3))
-     val result = Min of Sales by ("Nation" and "Product")
-     result.cube shouldEqual List(
+    val Sales = QueryDSL(Seq(event1, event2, event3))
+    val result = Min of Sales by ("Nation" and "Product")
+    result.cube shouldEqual List(
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
         Product(
@@ -179,9 +176,9 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
       )
     )
   it should "return a set of secondary events resulting from the aggregation using the max operator of multiple primary events according to the attributes in the group-by set" in:
-     val Sales = QueryDSL(Seq(event1, event2, event3))
-     val result = Max of Sales by ("Nation" and "Product")
-     result.cube shouldEqual List(
+    val Sales = QueryDSL(Seq(event1, event2, event3))
+    val result = Max of Sales by ("Nation" and "Product")
+    result.cube shouldEqual List(
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
         Product(
@@ -213,6 +210,3 @@ class RollUpDSLSpec extends AnyFlatSpec with Matchers:
         QuantitySold(2)
       )
     )
-
-
-  

@@ -34,15 +34,15 @@ object Operators:
     *   matching events sharing one or more common leaf attributes
     */
   private def leafAttributes[A <: Attribute](attrs: Iterable[A]): Iterable[A] =
-      val allParents = attrs.flatMap(_.parent)
-      attrs.filterNot(a => allParents.exists(_ == a))
+    val allParents = attrs.flatMap(_.parent)
+    attrs.filterNot(a => allParents.exists(_ == a))
 
   def drillAcross[
       A <: Attribute,
       A1 <: A,
       A2 <: A,
       M <: Measure,
-      M2 <: Measure, 
+      M2 <: Measure,
       E1 <: Event[A1, M],
       E2 <: Event[A2, M2],
       E <: Event[A1, M | M2]
@@ -50,7 +50,7 @@ object Operators:
       events: Iterable[E1],
       otherEvents: Iterable[E2],
       createEvent: EventConstructor[A1, M | M2, E]
-  ): Iterable[E] = {   
+  ): Iterable[E] = {
 
     events.flatMap { eventA =>
       val leavesA = leafAttributes(eventA.attributes)
@@ -107,8 +107,8 @@ object Operators:
   import AggregationOp.*
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
-  )(groupBySet: Iterable[String])(aggregationOp: AggregationOp)(
-      using operational: Operational[A, M, E]
+  )(groupBySet: Iterable[String])(aggregationOp: AggregationOp)(using
+      operational: Operational[A, M, E]
   ): Iterable[E] =
     if groupBySet.exists(name => events.matchAttributeByName(name)) then
       val groupByMap =

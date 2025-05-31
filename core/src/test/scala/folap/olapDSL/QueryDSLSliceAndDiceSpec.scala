@@ -28,20 +28,17 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
       override val measures: Iterable[SalesMeasure]
   ) extends Event[SalesAttribute, SalesMeasure]
   val event1: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(Nation("Italy", None), Year("2024", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(Nation("France", None), Year("2024", None)),
+    dimensions = Seq(Nation("France", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(Nation("Italy", None), Year("2023", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
