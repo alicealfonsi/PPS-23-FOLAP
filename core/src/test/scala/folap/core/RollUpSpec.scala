@@ -64,3 +64,77 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
         QuantitySold(3)
       )
     )
+
+  it should "return a set of secondary events resulting from the aggregation using the sum operator of multiple primary events according to the attributes in the group-by set" in:
+    val events = List(event1, event2, event3)
+    val groupBySet = List("Nation", "Product")
+    val aggregationOperator = Sum
+    rollUp(events)(groupBySet)(aggregationOperator) shouldEqual List(
+      SalesEvent(
+        Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+        Product(
+          Some(
+            Type(
+              Some(
+                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+              ),
+              "Food"
+            )
+          ),
+          "Food1"
+        ),
+        QuantitySold(7)
+      ),
+      SalesEvent(
+        Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+        Product(
+          Some(
+            Type(
+              Some(
+                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+              ),
+              "Drink"
+            )
+          ),
+          "Drink1"
+        ),
+        QuantitySold(3)
+      )
+    )
+
+  it should "return a set of secondary events resulting from the aggregation using the average operator of multiple primary events according to the attributes in the group-by set" in:
+    val events = List(event1, event2, event3)
+    val groupBySet = List("Nation", "Product")
+    val aggregationOperator = Avg
+    rollUp(events)(groupBySet)(aggregationOperator) shouldEqual List(
+      SalesEvent(
+        Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+        Product(
+          Some(
+            Type(
+              Some(
+                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+              ),
+              "Food"
+            )
+          ),
+          "Food1"
+        ),
+        QuantitySold(7)
+      ),
+      SalesEvent(
+        Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
+        Product(
+          Some(
+            Type(
+              Some(
+                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+              ),
+              "Drink"
+            )
+          ),
+          "Drink1"
+        ),
+        QuantitySold(1)
+      )
+    )

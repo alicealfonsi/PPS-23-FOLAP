@@ -101,7 +101,7 @@ object Operators:
       groupByMap.values.map(events =>
         aggregationOperator match
           case Sum => events.aggregateBySum(groupBySet)
-          case Avg => ???
+          case Avg => events.aggregateByAverage(groupBySet)
           case Min => ???
           case Max => ???
       )
