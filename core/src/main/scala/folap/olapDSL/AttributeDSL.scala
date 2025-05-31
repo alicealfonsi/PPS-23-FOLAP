@@ -47,7 +47,7 @@ object AttributeDSL:
     *   an instance of AttributeDSLWithValue
     */
   def apply(baseName: String, value: String): AttributeDSLWithValue =
-    AttributeDSLWithValue(baseName + "Attribute", value)
+    AttributeDSLWithValue(baseName, value)
 
   /** Creates an AttributeDSLWithoutValue with the specified base name.
     *
@@ -57,4 +57,4 @@ object AttributeDSL:
     *   an instance of AttributeDSLWithoutValue with empty value
     */
   def apply(baseName: String): AttributeDSLWithoutValue =
-    AttributeDSLWithoutValue(baseName + "Attribute")
+    AttributeDSLWithoutValue(baseName)
