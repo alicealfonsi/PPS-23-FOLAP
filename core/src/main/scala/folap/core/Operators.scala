@@ -33,21 +33,24 @@ object Operators:
     *   a collection of events, each one resulting from the combination of two
     *   matching events sharing one or more common leaf attributes
     */
-
-  def drillAcross[
-      A1 <: Attribute,
-      M1 <: Measure,
-      A2 <: Attribute,
-      M2 <: Measure
-  ](
-      events: Iterable[Event[A1, M1]],
-      otherEvents: Iterable[Event[A2, M2]],
-      createEvent: EventConstructor[Attribute, M1 | M2]
-  ): Iterable[Event[Attribute, M1 | M2]] = {
-
-    def leafAttributes(attrs: Iterable[Attribute]): Iterable[Attribute] =
+  private def leafAttributes[A <: Attribute](attrs: Iterable[A]): Iterable[A] =
       val allParents = attrs.flatMap(_.parent)
       attrs.filterNot(a => allParents.exists(_ == a))
+
+  def drillAcross[
+      A <: Attribute,
+      A1 <: A,
+      A2 <: A,
+      M <: Measure,
+      M2 <: Measure, 
+      E1 <: Event[A1, M],
+      E2 <: Event[A2, M2],
+      E <: Event[A1, M | M2]
+  ](
+      events: Iterable[E1],
+      otherEvents: Iterable[E2],
+      createEvent: EventConstructor[A1, M | M2, E]
+  ): Iterable[E] = {   
 
     events.flatMap { eventA =>
       val leavesA = leafAttributes(eventA.attributes)
@@ -62,7 +65,7 @@ object Operators:
         }
 
         if (commonLeaves.nonEmpty) {
-          val combinedMeasures: Iterable[M1 | M2] =
+          val combinedMeasures: Iterable[M | M2] =
             eventA.measures ++ eventB.measures
           Seq(createEvent(commonLeaves, combinedMeasures))
         } else {
@@ -87,10 +90,10 @@ object Operators:
     *   events that match all filters
     */
 
-  def sliceAndDice[A <: Attribute, M <: Measure](
-      events: Iterable[Event[A, M]],
+  def sliceAndDice[A <: Attribute, M <: Measure, E <: Event[A, M]](
+      events: Iterable[E],
       filters: Iterable[Attribute]
-  ): Iterable[Event[A, M]] =
+  ): Iterable[E] =
     events.filter { event =>
       filters.forall { filter =>
         event.attributes
@@ -101,10 +104,10 @@ object Operators:
     }
 
   import Cube.*
-  import Additivity.*, AggregationOperator.*
+  import AggregationOp.*
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
-  )(groupBySet: Iterable[String])(aggregationOperator: AggregationOperator)(
+  )(groupBySet: Iterable[String])(aggregationOp: AggregationOp)(
       using operational: Operational[A, M, E]
   ): Iterable[E] =
     if groupBySet.exists(name => events.matchAttributeByName(name)) then
@@ -113,7 +116,7 @@ object Operators:
           _.findAttributesByNames(groupBySet).map(_.value)
         )
       groupByMap.values.map(events =>
-        aggregationOperator match
+        aggregationOp match
           case Sum => events.aggregateBySum(groupBySet)
           case Avg => events.aggregateByAverage(groupBySet)
           case Min => events.aggregateByMinimum(groupBySet)
