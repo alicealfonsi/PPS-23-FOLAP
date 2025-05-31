@@ -87,7 +87,7 @@ object Operators:
     }
 
   import Cube.*
-  import AggregationStrategies.*, AggregationOperator.*
+  import Additivity.*, AggregationOperator.*
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
   )(groupBySet: Iterable[String])(aggregationOperator: AggregationOperator)(
