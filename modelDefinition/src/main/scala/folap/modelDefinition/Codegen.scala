@@ -42,7 +42,14 @@ object Codegen:
 
     s"${traitAndObjectHead}\n${objectBody}\n${lastLevel}"
 
-  private def generate(t: MeasureType): String =
+  /** Map the MeasureType to a Scala type as a String
+    *
+    * @param t
+    *   the Measure's type
+    * @return
+    *   the type as a string
+    */
+  def generate(t: MeasureType): String =
     t match
       case Int        => "Int"
       case Long       => "Long"
