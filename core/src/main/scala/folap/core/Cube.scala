@@ -16,3 +16,16 @@ trait Cube[A <: Attribute, M <: Measure, E <: Event[A, M]]:
     *   the list of Cube events
     */
   def events: Iterable[Event[A, M]]
+
+object Cube:
+  extension [A <: Attribute, M <: Measure](events: Iterable[Event[A, M]])
+    /** Tests whether all these events have an Attribute whose name is equal to
+      * the specified name
+      * @param name
+      *   the Attribute name to be matched
+      * @return
+      *   true if all these events have an Attribute whose name matches the
+      *   specified name; false otherwise
+      */
+    def matchAttributeByName(name: String): Boolean =
+      events.forall(_.attributes.exists(_.name == name))

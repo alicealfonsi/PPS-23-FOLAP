@@ -25,34 +25,33 @@ class SliceAndDiceSpec
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
 
-  case class TotSalesMeasure(val value: Int) extends SalesMeasure:
+  case class TotSalesMeasure(override val value: Int) extends SalesMeasure:
     type T = Int
-    override def fromRaw(value: Int): TotSalesMeasure = TotSalesMeasure(value)
 
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
       override val measures: Iterable[SalesMeasure]
   ) extends Event[SalesAttribute, SalesMeasure]
 
-  val event1 = SalesEvent(
+  val event1: SalesEvent = SalesEvent(
     dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
-  val event2 = SalesEvent(
+  val event2: SalesEvent = SalesEvent(
     dimensions =
       Seq(NationAttribute("France", None), YearAttribute("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
-  val event3 = SalesEvent(
+  val event3: SalesEvent = SalesEvent(
     dimensions =
       Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
-  val events = Seq(event1, event2, event3)
+  val events: Seq[SalesEvent] = Seq(event1, event2, event3)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
     val filtered =
