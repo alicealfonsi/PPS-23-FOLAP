@@ -54,10 +54,7 @@ object Codegen:
         s"override def fromRaw(value: ${t}): folap.core.MultidimensionalModel.Measure =",
         2
       ),
-      indent(s"${name}(value)", 4),
-      s"given folap.core.Computable[${name}] with",
-      s"  extension (m: ${name})",
-      s"    def sum(other: ${name}) = ${name}(m.value + other.value)"
+      indent(s"${name}(value)", 4)
     ).mkString("\n")
 
   private def generateGiven(e: Event): String =
