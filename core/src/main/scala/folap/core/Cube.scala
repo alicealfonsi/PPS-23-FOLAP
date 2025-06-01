@@ -10,15 +10,15 @@ import MultidimensionalModel._
   * @tparam E
   *   the type of events
   */
-trait Cube[A <: Attribute, M <: Measure, E <: Event[A, M]]:
+trait Cube[L, A <: Attribute[L], M <: Measure, E <: Event[L, A, M]]:
   /** The events stored in the Cube
     * @return
     *   the list of Cube events
     */
-  def events: Iterable[Event[A, M]]
+  def events: Iterable[Event[L, A, M]]
 
 object Cube:
-  extension [A <: Attribute, M <: Measure](events: Iterable[Event[A, M]])
+  extension [L, A <: Attribute[L], M <: Measure](events: Iterable[Event[L, A, M]])
     /** Tests whether all these events have an Attribute whose name is equal to
       * the specified name
       * @param name
@@ -27,5 +27,5 @@ object Cube:
       *   true if all these events have an Attribute whose name matches the
       *   specified name; false otherwise
       */
-    def matchAttributeByName(name: String): Boolean =
+    def matchAttributeByName(name: L): Boolean =
       events.forall(_.attributes.exists(_.name == name))

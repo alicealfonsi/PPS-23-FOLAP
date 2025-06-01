@@ -6,12 +6,13 @@ import MultidimensionalModel._
 import flatspec._
 import matchers._
 
-trait ExampleEventAttribute extends Attribute
+trait ExampleEventAttribute extends Attribute[DimensionExampleAttribute.type]
 trait ExampleEventMeasure extends Measure
 private case class DimensionExampleAttribute(
     override val parent: Option[TopAttribute],
     override val value: String
-) extends ExampleEventAttribute
+) extends ExampleEventAttribute:
+  override val level = DimensionExampleAttribute
 private case class QuantityExampleMeasure(override val value: Int)
     extends ExampleEventMeasure:
   type T = Int
@@ -23,7 +24,11 @@ private case class RevenueExampleMeasure(override val value: Double)
 private val valueQ: Int = 10
 private val valueR: Double = 17.5
 private case class ExampleEvent()
-    extends Event[ExampleEventAttribute, ExampleEventMeasure]:
+    extends Event[
+      DimensionExampleAttribute.type,
+      ExampleEventAttribute,
+      ExampleEventMeasure
+    ]:
   override def dimensions: Iterable[ExampleEventAttribute] =
     List(DimensionExampleAttribute(Some(TopAttribute()), ""))
   override def measures: Iterable[ExampleEventMeasure] = List(
@@ -34,7 +39,11 @@ private case class ExampleEvent()
 class EventSpec extends AnyFlatSpec with should.Matchers:
   val dim: DimensionExampleAttribute =
     DimensionExampleAttribute(Some(TopAttribute()), "")
-  val event: Event[ExampleEventAttribute, ExampleEventMeasure] =
+  val event: Event[
+    DimensionExampleAttribute.type,
+    ExampleEventAttribute,
+    ExampleEventMeasure
+  ] =
     ExampleEvent()
 
   "An Event" should "have a list of dimensions" in:
@@ -51,12 +60,17 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
 
   it should "return its attributes given their names" in:
     import CubeMockup.*, GeographicAttribute.*, ProductAttribute.*
-    event1.findAttributesByNames(List("Shop", "Product")) shouldEqual
+    event1.findAttributesByNames(List(Shop, Product)) shouldEqual
       List(
         Shop(
           Some(
             City(
-              Some(Nation(Some(GeographicAttribute.TopAttribute()), "Italy")),
+              Some(
+                Nation(
+                  Some(GeographicAttribute.TopAttribute()),
+                  "Italy"
+                )
+              ),
               "Bologna"
             )
           ),
@@ -66,7 +80,10 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Drink"
             )

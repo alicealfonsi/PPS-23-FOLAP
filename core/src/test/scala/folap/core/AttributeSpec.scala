@@ -7,15 +7,36 @@ import flatspec._
 import matchers._
 
 class AttributeSpec extends AnyFlatSpec with should.Matchers:
-  private case class ExampleAttribute() extends Attribute:
-    override val parent: Option[Attribute] = Some(TopAttribute())
+  private case class ExampleAttribute()
+      extends Attribute[
+        ExampleAttribute.type | DimensionAttribute.type
+      ]:
+    override val parent: Option[Attribute[
+      ExampleAttribute.type | DimensionAttribute.type
+    ]] =
+      None
     override val value: String = ""
+    override val level: ExampleAttribute.type = ExampleAttribute
   private case class DimensionAttribute(
-      override val parent: Option[Attribute],
+      override val parent: Option[
+        Attribute[
+          ExampleAttribute.type | DimensionAttribute.type
+        ]
+      ],
       override val value: String
-  ) extends Attribute
-  val attribute: Attribute = ExampleAttribute()
-  val dim: Attribute = DimensionAttribute(Some(attribute), "")
+  ) extends Attribute[
+        ExampleAttribute.type | DimensionAttribute.type
+      ]:
+    override val level = DimensionAttribute
+
+  private val attribute: Attribute[
+    ExampleAttribute.type | DimensionAttribute.type
+  ] =
+    ExampleAttribute()
+  private val dim: Attribute[
+    ExampleAttribute.type | DimensionAttribute.type
+  ] =
+    DimensionAttribute(Some(attribute), "")
 
   "An Attribute" should "have a name equal to the class name" in:
     attribute.name shouldEqual "ExampleAttribute"
@@ -24,22 +45,20 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
     attribute.value shouldEqual ""
 
   it should "have an optional parent" in:
-    attribute.parent shouldEqual Some(TopAttribute())
+    attribute.parent shouldEqual None
 
   it should "have a hierarchy" in:
-    dim.hierarchy shouldEqual List(dim, attribute, TopAttribute())
+    dim.hierarchy shouldEqual List(dim, attribute)
 
   it should "be comparable: equal to" in:
-    val other: Attribute =
-      DimensionAttribute(Some(TopAttribute()), "")
+    val other: Attribute[
+      ExampleAttribute.type | DimensionAttribute.type
+    ] =
+      DimensionAttribute(None, "")
     dim.equals(other) shouldBe true
 
   import CubeMockup.*, GeographicAttribute.*
   val shop: Shop = shop1
-  it should "find the Attribute name in its hierarchy that matches one of the specified names if such an Attribute exists" in:
-    shop.searchCorrespondingAttributeName(
-      List("Category", "City")
-    ) shouldEqual "City"
 
   it should "move up the hierarchy to the specified level" in:
-    shop.upToLevel("City") shouldEqual City(Some(nation123), "Bologna")
+    shop.upToLevel(City) shouldEqual City(Some(nation123), "Bologna")

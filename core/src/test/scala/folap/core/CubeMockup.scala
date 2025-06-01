@@ -3,41 +3,56 @@ package folap.core
 import MultidimensionalModel._
 
 object CubeMockup:
-  trait SalesAttribute extends Attribute
+  type SalesAttributes = GeographicAttributes | ProductAttributes
+  trait SalesAttribute extends Attribute[SalesAttributes]
+  type GeographicAttributes = GeographicAttribute.Shop.type |
+    GeographicAttribute.City.type | GeographicAttribute.Nation.type |
+    GeographicAttribute.TopAttribute.type
   trait GeographicAttribute extends SalesAttribute
+  type ProductAttributes = ProductAttribute.Category.type |
+    ProductAttribute.Type.type | ProductAttribute.Product.type |
+    ProductAttribute.TopAttribute.type
   trait ProductAttribute extends SalesAttribute
   object GeographicAttribute:
     case class TopAttribute() extends GeographicAttribute:
-      override val parent: Option[Attribute] = None
+      override val parent: Option[Attribute[SalesAttributes]] = None
       override val value: String = ""
+      override val level = TopAttribute
     case class Nation(
         override val parent: Option[TopAttribute],
         override val value: String
-    ) extends GeographicAttribute
+    ) extends GeographicAttribute:
+      override val level = TopAttribute
     case class City(
         override val parent: Option[Nation],
         override val value: String
-    ) extends GeographicAttribute
+    ) extends GeographicAttribute:
+      override val level = City
     case class Shop(
         override val parent: Option[City],
         override val value: String
-    ) extends GeographicAttribute
+    ) extends GeographicAttribute:
+      override val level = Shop
   object ProductAttribute:
     case class TopAttribute() extends ProductAttribute:
-      override val parent: Option[Attribute] = None
+      override val parent: Option[Attribute[SalesAttributes]] = None
       override val value: String = ""
+      override val level = TopAttribute
     case class Category(
         override val parent: Option[TopAttribute],
         override val value: String
-    ) extends ProductAttribute
+    ) extends ProductAttribute:
+      override val level = Category
     case class Type(
         override val parent: Option[Category],
         override val value: String
-    ) extends ProductAttribute
+    ) extends ProductAttribute:
+      override val level = Type
     case class Product(
         override val parent: Option[Type],
         override val value: String
-    ) extends ProductAttribute
+    ) extends ProductAttribute:
+      override val level = Product
 
   type SalesMeasure = QuantitySold
 
@@ -48,13 +63,16 @@ object CubeMockup:
       where: GeographicAttribute,
       what: ProductAttribute,
       quantity: QuantitySold
-  ) extends Event[SalesAttribute, SalesMeasure]:
+  ) extends Event[SalesAttributes, SalesAttribute, SalesMeasure]:
     override def dimensions: Iterable[SalesAttribute] = List(where, what)
     override def measures: Iterable[SalesMeasure] = List(quantity)
 
-  given Operational[SalesAttribute, SalesMeasure, SalesEvent] with
+  given Operational[SalesAttributes, SalesAttribute, SalesMeasure, SalesEvent]
+  with
     extension (e: SalesEvent)
-      def sum(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
+      def sum(other: SalesEvent)(
+          groupBySet: Iterable[SalesAttributes]
+      ): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
           aggregated.where,
@@ -63,26 +81,32 @@ object CubeMockup:
         )
       def div(n: Int): SalesEvent =
         SalesEvent(e.where, e.what, QuantitySold(e.quantity.value / n))
-      def min(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
+      def min(other: SalesEvent)(
+          groupBySet: Iterable[SalesAttributes]
+      ): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
           aggregated.where,
           aggregated.what,
           QuantitySold(math.min(e.quantity.value, other.quantity.value))
         )
-      def max(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
+      def max(other: SalesEvent)(
+          groupBySet: Iterable[SalesAttributes]
+      ): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
           aggregated.where,
           aggregated.what,
           QuantitySold(math.max(e.quantity.value, other.quantity.value))
         )
-      def aggregate(groupBySet: Iterable[String]): SalesEvent =
+      def aggregate(groupBySet: Iterable[SalesAttributes]): SalesEvent =
         SalesEvent(
           e.where.upToLevel(
             e.where.searchCorrespondingAttributeName(groupBySet)
           ),
-          e.what.upToLevel(e.what.searchCorrespondingAttributeName(groupBySet)),
+          e.what.upToLevel(
+            e.what.searchCorrespondingAttributeName(groupBySet)
+          ),
           e.quantity
         )
 

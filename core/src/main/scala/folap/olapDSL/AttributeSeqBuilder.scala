@@ -16,9 +16,9 @@ object AttributeSeqBuilder:
     * @return
     *   a sequence of AttributeDSL with empty values
     */
-  extension (name: String)
-    infix def and(other: String): Seq[AttributeDSL] =
-      Seq(AttributeDSL(name), AttributeDSL(other))
+  extension [L](name: L)
+    infix def and(other: L): Seq[(L, String)] =
+      Seq((name, ""), (other, ""))
 
   /** Extension method that allows appending a new attribute (by name, with
     * empty value) to an existing sequence.
@@ -30,9 +30,9 @@ object AttributeSeqBuilder:
     * @return
     *   updated sequence including the new attribute
     */
-  extension (seq: Seq[AttributeDSL])
-    infix def and(next: String): Seq[AttributeDSL] =
-      seq :+ AttributeDSL(next)
+  extension [L](seq: Seq[(L, String)])
+    infix def and(next: L): Seq[(L, String)] =
+      seq :+ (next, "")
 
   /** Extension method that allows appending an AttributeDSL to an existing
     * sequence of AttributeDSL.
@@ -44,8 +44,8 @@ object AttributeSeqBuilder:
     * @return
     *   updated sequence including the new attribute
     */
-  extension (seq: Seq[AttributeDSL])
-    infix def and(attr: AttributeDSL): Seq[AttributeDSL] =
+  extension [L](seq: Seq[(L, String)])
+    infix def and(attr: (L, String)): Seq[(L, String)] =
       seq :+ attr
 
   /** Extension method that allows combining two attributes into a sequence of
@@ -58,6 +58,6 @@ object AttributeSeqBuilder:
     * @return
     *   a sequence of AttributeDSL
     */
-  extension (attribute: AttributeDSL)
-    infix def and(attr: AttributeDSL): Seq[AttributeDSL] =
+  extension [L](attribute: (L, String))
+    infix def and(attr: (L, String)): Seq[(L, String)] =
       Seq(attribute, attr)

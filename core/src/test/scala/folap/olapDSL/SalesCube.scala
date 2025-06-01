@@ -9,56 +9,73 @@ import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSLBuilder._
 import folap.utils.visualize
 
-trait Dimension extends Attribute
+trait Dimension extends Attribute[DimensionalAttributes]
+type DimensionalAttributes = DateDimensions | GeographicDimensions |
+  ProductDimensions
 trait DateDimension extends Dimension
+type DateDimensions = MonthAttribute.type | QuarterAttribute.type |
+  YearAttribute.type
 trait GeographicDimension extends Dimension
+type GeographicDimensions = CityAttribute.type | CountryAttribute.type |
+  RegionAttribute.type
 trait ProductDimension extends Dimension
+type ProductDimensions = ProductAttribute.type | SubCategoryAttribute.type |
+  CategoryAttribute.type
 type Measures = RevenueAmount | QuantitySold
 
 private case class YearAttribute(
-    override val parent: Option[TopAttribute],
+    override val parent: Option[Attribute[DimensionalAttributes]],
     override val value: String
-) extends DateDimension
+) extends DateDimension:
+  override val level = YearAttribute
 
 private case class QuarterAttribute(
     override val parent: Option[YearAttribute],
     override val value: String
-) extends DateDimension
+) extends DateDimension:
+  override val level = QuarterAttribute
 
 private case class MonthAttribute(
     override val parent: Option[QuarterAttribute],
     override val value: String
-) extends DateDimension
+) extends DateDimension:
+  override val level = MonthAttribute
 
 private case class RegionAttribute(
-    override val parent: Option[TopAttribute],
+    override val parent: Option[Attribute[DimensionalAttributes]],
     override val value: String
-) extends GeographicDimension
+) extends GeographicDimension:
+  override val level = RegionAttribute
 
 private case class CountryAttribute(
     override val parent: Option[RegionAttribute],
     override val value: String
-) extends GeographicDimension
+) extends GeographicDimension:
+  override val level = CountryAttribute
 
 private case class CityAttribute(
     override val parent: Option[CountryAttribute],
     override val value: String
-) extends GeographicDimension
+) extends GeographicDimension:
+  override val level = CityAttribute
 
 private case class CategoryAttribute(
-    override val parent: Option[TopAttribute],
+    override val parent: Option[Attribute[DimensionalAttributes]],
     override val value: String
-) extends ProductDimension
+) extends ProductDimension:
+  override val level = CategoryAttribute
 
 private case class SubCategoryAttribute(
     override val parent: Option[CategoryAttribute],
     override val value: String
-) extends ProductDimension
+) extends ProductDimension:
+  override val level = SubCategoryAttribute
 
 private case class ProductAttribute(
     override val parent: Option[SubCategoryAttribute],
     override val value: String
-) extends ProductDimension
+) extends ProductDimension:
+  override val level = ProductAttribute
 
 case class RevenueAmount(override val value: Double) extends Measure:
   type T = Double
@@ -72,12 +89,12 @@ case class SalesEvent(
     date: DateDimension,
     quantity: QuantitySold,
     revenue: RevenueAmount
-) extends Event[Dimension, Measures]:
+) extends Event[DimensionalAttributes, Dimension, Measures]:
   def dimensions: Iterable[Dimension] = Seq(geographic, product, date)
   def measures: Iterable[Measures] = Seq(quantity, revenue)
 
-val year2023 = YearAttribute(Some(TopAttribute()), "2023")
-val year2024 = YearAttribute(Some(TopAttribute()), "2024")
+val year2023 = YearAttribute(None, "2023")
+val year2024 = YearAttribute(None, "2024")
 
 val quarterQ1_2023 = QuarterAttribute(Some(year2023), "Q1")
 val quarterQ2_2023 = QuarterAttribute(Some(year2023), "Q2")
@@ -87,21 +104,23 @@ val monthJanuary_2023 = MonthAttribute(Some(quarterQ1_2023), "January")
 val monthJanuary_2024 = MonthAttribute(Some(quarterQ1_2024), "January")
 val monthApril_2023 = MonthAttribute(Some(quarterQ2_2023), "April")
 
-val regionNorthAmerica = RegionAttribute(Some(TopAttribute()), "North America")
+val regionNorthAmerica =
+  RegionAttribute(None, "North America")
 val countryUSA = CountryAttribute(Some(regionNorthAmerica), "USA")
 val cityNewYork = CityAttribute(Some(countryUSA), "New York")
-val regionEurope = RegionAttribute(Some(TopAttribute()), "Europe")
+val regionEurope = RegionAttribute(None, "Europe")
 val countryGermany = CountryAttribute(Some(regionEurope), "Germany")
 val cityBerlin = CityAttribute(Some(countryGermany), "Berlin")
 val countryItaly = CountryAttribute(Some(regionEurope), "Italy")
 val cityMilan = CityAttribute(Some(countryItaly), "Milan")
 
-val categoryElectronics = CategoryAttribute(Some(TopAttribute()), "Electronics")
+val categoryElectronics =
+  CategoryAttribute(None, "Electronics")
 val subCategorySmartphones =
   SubCategoryAttribute(Some(categoryElectronics), "Smartphones")
 val productIPhone = ProductAttribute(Some(subCategorySmartphones), "iPhone 14")
 val categoryHomeAppliances =
-  CategoryAttribute(Some(TopAttribute()), "Home Appliances")
+  CategoryAttribute(None, "Home Appliances")
 val subCategoryKitchen =
   SubCategoryAttribute(Some(categoryHomeAppliances), "Kitchen")
 val productBlender = ProductAttribute(Some(subCategoryKitchen), "Blender")
@@ -153,7 +172,9 @@ val salesEvent4 = SalesEvent(
   revenue4
 )
 val events = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
-val Sales: QueryDSL[Dimension, Measures] = QueryDSL(events)
+val Sales: QueryDSL[DimensionalAttributes, Dimension, Measures] = QueryDSL(
+  events
+)
 
 case class SatisfactionScore(value: Double) extends Measure:
   type T = Double
@@ -163,7 +184,7 @@ type CareMeasures = SatisfactionScore
 case class CustomerCareEvent(
     location: GeographicDimension,
     satisfaction: SatisfactionScore
-) extends Event[Dimension, CareMeasures]:
+) extends Event[DimensionalAttributes, Dimension, CareMeasures]:
   def dimensions: Iterable[Dimension] = Seq(location)
   def measures: Iterable[CareMeasures] = Seq(satisfaction)
 
@@ -176,11 +197,12 @@ val careEvent2 = CustomerCareEvent(
   cityMilan,
   SatisfactionScore(3.8)
 )
-case class ResultEvent[A <: Attribute, M <: Measure](
+case class ResultEvent[L, A <: Attribute[L], M <: Measure](
     override val dimensions: Iterable[A],
     override val measures: Iterable[M]
-) extends Event[A, M]
-given EventConstructor[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
+) extends Event[L, A, M]
+given EventConstructor[L, A <: Attribute[L], M <: Measure]
+    : EventConstructor[L, A, M] =
   (
       attributes: Iterable[A],
       measures: Iterable[M]
@@ -190,7 +212,8 @@ val careEvents = Iterable(careEvent1, careEvent2)
 val CustomerCare = QueryDSL(careEvents)
 
 @main def main(): Unit =
-  val filtered = Sales where ("Product" is "iPhone 14" and ("City" is "Berlin"))
+  val filtered =
+    Sales where (ProductAttribute is "iPhone 14" and (CityAttribute is "Berlin"))
   visualize(filtered.cube)
   val union = Sales union CustomerCare
   visualize(union.cube)

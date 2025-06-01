@@ -13,17 +13,20 @@ class SliceAndDiceSpec
     extends AnyFlatSpec
     with should.Matchers
     with BeforeAndAfterEach:
-  trait SalesAttribute extends Attribute
+  type SalesAttributes = NationAttribute.type | YearAttribute.type
+  trait SalesAttribute extends Attribute[SalesAttributes]
   trait SalesMeasure extends Measure
   case class NationAttribute(
       override val value: String,
-      override val parent: Option[TopAttribute]
-  ) extends SalesAttribute
+      override val parent: Option[Attribute[SalesAttributes]]
+  ) extends SalesAttribute:
+    override val level = NationAttribute
 
   case class YearAttribute(
       override val value: String,
-      override val parent: Option[TopAttribute]
-  ) extends SalesAttribute
+      override val parent: Option[Attribute[SalesAttributes]]
+  ) extends SalesAttribute:
+    val level = YearAttribute
 
   case class TotSalesMeasure(override val value: Int) extends SalesMeasure:
     type T = Int
@@ -31,7 +34,7 @@ class SliceAndDiceSpec
   case class SalesEvent(
       override val dimensions: Iterable[SalesAttribute],
       override val measures: Iterable[SalesMeasure]
-  ) extends Event[SalesAttribute, SalesMeasure]
+  ) extends Event[SalesAttributes, SalesAttribute, SalesMeasure]
 
   val event1: SalesEvent = SalesEvent(
     dimensions =
@@ -55,13 +58,13 @@ class SliceAndDiceSpec
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
     val filtered =
-      sliceAndDice(events, Seq(NationAttribute("Italy", None)))
+      sliceAndDice(events, Seq((NationAttribute, "Italy")))
     filtered should contain theSameElementsAs Seq(event1, event3)
 
   it should "filter events by multiple attributes (dice)" in:
     val filtered = sliceAndDice(
       events,
-      Seq(NationAttribute("Italy", None), YearAttribute("2024", None))
+      Seq((NationAttribute, "Italy"), (YearAttribute, "2024"))
     )
     filtered should contain theSameElementsAs Seq(event1)
 
@@ -71,5 +74,5 @@ class SliceAndDiceSpec
 
   it should "return an empty result when no event matches the filter" in:
     val filtered =
-      sliceAndDice(events, Seq(NationAttribute("Germany", None)))
+      sliceAndDice(events, Seq((NationAttribute, "Germany")))
     filtered should be(empty)

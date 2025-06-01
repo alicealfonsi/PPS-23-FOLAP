@@ -8,7 +8,7 @@ object MultidimensionalModel:
 
   /** An Attribute is a finite domain property of an Event
     */
-  trait Attribute:
+  trait Attribute[L]:
     /** The name of the Attribute
       * @return
       *   the Attribute name
@@ -26,7 +26,7 @@ object MultidimensionalModel:
       *   a Some containing the parent Attribute if this Attribute is not the
       *   last in the hierarchy; None otherwise
       */
-    def parent: Option[Attribute]
+    def parent: Option[Attribute[L]]
 
     /** Indicates whether this Attribute is "equal to" the other Attribute
       * @param other
@@ -35,11 +35,18 @@ object MultidimensionalModel:
       *   true if this Attribute has the same name and value as the other; false
       *   otherwise
       */
-    def equals(other: Attribute): Boolean =
-      name == other.name && value == other.value
+    def equals(other: Attribute[L]): Boolean =
+      level == other.level && value == other.value
+
+    /** Get the current hierarchy level
+      *
+      * @return
+      *   the level
+      */
+    def level: L
 
   object Attribute:
-    extension [A <: Attribute](a: A)
+    extension [L, A <: Attribute[L]](a: A)
       /** The hierarchy rooted in this Attribute
         * @return
         *   the list of attributes in the hierarchy in ascending order of
@@ -65,18 +72,18 @@ object MultidimensionalModel:
         *   the name of the Attribute that matches if this Attribute exists;
         *   otherwise TopAttribute
         */
-      def searchCorrespondingAttributeName(names: Iterable[String]): String =
+      def searchCorrespondingAttributeName(names: Iterable[L]): L =
         @tailrec
         def searchInTheHierarchy(
-            namesToMatch: Iterable[String],
+            namesToMatch: Iterable[L],
             attribute: A
-        ): String =
-          if namesToMatch.isEmpty then "TopAttribute"
+        ): L =
+          if namesToMatch.isEmpty then ???
           else
             a.hierarchy.find(
-              _.name == namesToMatch.head
+              _.level == namesToMatch.head
             ) match
-              case Some(attr) => attr.name
+              case Some(attr) => attr.level
               case None => searchInTheHierarchy(namesToMatch.tail, attribute)
         searchInTheHierarchy(names, a)
 
@@ -87,13 +94,7 @@ object MultidimensionalModel:
         * @return
         *   the Attribute whose name matches the one specified
         */
-      def upToLevel(level: String): A = hierarchy.find(_.name == level).get
-
-  /** The top Attribute in the hierarchy
-    */
-  case class TopAttribute() extends Attribute:
-    override val parent: Option[Attribute] = None
-    override val value: String = ""
+      def upToLevel(level: L): A = hierarchy.find(_.level == level).get
 
   /** A Measure represents a numeric value associated with an Event
     */

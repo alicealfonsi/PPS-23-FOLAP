@@ -8,7 +8,7 @@ import MultidimensionalModel._
   * @tparam M
   *   the type of the Event measures
   */
-trait Event[A <: Attribute, M <: Measure]:
+trait Event[L, A <: Attribute[L], M <: Measure]:
   /** The dimensions that describe the Event
     * @return
     *   the list of Event dimensions
@@ -29,7 +29,7 @@ trait Event[A <: Attribute, M <: Measure]:
   def measures: Iterable[M]
 
 object Event:
-  extension [A <: Attribute, M <: Measure](event: Event[A, M])
+  extension [L, A <: Attribute[L], M <: Measure](event: Event[L, A, M])
     /** Finds the attributes of this Event whose name is equal to one of the
       * specified ones
       * @param names
@@ -37,5 +37,5 @@ object Event:
       * @return
       *   a new iterable collection containing the found attributes
       */
-    def findAttributesByNames(names: Iterable[String]): Iterable[A] =
+    def findAttributesByNames(names: Iterable[L]): Iterable[A] =
       names.flatMap(name => event.attributes.filter(_.name == name))

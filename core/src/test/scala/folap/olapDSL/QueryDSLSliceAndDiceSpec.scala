@@ -10,54 +10,40 @@ import org.scalatest.matchers.should.Matchers
 
 class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
 
-  trait SalesAttribute extends Attribute
-  trait SalesMeasure extends Measure
-  case class NationAttribute(
-      override val value: String,
-      override val parent: Option[TopAttribute]
-  ) extends SalesAttribute
-  case class YearAttribute(
-      override val value: String,
-      override val parent: Option[TopAttribute]
-  ) extends SalesAttribute
-  case class TotSalesMeasure(override val value: Int) extends SalesMeasure:
-    type T = Int
+  import folap.core.CubeMockup._
+  import CubeMockup.GeographicAttribute._
+  import CubeMockup.ProductAttribute._
 
-  case class SalesEvent(
-      override val dimensions: Iterable[SalesAttribute],
-      override val measures: Iterable[SalesMeasure]
-  ) extends Event[SalesAttribute, SalesMeasure]
   val event1: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
-    measures = Seq(TotSalesMeasure(100))
+    Nation(None, "Italy"),
+    Category(None, "Pizza"),
+    QuantitySold(100)
   )
 
   val event2: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("France", None), YearAttribute("2024", None)),
-    measures = Seq(TotSalesMeasure(150))
+    Nation(None, "France"),
+    Category(None, "Baguettes"),
+    QuantitySold(150)
   )
 
   val event3: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
-    measures = Seq(TotSalesMeasure(120))
+    Nation(None, "Italy"),
+    Category(None, "Pasta"),
+    QuantitySold(120)
   )
 
   val events: Seq[SalesEvent] = Seq(event1, event2, event3)
 
-  val Sales: QueryDSL[SalesAttribute, SalesMeasure] = QueryDSL(events)
+  val Sales = QueryDSL[SalesAttributes, SalesAttribute, SalesMeasure](events)
 
   "sliceAndDice" should "filter events by a single attribute (slice)" in:
-    val Nation = "Nation"
     val filtered = Sales where (Nation is "Italy")
     filtered.cube should contain theSameElementsAs Seq(event1, event3)
 
   it should "filter events by multiple attributes (dice)" in:
-    val Nation = "Nation"
-    val Year = "Year"
-    val filtered = Sales where (Nation is "Italy" and (Year is "2024"))
+    val filter: Iterable[(SalesAttributes, String)] =
+      (Nation is "Italy" and (Category is "Pizza"))
+    val filtered = Sales where filter
     filtered.cube shouldEqual Seq(event1)
 
   it should "return all events when no filter is provided" in:
@@ -65,6 +51,5 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
     filtered.cube should contain theSameElementsAs events
 
   it should "return an empty result when no event matches the filter" in:
-    val Nation = "Nation"
     val filtered = Sales where (Nation is "Germany")
     filtered.cube shouldBe empty

@@ -35,19 +35,22 @@ object Operators:
     */
 
   def drillAcross[
-      A1 <: Attribute,
+      L1,
+      A1 <: Attribute[L1],
       M1 <: Measure,
-      A2 <: Attribute,
+      L2,
+      A2 <: Attribute[L2],
       M2 <: Measure
   ](
-      events: Iterable[Event[A1, M1]],
-      otherEvents: Iterable[Event[A2, M2]],
-      createEvent: EventConstructor[Attribute, M1 | M2]
-  ): Iterable[Event[Attribute, M1 | M2]] = {
+      events: Iterable[Event[L1, A1, M1]],
+      otherEvents: Iterable[Event[L2, A2, M2]],
+      createEvent: EventConstructor[L1 | L2, Attribute[L1 | L2], M1 | M2]
+  ): Iterable[Event[L1 | L2, Attribute[L1 | L2], M1 | M2]] = {
 
-    def leafAttributes(attrs: Iterable[Attribute]): Iterable[Attribute] =
+    def leafAttributes(attrs: Iterable[A1 | A2]): Iterable[Attribute[L1 | L2]] =
       val allParents = attrs.flatMap(_.parent)
-      attrs.filterNot(a => allParents.exists(_ == a))
+      // attrs.filterNot(a => allParents.exists(_ == a))
+      ???
 
     events.flatMap { eventA =>
       val leavesA = leafAttributes(eventA.attributes)
@@ -87,25 +90,25 @@ object Operators:
     *   events that match all filters
     */
 
-  def sliceAndDice[A <: Attribute, M <: Measure](
-      events: Iterable[Event[A, M]],
-      filters: Iterable[Attribute]
-  ): Iterable[Event[A, M]] =
+  def sliceAndDice[L, A <: Attribute[L], M <: Measure](
+      events: Iterable[Event[L, A, M]],
+      filters: Iterable[(L, String)]
+  ): Iterable[Event[L, A, M]] =
     events.filter { event =>
       filters.forall { filter =>
         event.attributes
-          .find(attr => attr.name == filter.name)
-          .exists(_.value == filter.value)
+          .find(attr => attr == filter._1)
+          .exists(_.value == filter._2)
       }
 
     }
 
   import Cube.*
   import Additivity.*, AggregationOperator.*
-  def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
+  def rollUp[L, A <: Attribute[L], M <: Measure, E <: Event[L, A, M]](
       events: Iterable[E]
-  )(groupBySet: Iterable[String])(aggregationOperator: AggregationOperator)(
-      using operational: Operational[A, M, E]
+  )(groupBySet: Iterable[L])(aggregationOperator: AggregationOperator)(using
+      operational: Operational[L, A, M, E]
   ): Iterable[E] =
     if groupBySet.exists(name => events.matchAttributeByName(name)) then
       val groupByMap =

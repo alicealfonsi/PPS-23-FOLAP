@@ -11,19 +11,15 @@ import GeographicAttribute._
 import ProductAttribute._
 
 class RollUpSpec extends AnyFlatSpec with should.Matchers:
-  "RollUp" should "aggregate only if at least one of the attributes in the group-by set matches all events" in:
+  "RollUp" should "search for attributes in the group-by set among the dimensions" in:
     val events = List(event1, event2)
-    val groupBySet = List("Client")
-    rollUp(events)(groupBySet)(Sum) shouldEqual List(event1, event2)
-
-  it should "search for attributes in the group-by set among the dimensions" in:
-    val events = List(event1, event2)
-    val groupBySet = List("Shop", "Product")
+    val groupBySet = List(Shop, Product)
     rollUp(events)(groupBySet)(Sum) shouldEqual List(event1, event2)
 
   it should "search for attributes in the group-by set by moving up the attributes hierarchies" in:
     val events = List(event1, event2)
-    val groupBySet = List("Nation", "TopAttribute")
+    val groupBySet =
+      List(Nation, folap.core.CubeMockup.ProductAttribute.TopAttribute)
     rollUp(events)(groupBySet)(Sum) shouldEqual List(
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
@@ -34,7 +30,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "aggregate along the entire hierarchy for dimensions for which no attribute is specified in the group-by set" in:
     val events = List(event1, event2, event3)
-    val groupBySet = List("Nation")
+    val groupBySet = List(Nation)
     rollUp(events)(groupBySet)(Sum) shouldEqual List(
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
@@ -45,12 +41,17 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "aggregate foreach attribute specified in the group-by set" in:
     val events = List(event1, event2, event3)
-    val groupBySet = List("Type", "Nation")
+    val groupBySet = List(Type, Nation)
     rollUp(events)(groupBySet)(Sum) shouldEqual List(
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
         Type(
-          Some(Category(Some(ProductAttribute.TopAttribute()), "Groceries")),
+          Some(
+            Category(
+              Some(ProductAttribute.TopAttribute()),
+              "Groceries"
+            )
+          ),
           "Food"
         ),
         QuantitySold(7)
@@ -58,7 +59,12 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
       SalesEvent(
         Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
         Type(
-          Some(Category(Some(ProductAttribute.TopAttribute()), "Groceries")),
+          Some(
+            Category(
+              Some(ProductAttribute.TopAttribute()),
+              "Groceries"
+            )
+          ),
           "Drink"
         ),
         QuantitySold(3)
@@ -67,7 +73,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "return a set of secondary events resulting from the aggregation using the sum operator of multiple primary events according to the attributes in the group-by set" in:
     val events = List(event1, event2, event3)
-    val groupBySet = List("Nation", "Product")
+    val groupBySet = List(Nation, Product)
     val aggregationOperator = Sum
     rollUp(events)(groupBySet)(aggregationOperator) shouldEqual List(
       SalesEvent(
@@ -76,7 +82,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Food"
             )
@@ -91,7 +100,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Drink"
             )
@@ -104,7 +116,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "return a set of secondary events resulting from the aggregation using the average operator of multiple primary events according to the attributes in the group-by set" in:
     val events = List(event1, event2, event3)
-    val groupBySet = List("Nation", "Product")
+    val groupBySet = List(Nation, Product)
     val aggregationOperator = Avg
     rollUp(events)(groupBySet)(aggregationOperator) shouldEqual List(
       SalesEvent(
@@ -113,7 +125,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Food"
             )
@@ -128,7 +143,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Drink"
             )
@@ -141,7 +159,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "return a set of secondary events resulting from the aggregation using the minimum operator of multiple primary events according to the attributes in the group-by set" in:
     val events = List(event1, event2, event3)
-    val groupBySet = List("Nation", "Product")
+    val groupBySet = List(Nation, Product)
     val aggregationOperator = Min
     rollUp(events)(groupBySet)(aggregationOperator) shouldEqual List(
       SalesEvent(
@@ -150,7 +168,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Food"
             )
@@ -165,7 +186,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Drink"
             )
@@ -178,7 +202,7 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
 
   it should "return a set of secondary events resulting from the aggregation using the maximum operator of multiple primary events according to the attributes in the group-by set" in:
     val events = List(event1, event2, event3)
-    val groupBySet = List("Nation", "Product")
+    val groupBySet = List(Nation, Product)
     val aggregationOperator = Max
     rollUp(events)(groupBySet)(aggregationOperator) shouldEqual List(
       SalesEvent(
@@ -187,7 +211,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Food"
             )
@@ -202,7 +229,10 @@ class RollUpSpec extends AnyFlatSpec with should.Matchers:
           Some(
             Type(
               Some(
-                Category(Some(ProductAttribute.TopAttribute()), "Groceries")
+                Category(
+                  Some(ProductAttribute.TopAttribute()),
+                  "Groceries"
+                )
               ),
               "Drink"
             )

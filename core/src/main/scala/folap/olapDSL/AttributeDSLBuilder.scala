@@ -14,6 +14,6 @@ object AttributeDSLBuilder:
     * @return
     *   an AttributeDSL with the specified name and value.
     */
-  extension (name: String)
-    infix def is(value: String): AttributeDSL =
-      AttributeDSL(name, value)
+  extension [L](name: L)
+    infix def is(value: String): (L, String) =
+      (name, value)

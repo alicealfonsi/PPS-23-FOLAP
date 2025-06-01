@@ -7,7 +7,9 @@ import folap.core.MultidimensionalModel._
   * All attribute names are automatically suffixed with "Attribute".
   */
 object AttributeDSL:
-  trait AttributeDSL extends Attribute
+  trait AttributeDSL[L]:
+    def name: L
+    def value: String
 
   /** A concrete implementation of EventAttribute used to define attributes with
     * a value.
@@ -17,11 +19,10 @@ object AttributeDSL:
     * @param value
     *   value of the attribute
     */
-  case class AttributeDSLWithValue(
-      override val name: String,
-      override val value: String
-  ) extends AttributeDSL:
-    override val parent: Option[Attribute] = None
+  case class AttributeDSLWithValue[L](
+      val name: L,
+      val value: String
+  ) extends AttributeDSL[L]
 
   /** A concrete implementation of EventAttribute used to define attributes
     * without a value.
@@ -31,11 +32,10 @@ object AttributeDSL:
     * @param name
     *   name of the attribute
     */
-  case class AttributeDSLWithoutValue(
-      override val name: String,
-      override val value: String = ""
-  ) extends AttributeDSL:
-    override val parent: Option[Attribute] = None
+  case class AttributeDSLWithoutValue[L](
+      val name: L,
+      val value: String = ""
+  ) extends AttributeDSL[L]
 
   /** Creates an AttributeDSLWithValue with the specified base name and value.
     *
@@ -46,8 +46,8 @@ object AttributeDSL:
     * @return
     *   an instance of AttributeDSLWithValue
     */
-  def apply(baseName: String, value: String): AttributeDSLWithValue =
-    AttributeDSLWithValue(baseName + "Attribute", value)
+  def apply[L](baseName: L, value: String): AttributeDSLWithValue[L] =
+    AttributeDSLWithValue(baseName, value)
 
   /** Creates an AttributeDSLWithoutValue with the specified base name.
     *
@@ -56,5 +56,5 @@ object AttributeDSL:
     * @return
     *   an instance of AttributeDSLWithoutValue with empty value
     */
-  def apply(baseName: String): AttributeDSLWithoutValue =
-    AttributeDSLWithoutValue(baseName + "Attribute")
+  def apply[L](baseName: L): AttributeDSLWithoutValue[L] =
+    AttributeDSLWithoutValue(baseName)

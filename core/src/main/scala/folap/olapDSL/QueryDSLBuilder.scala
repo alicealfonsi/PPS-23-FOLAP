@@ -12,8 +12,8 @@ import folap.core._
   * @param op
   *   roll-up operation to apply
   */
-case class QueryWithOp[A <: Attribute, M <: Measure](
-    query: QueryDSL[A, M],
+case class QueryWithOp[L, A <: Attribute[L], M <: Measure](
+    query: QueryDSL[L, A, M],
     op: AggregationOp
 )
 
@@ -24,7 +24,7 @@ object QueryDSLBuilder:
 
   /** Extension methods for AggregationOp.
     */
-  extension [A <: Attribute, M <: Measure](op: AggregationOp)
+  extension [L, A <: Attribute[L], M <: Measure](op: AggregationOp)
     /** Wraps a cube and a roll-up operation into a QueryWithOp.
       *
       * @param q
@@ -32,13 +32,13 @@ object QueryDSLBuilder:
       * @return
       *   a QueryWithOp with the cube and operation
       */
-    infix def of(q: QueryDSL[A, M]): QueryWithOp[A, M] =
+    infix def of(q: QueryDSL[L, A, M]): QueryWithOp[L, A, M] =
       QueryWithOp(q, op)
 
   /** Extension methods for QueryDSL to support slice and dice and drill across
     * operations.
     */
-  extension [A <: Attribute, M <: Measure](q: QueryDSL[A, M])
+  extension [L, A <: Attribute[L], M <: Measure](q: QueryDSL[L, A, M])
     /** Performs the slice and dice
       *
       * @param filters
@@ -46,7 +46,7 @@ object QueryDSLBuilder:
       * @return
       *   a new QueryDSL instance (cube) with filtered events
       */
-    infix def where(filters: Iterable[Attribute]): QueryDSL[A, M] =
+    infix def where(filters: Iterable[(L, String)]): QueryDSL[L, A, M] =
       val sliced = sliceAndDice(q.cube, filters)
       QueryDSL(sliced)
 
@@ -57,7 +57,7 @@ object QueryDSLBuilder:
       * @return
       *   a new QueryDSL instance (cube) with filtered events
       */
-    infix def where(filter: Attribute): QueryDSL[A, M] =
+    infix def where(filter: (L, String)): QueryDSL[L, A, M] =
       val sliced = sliceAndDice(q.cube, Iterable(filter))
       QueryDSL(sliced)
 
@@ -70,10 +70,10 @@ object QueryDSLBuilder:
       * @return
       *   a new QueryDSL representing the drill-across result
       */
-    infix def union[A2 <: Attribute, M2 <: Measure](
-        other: QueryDSL[A2, M2]
+    infix def union[A2 <: Attribute[L], M2 <: Measure](
+        other: QueryDSL[L, A2, M2]
     )(using
-        constructor: EventConstructor[Attribute, M | M2]
-    ): QueryDSL[Attribute, M | M2] =
+        constructor: EventConstructor[L, Attribute[L], M | M2]
+    ): QueryDSL[L, A | A2, M | M2] =
       val drilled = drillAcross(q.cube, other.cube, constructor)
-      QueryDSL(drilled)
+      ??? // QueryDSL(drilled)

@@ -2,20 +2,20 @@ package folap.utils
 import folap.core.Event
 import folap.core.MultidimensionalModel._
 
-private def extractAllDimensions(attr: Attribute): List[Attribute] =
+private def extractAllDimensions[L](attr: Attribute[L]): List[Attribute[L]] =
   attr match
-    case TopAttribute() => Nil
+    // case TopAttribute() => Nil
     case a =>
       a.parent.toList.flatMap(extractAllDimensions) ++ List(a)
 
-def visualize(events: Iterable[Event[_, _]]): Unit =
+def visualize(events: Iterable[Event[_, _, _]]): Unit =
   println("===== Cube Result =====")
   events.zipWithIndex.foreach { (event, idx) =>
     println(s"--- Event ${idx + 1} ---")
 
     val expanded = event.dimensions
       .flatMap(extractAllDimensions)
-      .filter(_ != TopAttribute())
+    // .filter(_.level != TopAttribute)
 
     val seen = scala.collection.mutable.LinkedHashSet[String]()
     val orderedDims = expanded.filter { a =>
