@@ -52,7 +52,7 @@ object CubeMockup:
     override def dimensions: Iterable[SalesAttribute] = List(where, what)
     override def measures: Iterable[SalesMeasure] = List(quantity)
 
-  given Operational[SalesAttribute, SalesMeasure, SalesEvent] with
+  given Computable[SalesAttribute, SalesMeasure, SalesEvent] with
     extension (e: SalesEvent)
       def sum(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)

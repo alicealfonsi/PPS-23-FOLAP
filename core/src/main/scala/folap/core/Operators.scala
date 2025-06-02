@@ -105,7 +105,7 @@ object Operators:
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
   )(groupBySet: Iterable[String])(aggregationOperator: AggregationOp)(using
-      operational: Operational[A, M, E]
+      computable: Computable[A, M, E]
   ): Iterable[E] =
     if groupBySet.exists(name => events.matchAttributeByName(name)) then
       val groupByMap =
