@@ -57,8 +57,8 @@ object CubeMockup:
       def sum(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
-          aggregated.where,
-          aggregated.what,
+          aggregated.where.lowestCommonAncestor(other.where),
+          aggregated.what.lowestCommonAncestor(other.what),
           QuantitySold(aggregated.quantity.value + other.quantity.value)
         )
       def div(n: Int): SalesEvent =
@@ -66,8 +66,8 @@ object CubeMockup:
       def min(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
-          aggregated.where,
-          aggregated.what,
+          aggregated.where.lowestCommonAncestor(other.where),
+          aggregated.what.lowestCommonAncestor(other.what),
           QuantitySold(
             math.min(aggregated.quantity.value, other.quantity.value)
           )
@@ -75,8 +75,8 @@ object CubeMockup:
       def max(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
-          aggregated.where,
-          aggregated.what,
+          aggregated.where.lowestCommonAncestor(other.where),
+          aggregated.what.lowestCommonAncestor(other.what),
           QuantitySold(
             math.max(aggregated.quantity.value, other.quantity.value)
           )
