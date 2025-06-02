@@ -102,6 +102,27 @@ object Operators:
 
   import Cube.*
   import AggregationOp.*
+
+  /** Performs events aggregation based on the specified group-by set and
+    * aggregation operator
+    * @param events
+    *   primary events to aggregate
+    * @param groupBySet
+    *   the names of the attributes against which to aggregate
+    * @param aggregationOperator
+    *   the operator according to which aggregate the measures values of primary
+    *   events
+    * @param computable
+    *   a Computable type class instance
+    * @tparam A
+    *   the type of Event attributes, which must be a subtype of Attribute
+    * @tparam M
+    *   the type of Event measures, which must be a subtype of Measure
+    * @tparam E
+    *   the events type, which must be a subtype of Event[A, M]
+    * @return
+    *   secondary events resulting from the aggregation
+    */
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
   )(groupBySet: Iterable[String])(aggregationOperator: AggregationOp)(using
