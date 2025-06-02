@@ -41,5 +41,11 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
       List("Category", "City")
     ) shouldEqual "City"
 
+  it should "find the lowest ancestor that it has in common with another attribute" in:
+    shop.lowestCommonAncestor(shop2) shouldEqual Nation(
+      Some(GeographicAttribute.TopAttribute()),
+      "Italy"
+    )
+
   it should "move up the hierarchy to the specified level" in:
     shop.upToLevel("City") shouldEqual City(Some(nation123), "Bologna")
