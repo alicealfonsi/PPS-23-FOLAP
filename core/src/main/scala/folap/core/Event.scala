@@ -4,9 +4,9 @@ import MultidimensionalModel._
 
 /** An Event is an instance of a fact that occurred in the business domain
   * @tparam A
-  *   the type of the Event attributes
+  *   the type of Event attributes, which must be a subtype of Attribute
   * @tparam M
-  *   the type of the Event measures
+  *   the type of Event measures, which must be a subtype of Measure
   */
 trait Event[A <: Attribute, M <: Measure]:
   /** The dimensions that describe the Event
