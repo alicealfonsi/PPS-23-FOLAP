@@ -100,7 +100,8 @@ object Codegen:
       .map((x, t) => s"${t}(aggregated.${x}.value.min(other.${x}.value))")
     val maxMeasures = measures
       .map((x, t) => s"${t}(aggregated.${x}.value.max(other.${x}.value))")
-    val aggregatedDimensions = dimensions.map(x => s"aggregated.${x}")
+    val aggregatedDimensions =
+      dimensions.map(x => s"aggregated.${x}.lowestCommonAncestor(other.${x})")
 
     Seq(
       s"given folap.core.Operational[Dimension, Measures, ${name}] with",
