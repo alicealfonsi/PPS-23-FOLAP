@@ -101,11 +101,11 @@ object Operators:
     }
 
   import Cube.*
-  import Additivity.*, AggregationOperator.*
+  import AggregationOp.*
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
-  )(groupBySet: Iterable[String])(aggregationOperator: AggregationOperator)(
-      using operational: Operational[A, M, E]
+  )(groupBySet: Iterable[String])(aggregationOperator: AggregationOp)(using
+      operational: Operational[A, M, E]
   ): Iterable[E] =
     if groupBySet.exists(name => events.matchAttributeByName(name)) then
       val groupByMap =
