@@ -68,14 +68,18 @@ object CubeMockup:
         SalesEvent(
           aggregated.where,
           aggregated.what,
-          QuantitySold(math.min(e.quantity.value, other.quantity.value))
+          QuantitySold(
+            math.min(aggregated.quantity.value, other.quantity.value)
+          )
         )
       def max(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
           aggregated.where,
           aggregated.what,
-          QuantitySold(math.max(e.quantity.value, other.quantity.value))
+          QuantitySold(
+            math.max(aggregated.quantity.value, other.quantity.value)
+          )
         )
       def aggregate(groupBySet: Iterable[String]): SalesEvent =
         SalesEvent(
