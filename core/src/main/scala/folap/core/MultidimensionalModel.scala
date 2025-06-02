@@ -80,6 +80,21 @@ object MultidimensionalModel:
               case None => searchInTheHierarchy(namesToMatch.tail, attribute)
         searchInTheHierarchy(names, a)
 
+      /** Finds the lowest common ancestor between this Attribute and the other
+        * Attribute
+        * @param other
+        *   the Attribute to compare with
+        * @return
+        *   the lowest common Attribute for both attributes
+        */
+      def lowestCommonAncestor(other: A): A =
+        @tailrec
+        def findLCA(upperLevels: Iterable[A], other: A): A =
+          other.hierarchy.find(_.value == upperLevels.head.value) match
+            case Some(lca) => lca
+            case None      => findLCA(upperLevels.tail, other)
+        findLCA(a.hierarchy, other)
+
       /** Finds the Attribute in the hierarchy whose name matches the specified
         * one
         * @param level

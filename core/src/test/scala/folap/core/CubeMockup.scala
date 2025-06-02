@@ -52,13 +52,13 @@ object CubeMockup:
     override def dimensions: Iterable[SalesAttribute] = List(where, what)
     override def measures: Iterable[SalesMeasure] = List(quantity)
 
-  given Operational[SalesAttribute, SalesMeasure, SalesEvent] with
+  given Computable[SalesAttribute, SalesMeasure, SalesEvent] with
     extension (e: SalesEvent)
       def sum(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
-          aggregated.where,
-          aggregated.what,
+          aggregated.where.lowestCommonAncestor(other.where),
+          aggregated.what.lowestCommonAncestor(other.what),
           QuantitySold(aggregated.quantity.value + other.quantity.value)
         )
       def div(n: Int): SalesEvent =
@@ -66,16 +66,20 @@ object CubeMockup:
       def min(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
-          aggregated.where,
-          aggregated.what,
-          QuantitySold(math.min(e.quantity.value, other.quantity.value))
+          aggregated.where.lowestCommonAncestor(other.where),
+          aggregated.what.lowestCommonAncestor(other.what),
+          QuantitySold(
+            math.min(aggregated.quantity.value, other.quantity.value)
+          )
         )
       def max(other: SalesEvent)(groupBySet: Iterable[String]): SalesEvent =
         val aggregated = e.aggregate(groupBySet)
         SalesEvent(
-          aggregated.where,
-          aggregated.what,
-          QuantitySold(math.max(e.quantity.value, other.quantity.value))
+          aggregated.where.lowestCommonAncestor(other.where),
+          aggregated.what.lowestCommonAncestor(other.what),
+          QuantitySold(
+            math.max(aggregated.quantity.value, other.quantity.value)
+          )
         )
       def aggregate(groupBySet: Iterable[String]): SalesEvent =
         SalesEvent(

@@ -1,6 +1,6 @@
 package folap.core
 
-import folap.core.Additivity.AggregationOperator._
+import folap.core.AggregationOp._
 import folap.core.CubeMockup._
 import org.scalatest._
 
