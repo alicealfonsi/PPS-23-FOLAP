@@ -114,9 +114,9 @@ object Operators:
         )
       groupByMap.values.map(events =>
         aggregationOperator match
-          case Sum => events.aggregateBySum(groupBySet)
-          case Avg => events.aggregateByAverage(groupBySet)
-          case Min => events.aggregateByMinimum(groupBySet)
-          case Max => events.aggregateByMaximum(groupBySet)
+          case Sum => events.aggregateBy(Sum)(groupBySet)
+          case Avg => events.aggregateBy(Avg)(groupBySet)
+          case Min => events.aggregateBy(Min)(groupBySet)
+          case Max => events.aggregateBy(Max)(groupBySet)
       )
     else events

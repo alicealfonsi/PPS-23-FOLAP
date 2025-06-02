@@ -10,17 +10,29 @@ trait Operational[A <: Attribute, M <: Measure, E <: Event[A, M]]:
     def max(other: E)(groupBySet: Iterable[String]): E
     def aggregate(groupBySet: Iterable[String]): E
   extension (events: Iterable[E])
-    def aggregateBySum(groupBySet: Iterable[String]): E =
+    /** Aggregates the events according to the specified aggregation operator
+      * and the group-by set
+      * @param op
+      *   the aggregation operator
+      * @param groupBySet
+      *   the names of the attributes against which to aggregate
+      * @return
+      *   a new Event resulting from the aggregation
+      */
+    def aggregateBy(op: AggregationOp)(groupBySet: Iterable[String]): E =
       if events.size == 1 then events.head.aggregate(groupBySet)
       else
-        events.tail.foldLeft(events.head)((acc, el) => acc.sum(el)(groupBySet))
-    def aggregateByAverage(groupBySet: Iterable[String]): E =
-      events.aggregateBySum(groupBySet) div events.size
-    def aggregateByMinimum(groupBySet: Iterable[String]): E =
-      if events.size == 1 then events.head.aggregate(groupBySet)
-      else
-        events.tail.foldLeft(events.head)((acc, el) => acc.min(el)(groupBySet))
-    def aggregateByMaximum(groupBySet: Iterable[String]): E =
-      if events.size == 1 then events.head.aggregate(groupBySet)
-      else
-        events.tail.foldLeft(events.head)((acc, el) => acc.max(el)(groupBySet))
+        op match
+          case Sum =>
+            events.tail.foldLeft(events.head)((acc, el) =>
+              acc.sum(el)(groupBySet)
+            )
+          case Avg => events.aggregateBy(Sum)(groupBySet) div events.size
+          case Min =>
+            events.tail.foldLeft(events.head)((acc, el) =>
+              acc.min(el)(groupBySet)
+            )
+          case Max =>
+            events.tail.foldLeft(events.head)((acc, el) =>
+              acc.max(el)(groupBySet)
+            )

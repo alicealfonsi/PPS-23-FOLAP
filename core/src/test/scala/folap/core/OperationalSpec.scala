@@ -7,6 +7,7 @@ import folap.core.CubeMockup._
 import org.scalatest._
 
 import GeographicAttribute._
+import AggregationOp._
 import flatspec._
 import matchers._
 
@@ -71,7 +72,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
       )
 
   "Operational[SalesEvent]" should "return the correct aggregation by sum of a SalesEvent based on the specified group-by set" in:
-    List(event3).aggregateBySum(
+    List(event3).aggregateBy(Sum)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
@@ -80,7 +81,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by sum of SalesEvents based on the specified group-by set" in:
-    List(event1, event2, event3).aggregateBySum(
+    List(event1, event2, event3).aggregateBy(Sum)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(TopAttribute()), "Italy"),
@@ -89,7 +90,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by average of a SalesEvent based on the specified group-by set" in:
-    List(event3).aggregateByAverage(
+    List(event3).aggregateBy(Avg)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
@@ -98,7 +99,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by average of SalesEvents based on the specified group-by set" in:
-    List(event1, event2, event3).aggregateByAverage(
+    List(event1, event2, event3).aggregateBy(Avg)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(TopAttribute()), "Italy"),
@@ -107,7 +108,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by minimum of a SalesEvent based on the specified group-by set" in:
-    List(event3).aggregateByMinimum(
+    List(event3).aggregateBy(Min)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
@@ -116,7 +117,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by minimum of SalesEvents based on the specified group-by set" in:
-    List(event1, event2, event3).aggregateByMinimum(
+    List(event1, event2, event3).aggregateBy(Min)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(TopAttribute()), "Italy"),
@@ -125,7 +126,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by maximum of a SalesEvent based on the specified group-by set" in:
-    List(event3).aggregateByMaximum(
+    List(event3).aggregateBy(Max)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(GeographicAttribute.TopAttribute()), "Italy"),
@@ -134,7 +135,7 @@ class OperationalSpec extends AnyFlatSpec with should.Matchers:
     )
 
   "Operational[SalesEvent]" should "return the correct aggregation by maximum of SalesEvents based on the specified group-by set" in:
-    List(event1, event2, event3).aggregateByMaximum(
+    List(event1, event2, event3).aggregateBy(Max)(
       List("Nation", "Category")
     ) shouldEqual SalesEvent(
       Nation(Some(TopAttribute()), "Italy"),
