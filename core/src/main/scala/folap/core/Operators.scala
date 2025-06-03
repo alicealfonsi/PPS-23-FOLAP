@@ -51,6 +51,27 @@ object Operators:
     val allParents = attrs.flatMap(_.parent)
     attrs.filterNot(a => allParents.exists(_ == a))
 
+  /** Compares two attributes and returns true if they share the exact same hierarchy path.
+  *
+  * Two attributes are considered to have the same hierarchy if:
+  *   - They have the same name and value
+  *   - Their respective parents, grandparents, etc. match exactly in both name and value
+  *
+  * @param a1 
+  * the first attribute
+  * @param a2 
+  * the second attribute
+  * @tparam A 
+  * the attribute type, which must extend `Attribute`
+  * @return 
+  *  true if the two attributes share the same hierarchical structure and values
+  */
+  private def sameHierarchy[A <: Attribute](a1: A, a2: A): Boolean =
+        def asPath(attr: A): List[(String, String)] =
+         attr.hierarchy.map(a => (a.name, a.value)).toList
+
+        asPath(a1) == asPath(a2)
+
   /** Performs a drill across operation that combines events from two cubes when
     * they share at least one common leaf attribute.
     *
@@ -99,8 +120,7 @@ object Operators:
         val leavesB = leafAttributes(eventB.attributes)
 
         val commonLeaves = leavesA.filter { attrA =>
-          leavesB.exists(attrB =>
-            attrA.name == attrB.name && attrA.value == attrB.value
+          leavesB.exists(attrB => sameHierarchy(attrA, attrB)
           )
         }
 
