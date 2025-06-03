@@ -1,6 +1,6 @@
 package folap.core
 
-import MultidimensionalModel._
+import multidimensionalModel._
 
 /** An Event is an instance of a fact that occurred in the business domain
   * @tparam A

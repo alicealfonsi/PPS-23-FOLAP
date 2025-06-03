@@ -1,6 +1,6 @@
 package folap.core
 
-import MultidimensionalModel._
+import multidimensionalModel._
 
 /** A Cube stores events related to the same fact
   * @tparam A

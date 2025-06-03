@@ -1,6 +1,6 @@
 package folap.utils
 import folap.core.Event
-import folap.core.MultidimensionalModel._
+import folap.core.multidimensionalModel._
 
 private def extractAllDimensions(attr: Attribute): List[Attribute] =
   attr match

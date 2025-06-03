@@ -1,6 +1,6 @@
 package folap.core
 
-import MultidimensionalModel._
+import folap.core.multidimensionalModel._
 
 object CubeMockup:
   trait SalesAttribute extends Attribute

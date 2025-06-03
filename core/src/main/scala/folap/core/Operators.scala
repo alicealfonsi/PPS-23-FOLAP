@@ -1,6 +1,6 @@
 package folap.core
 
-import MultidimensionalModel._
+import multidimensionalModel._
 
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
