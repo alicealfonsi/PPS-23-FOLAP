@@ -23,7 +23,7 @@ case class QueryWithOp[A <: Attribute, M <: Measure, E <: Event[A, M]](
   */
 object QueryDSLBuilder:
 
-  /** Extension methods for AggregationOp.
+  /** Extension methods for AggregationOp to support roll-up operations
     */
   extension [A <: Attribute, M <: Measure, E <: Event[A, M]](op: AggregationOp)
     /** Wraps a cube and a roll-up operation into a QueryWithOp.
@@ -64,7 +64,7 @@ object QueryDSLBuilder:
       val sliced = sliceAndDice(q.cube, Iterable(filter))
       QueryDSL(sliced)
 
-    /** Performs a drill-across between two queries (cubes).
+    /** Performs a drill across between two queries (cubes).
       *
       * @param other
       *   other cube to combine witt
@@ -89,7 +89,7 @@ object QueryDSLBuilder:
   extension [A <: Attribute, M <: Measure, M2 <: Measure, E <: Event[A, M]](
       qwo: QueryWithOp[A, M, E]
   )
-    /** Aggregates the cube by a set of attributes using the specified roll-up
+    /** Aggregates the cube by a set of attributes using the specified roll up
       * operation.
       *
       * @param attributes
@@ -104,7 +104,7 @@ object QueryDSLBuilder:
     ): QueryDSL[A, M, E] =
       QueryDSL(rollUp(qwo.query.cube)(attributes.map(_.name))(qwo.op))
 
-    /** Aggregates the cube by a single attribute using the specified roll-up
+    /** Aggregates the cube by a single attribute using the specified roll up
       * operation.
       *
       * @param attribute

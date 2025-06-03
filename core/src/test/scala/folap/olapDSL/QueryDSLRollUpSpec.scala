@@ -13,7 +13,7 @@ import ProductAttribute._
 
 class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 
-  "RollUp" should "aggregate only if at least one of the attributes in the group-by set matches all events" in:
+  "The DSL syntax for roll up" should "aggregate only if at least one of the attributes in the group-by set matches all events" in:
     val Sales = QueryDSL(Seq(event1, event2))
     val result = Max of Sales by "Client"
     result.cube shouldEqual Seq(event1, event2)

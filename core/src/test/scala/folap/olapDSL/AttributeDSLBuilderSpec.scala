@@ -8,7 +8,7 @@ import org.scalatest.matchers.should.Matchers
 
 class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
 
-  "The is infix method" should "create an AttributeDSL with correct name and value" in:
+  "The `is` infix method" should "create an AttributeDSL with correct name and value" in:
     val Nation = "Nation"
     val attribute = Nation is "Italy"
 
@@ -17,7 +17,7 @@ class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
     attribute.value shouldEqual "Italy"
     attribute shouldEqual AttributeDSL(Nation, "Italy")
 
-  "The is and is chain" should "create a Seq[AttributeDSL] with correct attributes" in:
+  "The `and` chain" should "create a Seq[AttributeDSL] with correct attributes" in:
     val Nation = "Nation"
     val Year = "Year"
     val attributes = Nation is "Italy" and (Year is "2024")

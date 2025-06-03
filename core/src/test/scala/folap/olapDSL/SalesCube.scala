@@ -234,12 +234,12 @@ given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
   ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
 val careEvents = Iterable(careEvent1, careEvent2)
-val CustomerCare = QueryDSL(careEvents)
+val CustomerCareCube = QueryDSL(careEvents)
 
 @main def main(): Unit =
   val filtered = SalesCube where ("City" is "Berlin" and ("Month" is "January"))
   visualize(filtered.cube)
-  val union = SalesCube union CustomerCare
+  val union = SalesCube union CustomerCareCube
   visualize(union.cube)
   val aggregated = Sum of SalesCube by "City"
   visualize(aggregated.cube)

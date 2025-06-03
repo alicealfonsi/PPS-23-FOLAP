@@ -101,7 +101,7 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
     eventsC
   )
 
-  "The DSL union" should "combine events with matching attributes" in:
+  "The DSL method `union`" should "combine events with matching attributes" in:
     val result = Sales union Profits
 
     val expected = Seq(
