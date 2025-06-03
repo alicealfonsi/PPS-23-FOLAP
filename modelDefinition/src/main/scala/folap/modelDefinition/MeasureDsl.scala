@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 /** A class representing a DSL Measure.
   *
