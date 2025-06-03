@@ -9,8 +9,10 @@
 - Un data warehouse è una collezione di dati.
 - I dati sono memorizzati in cubi secondo il modello multidimensionale.
 - Un cubo comprende un insieme di eventi relativi a un fatto di interesse per l’analisi.
-- Un fatto è descritto da misure numeriche e dimensioni.
-- Ogni dimensione può essere la radice di una gerarchia di attributi usati per analizzare i dati sotto diversi punti di vista.
+- Un fatto è descritto da misure e dimensioni.
+- Una misura è una proprietà numerica di un fatto.
+- Una dimensione è una proprietà con dominio finito di un fatto.
+- Ogni dimensione può essere la radice di una gerarchia di attributi, sempre a valori discreti, usati per analizzare i dati sotto diversi punti di vista.
 - La gerarchia definisce i livelli crescenti di aggregazione a partire dalla dimensione in cui ha radice, che ne rappresenta la granularità più fine.
 - Un evento primario è una particolare occorrenza di un fatto, individuata da un valore per ciascuna dimensione. A ciascun evento primario è associato un valore per ciascuna misura.
 - Un evento secondario è il risultato dell’aggregazione di più eventi primari secondo un insieme di attributi dimensionali (group-by set).
