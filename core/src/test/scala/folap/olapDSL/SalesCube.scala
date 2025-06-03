@@ -198,8 +198,8 @@ val salesEvent4 = Sales.Sales(
   cityBerlin,
   productIPhone
 )
-val events = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
-val SalesCube = QueryDSL(events)
+val salesEvents = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
+val SalesCube = QueryDSL(salesEvents)
 
 case class SatisfactionScore(value: Double) extends Measure:
   type T = Double
@@ -213,12 +213,12 @@ case class CustomerCareEvent(
   def dimensions: Iterable[Dimension] = Seq(location)
   def measures: Iterable[CareMeasures] = Seq(satisfaction)
 
-val careEvent1 = CustomerCareEvent(
+val customerCareEvent1 = CustomerCareEvent(
   cityBerlin,
   SatisfactionScore(4.5)
 )
 
-val careEvent2 = CustomerCareEvent(
+val customerCareEvent2 = CustomerCareEvent(
   cityMilan,
   SatisfactionScore(3.8)
 )
@@ -233,8 +233,8 @@ given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
       measures: Iterable[M]
   ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
-val careEvents = Iterable(careEvent1, careEvent2)
-val CustomerCareCube = QueryDSL(careEvents)
+val customerCareEvents = Iterable(customerCareEvent1, customerCareEvent2)
+val CustomerCareCube = QueryDSL(customerCareEvents)
 
 @main def main(): Unit =
   val filtered = SalesCube where ("City" is "Berlin" and ("Month" is "January"))
