@@ -84,7 +84,7 @@ object QueryDSLBuilder:
       val drilled = drillAcross(q.cube, other.cube, constructor)
       QueryDSL(drilled)
 
-  /** Extension method for QueryWithOp to support roll-up operations.
+  /** Extension methods for QueryWithOp to support roll-up operations.
     */
   extension [A <: Attribute, M <: Measure, M2 <: Measure, E <: Event[A, M]](
       qwo: QueryWithOp[A, M, E]
