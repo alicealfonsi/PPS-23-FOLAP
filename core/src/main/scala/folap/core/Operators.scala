@@ -100,7 +100,6 @@ object Operators:
 
     }
 
-  import Cube.*
   import AggregationOp.*
 
   /** Performs events aggregation based on the specified group-by set and

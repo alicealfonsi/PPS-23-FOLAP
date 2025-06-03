@@ -29,6 +29,8 @@ trait Event[A <: Attribute, M <: Measure]:
   def measures: Iterable[M]
 
 object Event:
+  /** Extension method for instances of Event[A, M]
+    */
   extension [A <: Attribute, M <: Measure](event: Event[A, M])
     /** Finds the attributes of this Event whose name is equal to one of the
       * specified ones
@@ -39,3 +41,17 @@ object Event:
       */
     def findAttributesByNames(names: Iterable[String]): Iterable[A] =
       names.flatMap(name => event.attributes.filter(_.name == name))
+
+  /** Extension method for instances of Iterable[ Event[A, M] ]
+    */
+  extension [A <: Attribute, M <: Measure](events: Iterable[Event[A, M]])
+    /** Tests whether all these events have an Attribute whose name is equal to
+      * the specified name
+      * @param name
+      *   the Attribute name to be matched
+      * @return
+      *   true if all these events have an Attribute whose name matches the
+      *   specified name; false otherwise
+      */
+    def matchAttributeByName(name: String): Boolean =
+      events.forall(_.attributes.exists(_.name == name))
