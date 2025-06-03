@@ -29,11 +29,6 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
   it should "have a hierarchy" in:
     dim.hierarchy shouldEqual List(dim, attribute, TopAttribute())
 
-  it should "be comparable: equal to" in:
-    val other: Attribute =
-      DimensionAttribute(Some(TopAttribute()), "")
-    dim.equals(other) shouldBe true
-
   import CubeMockup.*, GeographicAttribute.*
   val shop: Shop = shop1
   it should "find the Attribute name in its hierarchy that matches one of the specified names if such an Attribute exists" in:

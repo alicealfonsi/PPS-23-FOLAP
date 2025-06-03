@@ -28,16 +28,6 @@ object MultidimensionalModel:
       */
     def parent: Option[Attribute]
 
-    /** Indicates whether this Attribute is "equal to" the other Attribute
-      * @param other
-      *   the Attribute with which to compare
-      * @return
-      *   true if this Attribute has the same name and value as the other; false
-      *   otherwise
-      */
-    def equals(other: Attribute): Boolean =
-      name == other.name && value == other.value
-
   object Attribute:
     extension [A <: Attribute](a: A)
       /** The hierarchy rooted in this Attribute
