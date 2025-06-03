@@ -1,3 +1,58 @@
+# 04 Implementazione
+
+## Multidimensional model (Alice Alfonsi)
+
+### Attribute
+Il `trait Attribute` modella il concetto di *attributo* nel modello multidimensionale. 
+Definisce le caratteristiche che un *attributo* possiede: `name` con cui l'attributo viene identificato, `value` assunto dall'attributo 
+per una specifica istanza di `Attribute`, `parent` che indica l'istanza di `Attribute` che precede l'attributo nella *gerarchia*.
+
+L'ultimo attributo nella gerarchia è un'istanza di `Attribute` denominata `TopAttribute` con `parent` None.
+
+La scelta di utilizzare un trait come contratto concettuale ha permesso l'astrazione del concetto di attributo e la separazione della
+sua definizione dalle implementazioni.
+
+
+L'`object Attribute` è usato come modulo funzionale che incapsula la logica per la definizione delle *gerarchie* e gli algoritmi che 
+abilitano i meccanismi di *aggregazione*. Contiene extension methods per aggiungere tali funzionalità a istanze di `Attribute`.
+
+Gli algoritmi per la costruzione delle gerarchie e per la ricerca degli attributi nelle gerarchie sono implementati usando 
+funzioni annidate tail-recursive che incapsulano la logica ricorsiva delle chiamate alla funzione. 
+Tali metodi helper interni sono annotati con `@tailrec`. Per garantire che il compilatore possa ottimizzare la ricorsione 
+i metodi esterni sono marcati come `final`.
+
+
+
+### Measure
+Il `trait Measure` astrae il concetto di *misura* nel modello multidimensionale definendo il contratto a cui tutte le sue 
+implementazioni devono conformarsi. Espone i metodi `name` e `value` che descrivono le caratteristiche che una 
+*misura* possiede e un tipo astratto `T` per descrivere il tipo di `value`.
+
+`T <: MeasureType` è un upper bound con tipo `MeasureType`, alias per il tipo unione `Int | Long | BigInt | Float | Double | BigDecimal` 
+introdotto per rappresentare i tipi numerici che il valore di una misura può assumere.
+
+In questo modo, la scelta del tipo concreto `T` è lasciata all'utente e il controllo del tipo è a compile time. Inoltre, l'uso di `T` 
+come type member di `Measure` consente liste eterogenee di istanze di `Measure` aventi tipo `T` distinto.
+
+
+## Event (Alice Alfonsi)
+La firma `trait Event[A <: Attribute, M <: Measure]` definisce un trait generico a due parametri, con vincoli di tipo, 
+che modella il concetto di *evento*.
+
+`A` con upper bound `Attribute` e `M` con upper bound `Measure` sono i parametri che rappresentano rispettivamente il tipo degli 
+*attributi* e il tipo delle *misure* di una specifica istanza di `Event`. Dunque, un'istanza di `Event` ha *dimensioni* omogenee 
+su `A` e misure omogenee su `M`. A questo proposito il trait `Event` definisce i metodi astratti `dimensions` e `measures` che 
+devono essere ridefiniti dalle classi che estendono il trait.
+
+Il metodo concreto `attributes` ha un'implementazione basata sul metodo `dimensions` valida per tutte le istanze di `Event`, 
+pertanto il metodo è marcato come `final`. Nel corpo del metodo si utilizza `flatMap`, funzione higher-order che accetta una funzione 
+come parametro evidenziando il ruolo delle funzioni in FP come valori di prima classe. 
+
+In accordo con SRP, il trait `Event` contiene solo ciò che definisce concettualmente un *evento*. L'`object Event` aggiunge, 
+mediante extension method per istanze di `Event[A, M]`, una funzionalità che viene utilizzata per implementare l'operatore di `rollUp`. 
+Anche nell'implementazione di tale metodo compare la funzione higher-order `flatMap`.
+
+
 # Event Constructor
 
 È stato introdotto un alias, denominato `EventConstructor`, per rappresentare una funzione che costruisce un nuovo *evento* a partire da una collezione di *dimensioni* e una collezione di *misure*.
