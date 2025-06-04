@@ -1,7 +1,7 @@
 package folap.core.multidimensionalModel
 
-import folap.core.multidimensionalmodel._
 import folap.core.CubeMockup
+import folap.core.multidimensionalmodel._
 import org.scalatest._
 import org.scalatest.flatspec._
 import org.scalatest.matchers._
