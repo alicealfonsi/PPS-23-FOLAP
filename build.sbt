@@ -31,6 +31,7 @@ lazy val modelDefinition = project
 lazy val examples = project
   .in(file("./examples"))
   .dependsOn(core)
+  .dependsOn(modelDefinition)
   .settings(
     version := "0.1.0-SNAPSHOT",
     scalaVersion := scala3Version,
