@@ -31,7 +31,7 @@ jobs:
       - name: Publish PDF Document
         uses: docker://pandoc/latex:3.5
         with:
-          args: "-f gfm -t pdf ${{ steps.md_files.outputs.files }} -o Documentazione.pdf"
+          args: "-f gfm -t pdf -V papersize:a4 ${{ steps.md_files.outputs.files }} -o Documentazione.pdf"
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
