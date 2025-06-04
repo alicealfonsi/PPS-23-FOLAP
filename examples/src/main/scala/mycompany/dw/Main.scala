@@ -24,7 +24,7 @@ given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
       measures: Iterable[M]
   ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
-@main def main(): Unit =
+object Main extends App:
   val filtered = SalesCube where ("City" is "Berlin" and ("Month" is "January"))
   println("- SLICE AND DICE RESULT -")
   visualize(filtered.cube)
