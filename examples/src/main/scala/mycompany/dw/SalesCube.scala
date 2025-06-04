@@ -1,4 +1,4 @@
-package folap.olapDSL
+package mycompany.dw
 
 import folap.core.AggregationOp._
 import folap.core.Event
