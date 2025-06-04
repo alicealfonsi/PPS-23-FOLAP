@@ -54,11 +54,6 @@ object Operators:
   /** Compares two attributes and returns true if they share the exact same
     * hierarchy path.
     *
-    * Two attributes are considered to have the same hierarchy if:
-    *   - They have the same name and value
-    *   - Their respective parents, grandparents, etc. match exactly in both
-    *     name and value
-    *
     * @param a1
     *   the first attribute
     * @param a2
@@ -70,10 +65,7 @@ object Operators:
     *   values
     */
   private def sameHierarchy[A <: Attribute](a1: A, a2: A): Boolean =
-    def asPath(attr: A): List[(String, String)] =
-      attr.hierarchy.map(a => (a.name, a.value)).toList
-
-    asPath(a1) == asPath(a2)
+    a1.hierarchy == a2.hierarchy
 
   /** Performs a drill across operation that combines events from two cubes when
     * they share at least one common leaf attribute.
