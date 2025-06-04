@@ -1,4 +1,4 @@
-# Design di dettaglio
+# 04 Design di dettaglio
 
 In primo luogo, si è deciso di operare su degli `Iterable` contenenti gli eventi primari (non aggregati), in modo
 da essere flessibili su come questi vengano recuperati dall'utente.
