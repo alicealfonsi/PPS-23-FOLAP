@@ -5,7 +5,7 @@ ThisBuild / scalacOptions ++= Seq("-Wunused:all", "-explain")
 lazy val core = project
   .in(file("./core"))
   .settings(
-    version := "1.0.0",
+    version := "1.0.1",
     scalaVersion := scala3Version,
     // For Scalafix
     semanticdbEnabled := true,
@@ -18,7 +18,7 @@ lazy val core = project
 lazy val modelDefinition = project
   .in(file("./modelDefinition"))
   .settings(
-    version := "1.0.0",
+    version := "1.0.1",
     scalaVersion := scala3Version,
     // For Scalafix
     semanticdbEnabled := true,
@@ -33,10 +33,11 @@ lazy val examples = project
   .dependsOn(core)
   .dependsOn(modelDefinition)
   .settings(
-    version := "1.0.0",
+    version := "1.0.1",
     scalaVersion := scala3Version,
     // For Scalafix
     semanticdbEnabled := true,
     name := "FOLAP (examples)",
+    assembly / mainClass := Some("mycompany.dw.Main"),
     assembly / assemblyOutputPath := file("./FOLAP-example.jar")
   )
