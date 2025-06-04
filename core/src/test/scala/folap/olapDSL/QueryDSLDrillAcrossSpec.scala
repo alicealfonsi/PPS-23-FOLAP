@@ -12,6 +12,9 @@ class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
   trait SalesMeasure extends Measure
   trait ProfitsMeasure extends Measure
   trait CustomerMeasure extends Measure
+  case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
   case class Nation(
       override val value: String,
       override val parent: Option[TopAttribute]

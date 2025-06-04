@@ -2,21 +2,15 @@ package folap.utils
 import folap.core.Event
 import folap.core.multidimensionalModel._
 
-private def extractAllDimensions(attr: Attribute): List[Attribute] =
-  attr match
-    case TopAttribute() => Nil
-    case a =>
-      a.parent.toList.flatMap(extractAllDimensions) ++ List(a)
-
 def visualize(events: Iterable[Event[_, _]]): Unit =
   events.zipWithIndex.foreach { (event, idx) =>
     println(s"--- Event ${idx + 1} ---")
 
     val expanded = event.attributes
-      .flatMap(extractAllDimensions)
+      .flatMap(_.hierarchy)
       .filter(_.name != "TopAttribute")
 
-    val seen = scala.collection.mutable.LinkedHashSet[String]()
+    val seen = scala.collection.mutable.Set[String]()
     val orderedDims = expanded.filter { a =>
       val key = a.name + ":" + a.value
       if seen.contains(key) then false else { seen += key; true }
