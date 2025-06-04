@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 
 import folap.olapdsl.AttributeSeqBuilder._
 import org.scalatest.flatspec.AnyFlatSpec

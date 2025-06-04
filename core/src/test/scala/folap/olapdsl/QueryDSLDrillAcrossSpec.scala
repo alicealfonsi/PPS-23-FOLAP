@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 import folap.core._
 import folap.olapdsl.QueryDSLBuilder.union
 import org.scalatest.flatspec.AnyFlatSpec

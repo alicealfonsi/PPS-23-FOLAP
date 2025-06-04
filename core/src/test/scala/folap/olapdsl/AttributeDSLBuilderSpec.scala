@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 
 import folap.olapdsl.AttributeDSL.AttributeDSL
 import folap.olapdsl.AttributeDSLBuilder._

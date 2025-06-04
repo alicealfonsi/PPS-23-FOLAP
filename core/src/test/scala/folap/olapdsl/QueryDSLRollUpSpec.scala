@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 
 import folap.core.AggregationOp._
 import folap.core.CubeMockup._
