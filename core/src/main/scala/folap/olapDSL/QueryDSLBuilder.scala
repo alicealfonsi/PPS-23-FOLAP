@@ -1,9 +1,9 @@
 package folap.olapDSL
 
-import folap.core.MultidimensionalModel._
 import folap.core.Operators.drillAcross
 import folap.core.Operators.sliceAndDice
 import folap.core._
+import folap.core.multidimensionalModel._
 
 /** Wraps a QueryDSL (cube) and a roll-up operation (sum, max, min, avg).
   *

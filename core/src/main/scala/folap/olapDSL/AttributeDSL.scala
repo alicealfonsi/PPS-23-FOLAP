@@ -1,5 +1,5 @@
 package folap.olapDSL
-import folap.core.MultidimensionalModel._
+import folap.core.multidimensionalModel.Attribute
 
 /** Companion object providing factory methods to create attribute DSL instances
   * for use in the OLAP DSL.
