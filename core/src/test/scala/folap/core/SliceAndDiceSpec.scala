@@ -15,6 +15,9 @@ class SliceAndDiceSpec
     with BeforeAndAfterEach:
   trait SalesAttribute extends Attribute
   trait SalesMeasure extends Measure
+  case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
   case class NationAttribute(
       override val value: String,
       override val parent: Option[TopAttribute]
