@@ -9,16 +9,18 @@ La libreria segue il pattern architetturale a layer. L'utente ne ha la seguente 
 ## Layer DSL OLAP
 
 Espone il DSL che permette la formulazione delle query in maniera intuitiva.
-A tal proposito il layer DSL OLAP traduce la query in una sequenza di operazioni OLAP come catena di chiamate alle funzioni del layer OLAP.
+A tal proposito il layer DSL OLAP traduce la query in una sequenza di operazioni OLAP come catena di chiamate ai metodi 
+del layer OLAP.
 
 ## Layer OLAP
 
-Espone le funzioni che implementano le operazioni OLAP traducendole in una rappresentazione generalizzata fornita dal layer multidimensionale.
+Espone i metodi che implementano le operazioni OLAP.
 
 ## Layer DSL DW
 
-Espone il DSL per la generazione del codice che permette di modellare il DW sottostante secondo il modello multidimensionale.
+Espone il DSL per la generazione del codice che permette di modellare il DW sottostante secondo il modello 
+multidimensionale.
 
 ## Layer della struttura multidimensionale
 
-Espone la struttura multidimensionale dei dati i quali devono essere estratti tramite connettore dalla sorgente dati.
+Espone la struttura multidimensionale dei dati forniti dall'utente.
