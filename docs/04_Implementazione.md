@@ -1,8 +1,6 @@
 # 04 Implementazione
 
-## Multidimensional model (Alice Alfonsi)
-
-### Attribute
+## Attribute (Alice Alfonsi)
 Il `trait Attribute` modella il concetto di *attributo* nel modello multidimensionale. 
 Definisce le caratteristiche che un *attributo* possiede: `name` con cui l'attributo viene identificato, `value` assunto dall'attributo 
 per una specifica istanza di `Attribute`, `parent` che indica l'istanza di `Attribute` che precede l'attributo nella *gerarchia*.
@@ -25,7 +23,7 @@ Nel corpo dei metodi per la ricerca degli attributi nella gerarchia è stata uti
 accetta una funzione (predicato) come parametro evidenziando il ruolo delle funzioni in FP come valori di prima classe.
 
 
-### Measure
+## Measure (Alice Alfonsi)
 Il `trait Measure` astrae il concetto di *misura* nel modello multidimensionale definendo il contratto a cui tutte le sue 
 implementazioni devono conformarsi. Espone i metodi `name` e `value` che descrivono le caratteristiche che una 
 *misura* possiede e un tipo astratto `T` per descrivere il tipo di `value`.
@@ -56,7 +54,7 @@ Per l'implementazione di tale metodo sono state utilizzate le funzioni higher-or
 Inoltre, l'`object Event` espone un extension method per istanze di `Iterable[Event[A, M]]`, anch'esso utilizzato 
 nell'implementazione del metodo `rollUp`. Nel corpo di tale metodo sono state utilizzate le funzioni higher-order `forall` e `exists`.
 
-## Event Constructor
+## Event Constructor (Claudia Giannelli)
 
 È stato introdotto un alias, denominato `EventConstructor`, per rappresentare una funzione che costruisce un nuovo *evento* a partire da una collezione di *dimensioni* e una collezione di *misure*.
 
@@ -64,7 +62,7 @@ L’implementazione della funzione è delegata all’utente, il quale può defin
 
 Questa astrazione consente un disaccoppiamento tra la logica generica dell’operatore e la rappresentazione concreta dei dati, rendendo l’implementazione adattabile a diversi contesti applicativi.
 
-# Computable (Alice Alfonsi)
+## Computable (Alice Alfonsi)
 Il `trait Computable[A <: Attribute, M <: Measure, E <: Event[A, M]]` è generico sui parametri `A`, `M`, `E` con vincoli
 `A` sottotipo di `Attribute`, `M` sottotipo di `Measure`, `E` sottotipo di `Event[A, M]` e prende il nome di type class.
 
@@ -97,7 +95,7 @@ L'`object Operators` contiene tutti gli *operatori OLAP* implementati nella libr
 
 L’object `Operators` raccoglie tutti gli *operatori OLAP* implementati nella libreria.  I risultati delle query possono essere visualizzati invocando il metodo `visualize`, che prende in input un iteratore di eventi.
 
-### Slice And Dice
+### Slice And Dice (Claudia Giannelli)
 
 L'operatore `sliceAndDice` permette, a partire da una collezione di eventi appartenenti al cubo OLAP, di restituire solo quelli che contengono gli attributi specificati come criterio di filtro. Affinché un attributo dell'evento corrisponda a uno dei filtri è necessario che coincidano sia il nome sia il valore dell’attributo.
 
@@ -109,7 +107,7 @@ Per l'implementazione sono state utilizzate higher-order methods, tipici della p
 
 L’impiego di questi metodi ha reso possibile la realizzazione di un metodo puro, conforme ai principi fondamentali della programmazione funzionale: l’output del metodo dipende unicamente dall’input fornito, senza produrre effetti collaterali né modificare lo stato esterno al metodo, nel rispetto del principio di immutabilità.
 
-### Drill Across
+### Drill Across (Claudia Giannelli)
 
 L'operatore `drillAcross` consente di combinare eventi di due *cubi OLAP* differenti, restituendo una nuova collezione di eventi costruita a partire da quelli che condividono almeno un *attributo foglia* in comune, ovvero un attributo situato all’ultimo livello di una gerarchia dimensionale e che non è genitore di altri attributi.
 
@@ -164,7 +162,7 @@ Per implementare tale DSL, è stato introdotto l’oggetto di supporto `MeasureW
 Successivamente, la chiamata al metodo `as` sull'oggetto `MeasureName` consente di completare la definizione della misura, specificandone la tipologia numerica. Il metodo `as` è implementato come estensione del tipo `MeasureName`
 
 
-## Event Builder (Alice Alfonsi)
+### Event Builder (Alice Alfonsi)
 L'*evento* è rappresentato dalla `case class Event(name: String, dimensions: Seq[Dimension], measures: Seq[Measure])`.
 
 L'`object EventBuilder` costituisce il builder dell'*evento* ed espone il metodo `event` come punto di accesso al DSL. Tale metodo 
