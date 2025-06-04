@@ -15,7 +15,7 @@
 - Ogni dimensione può essere la radice di una gerarchia di attributi, sempre a valori discreti, usati per analizzare i dati sotto diversi punti di vista.
 - La gerarchia definisce i livelli crescenti di aggregazione a partire dalla dimensione in cui ha radice, che ne rappresenta la granularità più fine.
 - Un evento primario è una particolare occorrenza di un fatto, individuata da un valore per ciascuna dimensione. A ciascun evento primario è associato un valore per ciascuna misura.
-- Un evento secondario è il risultato dell’aggregazione di più eventi primari secondo un insieme di attributi dimensionali (group-by set).
+- Un evento secondario è il risultato dell’aggregazione di più eventi primari secondo un insieme di attributi (group-by set).
 - L’additività è una proprietà che descrive se e come una misura può essere aggregata (somma, media, minimo, massimo) lungo una dimensione.
 - Ogni passo della sessione di analisi è scandito dall’applicazione di un operatore OLAP ai dati.
 - Il risultato delle interrogazioni OLAP è di tipo multidimensionale.
