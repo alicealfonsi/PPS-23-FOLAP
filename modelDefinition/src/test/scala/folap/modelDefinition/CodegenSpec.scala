@@ -157,7 +157,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val e = event named "example" having geoDimension and quantity
     val expectedEnding = indent(
       Seq(
-        "given folap.core.Operational[Dimension, Measures, Example] with",
+        "given folap.core.Computable[Dimension, Measures, Example] with",
         "  extension (e: Example)",
         "    override def aggregate(groupBySet: Iterable[String]): Example =",
         "      Example(e.test, e.geographic.upToLevel(e.geographic.searchCorrespondingAttributeName(groupBySet)))",

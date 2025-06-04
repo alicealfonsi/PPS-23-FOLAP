@@ -104,7 +104,7 @@ object Codegen:
       dimensions.map(x => s"aggregated.${x}.lowestCommonAncestor(other.${x})")
 
     Seq(
-      s"given folap.core.Operational[Dimension, Measures, ${name}] with",
+      s"given folap.core.Computable[Dimension, Measures, ${name}] with",
       s"  extension (e: ${name})",
       s"    override def aggregate(groupBySet: Iterable[String]): ${name} =",
       indent(
