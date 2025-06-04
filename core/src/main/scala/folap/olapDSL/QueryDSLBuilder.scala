@@ -4,7 +4,7 @@ import folap.core.Operators.drillAcross
 import folap.core.Operators.rollUp
 import folap.core.Operators.sliceAndDice
 import folap.core._
-import folap.core.multidimensionalModel._
+import folap.core.multidimensionalmodel.{Attribute, Measure}
 
 /** Wraps a QueryDSL (cube) and a roll-up operation (sum, max, min, avg).
   *

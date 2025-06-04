@@ -1,6 +1,6 @@
 package folap.utils
 import folap.core.Event
-import folap.core.multidimensionalModel._
+import folap.core.multidimensionalmodel._
 
 def visualize(events: Iterable[Event[_, _]]): Unit =
   events.zipWithIndex.foreach { (event, idx) =>

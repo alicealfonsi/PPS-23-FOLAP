@@ -2,10 +2,10 @@ package mycompany.dw
 
 object CustomerCare:
   case class SatisfactionScore(value: Double)
-      extends folap.core.multidimensionalModel.Measure:
+      extends folap.core.multidimensionalmodel.Measure:
     type T = Double
   type Measures = SatisfactionScore
-  sealed trait Dimension extends folap.core.multidimensionalModel.Attribute
+  sealed trait Dimension extends folap.core.multidimensionalmodel.Attribute
   object Dimension:
     sealed trait GeographicDimension extends Dimension
     object GeographicDimension:

@@ -83,7 +83,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
   it should "generate a case class for a measure" in:
     val m = measure named "test" as Int
     val expected = Seq(
-      "case class Test(value: Int) extends folap.core.multidimensionalModel.Measure:",
+      "case class Test(value: Int) extends folap.core.multidimensionalmodel.Measure:",
       "  type T = Int"
     ).mkString("\n")
     val generated = generate(m)
@@ -113,7 +113,7 @@ class CodegenSpec extends AnyFlatSpec with should.Matchers:
     val e = event named "test" having geoDimension
     val expectedInclude = indent(
       Seq(
-        "sealed trait Dimension extends folap.core.multidimensionalModel.Attribute",
+        "sealed trait Dimension extends folap.core.multidimensionalmodel.Attribute",
         "object Dimension:",
         indent(generate(geoDimension), 2)
       ).mkString("\n"),

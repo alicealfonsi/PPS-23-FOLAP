@@ -1,6 +1,6 @@
 package folap.core
 
-import multidimensionalModel._
+import multidimensionalmodel.{Attribute, Measure}
 
 /** A type alias for a function to construct an Event given its dimensions and
   * measures

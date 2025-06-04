@@ -3,7 +3,7 @@ package mycompany.dw
 import folap.core.AggregationOp._
 import folap.core.Event
 import folap.core.EventConstructor
-import folap.core.multidimensionalModel._
+import folap.core.multidimensionalmodel._
 import folap.olapDSL.AttributeDSLBuilder._
 import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSL

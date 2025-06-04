@@ -69,7 +69,7 @@ object Codegen:
     val name = sanitise(m.name)
     val t = generate(m.typology)
     Seq(
-      s"case class ${name}(value: ${t}) extends folap.core.multidimensionalModel.Measure:",
+      s"case class ${name}(value: ${t}) extends folap.core.multidimensionalmodel.Measure:",
       indent(s"type T = ${t}", 2)
     ).mkString("\n")
 
@@ -206,7 +206,7 @@ object Codegen:
       s"object ${name}:",
       s"${measures}",
       indent("type Measures = " + allMeasureTypes.mkString(" | "), 2),
-      "  sealed trait Dimension extends folap.core.multidimensionalModel.Attribute",
+      "  sealed trait Dimension extends folap.core.multidimensionalmodel.Attribute",
       "  object Dimension:",
       s"${dimensions}",
       indent(s"type Attributes = ${allDimensionAttributes}", 4),

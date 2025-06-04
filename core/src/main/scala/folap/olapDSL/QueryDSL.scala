@@ -1,6 +1,6 @@
 package folap.olapDSL
 import folap.core._
-import folap.core.multidimensionalModel._
+import folap.core.multidimensionalmodel.{Attribute, Measure}
 
 /** Represents a collection of OLAP events (cube)
   *

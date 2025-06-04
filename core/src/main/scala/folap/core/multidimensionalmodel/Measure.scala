@@ -1,4 +1,4 @@
-package folap.core.multidimensionalModel
+package folap.core.multidimensionalmodel
 
 /** A Measure represents a numeric value associated with an Event
   */

@@ -1,6 +1,5 @@
 package folap.core
 
-import folap.core.multidimensionalModel._
 import org.scalatest._
 
 import scala.language.postfixOps
@@ -8,6 +7,7 @@ import scala.language.postfixOps
 import Operators.drillAcross
 import flatspec._
 import matchers._
+import multidimensionalmodel.{Attribute, Measure}
 
 class DrillAcrossSpec
     extends AnyFlatSpec

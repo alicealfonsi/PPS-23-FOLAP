@@ -1,6 +1,6 @@
 package folap.core
 
-import folap.core.multidimensionalModel.Measure
+import folap.core.multidimensionalmodel.Measure
 import org.scalatest._
 
 import flatspec._

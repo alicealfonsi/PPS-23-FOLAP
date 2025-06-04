@@ -1,4 +1,4 @@
-package folap.core.multidimensionalModel
+package folap.core.multidimensionalmodel
 
 import scala.annotation.tailrec
 
