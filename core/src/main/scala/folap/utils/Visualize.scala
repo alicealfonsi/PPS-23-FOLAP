@@ -1,12 +1,12 @@
 package folap.utils
 import folap.core.Event
 import folap.core.multidimensionalModel._
-/**
- * Displays a sequence of events in a readable, structured format.
- *
- * @param events 
- * a collection of events.
- */
+
+/** Displays a sequence of events in a readable, structured format.
+  *
+  * @param events
+  *   a collection of events.
+  */
 def visualize(events: Iterable[Event[_, _]]): Unit =
   events.zipWithIndex.foreach { (event, idx) =>
     println(s"--- Event ${idx + 1} ---")
