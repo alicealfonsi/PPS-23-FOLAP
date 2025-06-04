@@ -53,7 +53,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Duplicate README into index.md
-        run: cp README.md index.md
+        run: |
+          cp README.md index.md
+          mv modelDefinition docs
+          mv core docs
       - name: Build
         uses: actions/jekyll-build-pages@v1
       - name: Upload artifact
