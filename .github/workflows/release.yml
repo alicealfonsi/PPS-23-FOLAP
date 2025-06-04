@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+      - name: Run sbt assembly
+        run: sbt assembly
+      - name: Fixing relative paths and copying README.md into docs
+        run: |
+          sed -i 's|./docs/|./|g' README.md
+          cp README.md docs/00_Indice.md
+      - name: Create file list
+        id: md_files
+        run: echo "files=$(printf '"%s" ' docs/*.md)" > $GITHUB_OUTPUT
+      - name: Publish PDF Document
+        uses: docker://pandoc/latex:3.5
+        with:
+          args: "-f gfm -t pdf -V papersize:a4 ${{ steps.md_files.outputs.files }} -o Documentazione.pdf"
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            *.jar
+            Documentazione.pdf
