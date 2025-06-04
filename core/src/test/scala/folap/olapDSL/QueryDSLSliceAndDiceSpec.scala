@@ -1,12 +1,13 @@
 package folap.olapDSL
 
 import folap.core._
-import folap.olapDSL.AttributeDSLBuilder._
-import folap.olapDSL.AttributeSeqBuilder._
-import folap.olapDSL.QueryDSLBuilder._
+import folap.olapdsl.AttributeDSLBuilder._
+import folap.olapdsl.AttributeSeqBuilder._
+import folap.olapdsl.QueryDSLBuilder._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import folap.core.multidimensionalmodel.{Attribute, Measure}
+import folap.olapdsl.QueryDSL
 
 class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
 

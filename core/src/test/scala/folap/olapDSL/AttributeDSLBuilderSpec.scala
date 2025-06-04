@@ -1,10 +1,11 @@
 package folap.olapDSL
 
-import folap.olapDSL.AttributeDSL.AttributeDSL
-import folap.olapDSL.AttributeDSLBuilder._
-import folap.olapDSL.AttributeSeqBuilder._
+import folap.olapdsl.AttributeDSL.AttributeDSL
+import folap.olapdsl.AttributeDSLBuilder._
+import folap.olapdsl.AttributeSeqBuilder._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import folap.olapdsl.AttributeDSL
 
 class AttributeDSLBuilderSpec extends AnyFlatSpec with Matchers:
 

@@ -1,8 +1,9 @@
 package folap.olapDSL
 
-import folap.olapDSL.AttributeSeqBuilder._
+import folap.olapdsl.AttributeSeqBuilder._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import folap.olapdsl.AttributeDSL
 
 class AttributeSeqBuilderSpec extends AnyFlatSpec with Matchers:
 

@@ -3,13 +3,14 @@ package folap.olapDSL
 import folap.core.AggregationOp._
 import folap.core.CubeMockup._
 import folap.core._
-import folap.olapDSL.AttributeSeqBuilder._
-import folap.olapDSL.QueryDSLBuilder._
+import folap.olapdsl.AttributeSeqBuilder._
+import folap.olapdsl.QueryDSLBuilder._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 import GeographicAttribute._
 import ProductAttribute._
+import folap.olapdsl.QueryDSL
 
 class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 

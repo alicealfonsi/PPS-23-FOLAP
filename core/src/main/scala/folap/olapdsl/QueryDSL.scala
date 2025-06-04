@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 import folap.core._
 import folap.core.multidimensionalmodel.{Attribute, Measure}
 

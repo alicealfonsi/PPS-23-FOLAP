@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 import folap.core.multidimensionalmodel.Attribute
 
 /** Object providing factory methods to create attribute DSL instances for use

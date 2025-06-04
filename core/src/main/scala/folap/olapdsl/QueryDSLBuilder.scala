@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 
 import folap.core.Operators.drillAcross
 import folap.core.Operators.rollUp

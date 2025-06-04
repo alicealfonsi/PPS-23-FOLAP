@@ -1,4 +1,4 @@
-package folap.olapDSL
+package folap.olapdsl
 import folap.olapDSL.AttributeDSL.AttributeDSL
 
 /** Provides a DSL for building sequences of AttributeDSL objects using
