@@ -10,14 +10,14 @@ import folap.olapDSL.QueryDSLBuilder._
 import folap.utils.visualize
 object Sales:
   case class Revenue(value: Double)
-      extends folap.core.MultidimensionalModel.Measure:
+      extends folap.core.multidimensionalModel.Measure:
     type T = Double
   case class Quantity(value: Int)
-      extends folap.core.MultidimensionalModel.Measure:
+      extends folap.core.multidimensionalModel.Measure:
     type T = Int
-    
+
   type Measures = Revenue | Quantity
-  sealed trait Dimension extends folap.core.MultidimensionalModel.Attribute
+  sealed trait Dimension extends folap.core.multidimensionalModel.Attribute
   object Dimension:
     sealed trait TemporalDimension extends Dimension
     object TemporalDimension:
@@ -72,7 +72,7 @@ object Sales:
     def dimensions: Iterable[Dimension] = Seq(temporal, geographic, product)
     def measures: Iterable[Measures] = Seq(revenue, quantity)
 
-  given folap.core.Operational[Dimension, Measures, Sales] with
+  given folap.core.Computable[Dimension, Measures, Sales] with
     extension (e: Sales)
       override def aggregate(groupBySet: Iterable[String]): Sales =
         Sales(
@@ -201,38 +201,72 @@ val salesEvent4 = Sales.Sales(
 )
 val salesEvents = Iterable(salesEvent1, salesEvent2, salesEvent3, salesEvent4)
 val SalesCube = QueryDSL(salesEvents)
-case class SatisfactionScore(value: Double) extends folap.core.MultidimensionalModel.Measure:
-    type T = Double
+case class SatisfactionScore(value: Double)
+    extends folap.core.multidimensionalModel.Measure:
+  type T = Double
 type Measures = SatisfactionScore
-type Attributes = GeographicDimension.City | GeographicDimension.Country | GeographicDimension.Region
+type Attributes = GeographicDimension.City | GeographicDimension.Country |
+  GeographicDimension.Region
 
-case class CustomerCare(satisfactionScore: SatisfactionScore, geographic: Dimension.GeographicDimension) extends folap.core.Event[Dimension, Measures]:
-    def dimensions: Iterable[Dimension] = Seq(geographic)
-    def measures: Iterable[Measures] = Seq(satisfactionScore)
-  given folap.core.Operational[Dimension, Measures, CustomerCare] with
-    extension (e: CustomerCare)
-      override def aggregate(groupBySet: Iterable[String]): CustomerCare =
-        CustomerCare(e.satisfactionScore, e.geographic.upToLevel(e.geographic.searchCorrespondingAttributeName(groupBySet)))  
-      override def sum(other: CustomerCare)(groupBySet: Iterable[String]): CustomerCare =
-        val aggregated = e.aggregate(groupBySet)
-        CustomerCare(SatisfactionScore(aggregated.satisfactionScore.value + other.satisfactionScore.value), aggregated.geographic)
-      override def div(n: Int): CustomerCare =
-        CustomerCare(SatisfactionScore(e.satisfactionScore.value / n), e.geographic)
-      override def min(other: CustomerCare)(groupBySet: Iterable[String]): CustomerCare =
-        val aggregated = e.aggregate(groupBySet)
-        CustomerCare(SatisfactionScore(aggregated.satisfactionScore.value.min(other.satisfactionScore.value)), aggregated.geographic)
-      override def max(other: CustomerCare)(groupBySet: Iterable[String]): CustomerCare =
-        val aggregated = e.aggregate(groupBySet)
-        CustomerCare(SatisfactionScore(aggregated.satisfactionScore.value.max(other.satisfactionScore.value)), aggregated.geographic)
+case class CustomerCare(
+    satisfactionScore: SatisfactionScore,
+    geographic: Dimension.GeographicDimension
+) extends folap.core.Event[Dimension, Measures]:
+  def dimensions: Iterable[Dimension] = Seq(geographic)
+  def measures: Iterable[Measures] = Seq(satisfactionScore)
+given folap.core.Computable[Dimension, Measures, CustomerCare] with
+  extension (e: CustomerCare)
+    override def aggregate(groupBySet: Iterable[String]): CustomerCare =
+      CustomerCare(
+        e.satisfactionScore,
+        e.geographic.upToLevel(
+          e.geographic.searchCorrespondingAttributeName(groupBySet)
+        )
+      )
+    override def sum(other: CustomerCare)(
+        groupBySet: Iterable[String]
+    ): CustomerCare =
+      val aggregated = e.aggregate(groupBySet)
+      CustomerCare(
+        SatisfactionScore(
+          aggregated.satisfactionScore.value + other.satisfactionScore.value
+        ),
+        aggregated.geographic
+      )
+    override def div(n: Int): CustomerCare =
+      CustomerCare(
+        SatisfactionScore(e.satisfactionScore.value / n),
+        e.geographic
+      )
+    override def min(other: CustomerCare)(
+        groupBySet: Iterable[String]
+    ): CustomerCare =
+      val aggregated = e.aggregate(groupBySet)
+      CustomerCare(
+        SatisfactionScore(
+          aggregated.satisfactionScore.value.min(other.satisfactionScore.value)
+        ),
+        aggregated.geographic
+      )
+    override def max(other: CustomerCare)(
+        groupBySet: Iterable[String]
+    ): CustomerCare =
+      val aggregated = e.aggregate(groupBySet)
+      CustomerCare(
+        SatisfactionScore(
+          aggregated.satisfactionScore.value.max(other.satisfactionScore.value)
+        ),
+        aggregated.geographic
+      )
 
 val customerCareEvent1 = CustomerCare(
   SatisfactionScore(4.5),
-  cityBerlin  
+  cityBerlin
 )
 
 val customerCareEvent2 = CustomerCare(
   SatisfactionScore(3.8),
-  cityMilan  
+  cityMilan
 )
 case class ResultEvent[A <: Attribute, M <: Measure](
     override val dimensions: Iterable[A],
@@ -250,11 +284,11 @@ val CustomerCareCube = QueryDSL(customerCareEvents)
 
 @main def main(): Unit =
   val filtered = SalesCube where ("City" is "Berlin" and ("Month" is "January"))
-  println("= SLICE AND DICE RESULT =")
+  println("- SLICE AND DICE RESULT -")
   visualize(filtered.cube)
   val union = SalesCube union CustomerCareCube
-  println("= DRILL ACROSS RESULT =")
+  println("- DRILL ACROSS RESULT -")
   visualize(union.cube)
   val aggregated = Sum of SalesCube by "City"
-  println("= ROLL UP RESULT =")
+  println("- ROLL UP RESULT -")
   visualize(aggregated.cube)

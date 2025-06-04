@@ -100,7 +100,7 @@ object QueryDSLBuilder:
       *   a new QueryDSL containing the rolled-up result.
       */
     def by(attributes: Iterable[Attribute])(using
-        operational: Operational[A, M, E]
+        computable: Computable[A, M, E]
     ): QueryDSL[A, M, E] =
       QueryDSL(rollUp(qwo.query.cube)(attributes.map(_.name))(qwo.op))
 
@@ -116,5 +116,5 @@ object QueryDSLBuilder:
       */
     def by(
         attribute: String
-    )(using operational: Operational[A, M, E]): QueryDSL[A, M, E] =
+    )(using computable: Computable[A, M, E]): QueryDSL[A, M, E] =
       QueryDSL(rollUp(qwo.query.cube)(Iterable(attribute))(qwo.op))

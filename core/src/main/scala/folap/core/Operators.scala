@@ -7,8 +7,8 @@ import multidimensionalModel._
   */
 
 object Operators:
-  /** Slice and dice operation used to filter events by matching attribute
-    * names and values.
+  /** Slice and dice operation used to filter events by matching attribute names
+    * and values.
     *
     * @param events
     *   events to filter
@@ -34,43 +34,46 @@ object Operators:
       }
 
     }
-  /**
-  * Returns only the leaf attributes from a collection of attributes.
-  *
-  * A leaf attribute is defined as an attribute that does not appear 
-  * as a parent of any other attribute in the given collection.
-  *
-  * @param attrs 
-  * the collection of attributes to process
-  * @tparam A 
-  * the type of attributes
-  * @return 
-  * a collection of attributes that are not parents of any other attributes
-  */
+
+  /** Returns only the leaf attributes from a collection of attributes.
+    *
+    * A leaf attribute is defined as an attribute that does not appear as a
+    * parent of any other attribute in the given collection.
+    *
+    * @param attrs
+    *   the collection of attributes to process
+    * @tparam A
+    *   the type of attributes
+    * @return
+    *   a collection of attributes that are not parents of any other attributes
+    */
   private def leafAttributes[A <: Attribute](attrs: Iterable[A]): Iterable[A] =
     val allParents = attrs.flatMap(_.parent)
     attrs.filterNot(a => allParents.exists(_ == a))
 
-  /** Compares two attributes and returns true if they share the exact same hierarchy path.
-  *
-  * Two attributes are considered to have the same hierarchy if:
-  *   - They have the same name and value
-  *   - Their respective parents, grandparents, etc. match exactly in both name and value
-  *
-  * @param a1 
-  * the first attribute
-  * @param a2 
-  * the second attribute
-  * @tparam A 
-  * the attribute type, which must extend `Attribute`
-  * @return 
-  *  true if the two attributes share the same hierarchical structure and values
-  */
+  /** Compares two attributes and returns true if they share the exact same
+    * hierarchy path.
+    *
+    * Two attributes are considered to have the same hierarchy if:
+    *   - They have the same name and value
+    *   - Their respective parents, grandparents, etc. match exactly in both
+    *     name and value
+    *
+    * @param a1
+    *   the first attribute
+    * @param a2
+    *   the second attribute
+    * @tparam A
+    *   the attribute type, which must extend `Attribute`
+    * @return
+    *   true if the two attributes share the same hierarchical structure and
+    *   values
+    */
   private def sameHierarchy[A <: Attribute](a1: A, a2: A): Boolean =
-        def asPath(attr: A): List[(String, String)] =
-         attr.hierarchy.map(a => (a.name, a.value)).toList
+    def asPath(attr: A): List[(String, String)] =
+      attr.hierarchy.map(a => (a.name, a.value)).toList
 
-        asPath(a1) == asPath(a2)
+    asPath(a1) == asPath(a2)
 
   /** Performs a drill across operation that combines events from two cubes when
     * they share at least one common leaf attribute.
@@ -97,7 +100,7 @@ object Operators:
     * @return
     *   a collection of events, each one resulting from the combination of two
     *   matching events sharing one or more common leaf attributes
-  */
+    */
   def drillAcross[
       A <: Attribute,
       A1 <: A,
@@ -120,8 +123,7 @@ object Operators:
         val leavesB = leafAttributes(eventB.attributes)
 
         val commonLeaves = leavesA.filter { attrA =>
-          leavesB.exists(attrB => sameHierarchy(attrA, attrB)
-          )
+          leavesB.exists(attrB => sameHierarchy(attrA, attrB))
         }
 
         if (commonLeaves.nonEmpty) {
@@ -135,8 +137,7 @@ object Operators:
     }
   }
 
-  
-import AggregationOp.*
+  import AggregationOp.*
 
   /** Performs events aggregation based on the specified group-by set and
     * aggregation operator

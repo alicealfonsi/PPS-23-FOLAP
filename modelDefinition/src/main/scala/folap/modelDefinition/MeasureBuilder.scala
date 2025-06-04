@@ -35,8 +35,8 @@ object MeasureDSL:
     */
   def measure = MeasureWord()
 
-  /** Extension method for Measurename to complete a Measure definition by assigning its
-    * typology.
+  /** Extension method for Measurename to complete a Measure definition by
+    * assigning its typology.
     *
     * @param typology
     *   the static type of the measure (e.g., Int, Long, Float, Double)

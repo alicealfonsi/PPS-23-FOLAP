@@ -9,7 +9,6 @@ private def extractAllDimensions(attr: Attribute): List[Attribute] =
       a.parent.toList.flatMap(extractAllDimensions) ++ List(a)
 
 def visualize(events: Iterable[Event[_, _]]): Unit =
-  println("===== Cube =====")
   events.zipWithIndex.foreach { (event, idx) =>
     println(s"--- Event ${idx + 1} ---")
 
