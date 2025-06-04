@@ -18,9 +18,11 @@ abilitano i meccanismi di *aggregazione*. Contiene extension methods per aggiung
 
 Gli algoritmi per la costruzione delle gerarchie e per la ricerca degli attributi nelle gerarchie sono implementati usando 
 funzioni annidate tail-recursive che incapsulano la logica ricorsiva delle chiamate alla funzione. 
-Tali metodi helper interni sono annotati con `@tailrec`. Per garantire che il compilatore possa ottimizzare la ricorsione 
-i metodi esterni sono marcati come `final`.
 
+Tali metodi helper interni sono annotati con `@tailrec` per garantire che il compilatore possa ottimizzare la ricorsione.
+
+Nel corpo dei metodi per la ricerca degli attributi nella gerarchia è stata utilizzata `find`, funzione higher-order che 
+accetta una funzione (predicato) come parametro evidenziando il ruolo delle funzioni in FP come valori di prima classe.
 
 
 ### Measure
@@ -45,12 +47,14 @@ su `A` e misure omogenee su `M`. A questo proposito il trait `Event` definisce i
 devono essere ridefiniti dalle classi che estendono il trait.
 
 Il metodo concreto `attributes` ha un'implementazione basata sul metodo `dimensions` valida per tutte le istanze di `Event`, 
-pertanto il metodo è marcato come `final`. Nel corpo del metodo si utilizza `flatMap`, funzione higher-order che accetta una funzione 
-come parametro evidenziando il ruolo delle funzioni in FP come valori di prima classe. 
+pertanto il metodo è marcato come `final`. Nel corpo del metodo si utilizza la funzione higher-order `flatMap`. 
 
 In accordo con SRP, il trait `Event` contiene solo ciò che definisce concettualmente un *evento*. L'`object Event` aggiunge, 
 mediante extension method per istanze di `Event[A, M]`, una funzionalità che viene utilizzata per implementare l'operatore di `rollUp`. 
-Anche nell'implementazione di tale metodo compare la funzione higher-order `flatMap`.
+Per l'implementazione di tale metodo sono state utilizzate le funzioni higher-order `flatMap` e `filter`.
+
+Inoltre, l'`object Event` espone un extension method per istanze di `Iterable[Event[A, M]]`, anch'esso utilizzato 
+nell'implementazione del metodo `rollUp`. Nel corpo di tale metodo sono state utilizzate le funzioni higher-order `forall` e `exists`.
 
 
 # Event Constructor
@@ -61,9 +65,36 @@ L’implementazione della funzione è delegata all’utente, il quale può defin
 
 Questa astrazione consente un disaccoppiamento tra la logica generica dell’operatore e la rappresentazione concreta dei dati, rendendo l’implementazione adattabile a diversi contesti applicativi.
 
-# Operators
 
-L'object `Operators` contiene tutti gli *operatori OLAP* implementati nella libreria.
+# Computable (Alice Alfonsi)
+Il `trait Computable[A <: Attribute, M <: Measure, E <: Event[A, M]]` è generico sui parametri `A`, `M`, `E` con vincoli
+`A` sottotipo di `Attribute`, `M` sottotipo di `Measure`, `E` sottotipo di `Event[A, M]` e prende il nome di type class.
+
+La type class `Computable[A, M, E]` definisce nuovi comportamenti per i tipi che estendono `Event[A, M]` senza modificarli, come promosso dall'OCP. 
+I metodi astratti `sum`, `div`, `min`, `max` e `aggregate`, definiti come extension methods per istanze di tipo `E`, rappresentano operazioni 
+per qualunque tipo `E` per cui esista una given instance `Computable[A, M, E]` in scope e dovranno essere implementati per ciascun tipo specifico.
+
+Grazie al polimorfismo ad-hoc è possibile fornire implementazioni (given instance) della type class `Computable[A, M, E]` per tipi concreti che 
+estendono `Event[A, M]`, aggiungendo anche a posteriori un potenziamento a tipi esistenti e senza ereditarietà. 
+
+In questo modo la type class favorisce riusabilità e rimane aperta a future estensioni. L'utente può definire implementazioni ad-hoc dei metodi
+`sum`, `div`, `min`, `max` e `aggregate` solo per i tipi `E` di interesse.
+
+Allo stesso modo, la type class `Computable[A, M, E]` definisce il metodo concreto `aggregateBy` come extension method per istanze di 
+`Iterable[E]`, che sarà disponibile per ogni `E` per cui esiste un'istanza di `Computable[A, M, E]` in scope e il cui comportamento cambia in base 
+all'implementazione specifica di `Computable[A, M, E]`. 
+
+Il metodo `aggregateBy` incapsula le logiche di *aggregazione* degli *eventi*. Nel caso in cui l'evento da aggregare sia soltanto uno chiama 
+il metodo `aggregate`, nel caso di più eventi da aggregare chiama il metodo astratto della type class che rappresenta l'operazione corrispondente 
+all'*operatore di aggregazione* specificato. A tal proposito è stato introdotto il tipo `AggregationOp` costituito dalla seguente enumerazione 
+di tipi: `Sum`, `Avg`, `Min`, `Max`.
+
+Il metodo `aggregateBy` è implementato utilizzando `foldleft` come funzione curried higher-order che nel caso specifico accetta come parametro una 
+funzione tra `sum`, `min` e `max`. In Scala il metodo `foldleft` è implementato tramite ricorsione tail ed è quindi ottimizzato dal compilatore.
+
+
+# Operators (Claudia Giannelli, Alice Alfonsi)
+L'`object Operators` contiene tutti gli *operatori OLAP* implementati nella libreria.
 
 # Slice And Dice
 
@@ -87,9 +118,35 @@ Dal punto di vista implementativo, la funzione utilizza higher-order functions p
 
 Anche in questo caso, l’intera funzione è pura: non modifica alcun dato esistente, non produce effetti collaterali e restituisce un output deterministico in base agli input forniti.
 
+
+# Roll-up (Alice Alfonsi)
+L'operatore `rollUp` permette di aggregare gli *eventi primari* memorizzati nel *cubo OLAP* negli *eventi secondari* corrispondenti secondo un 
+insieme di *attributi* che costituiscono il *group-by set*. I valori delle *misure* che caratterizzano gli eventi primari vengono aggregati in 
+valori da abbinare a ciascun evento secondario secondo l'*operatore di aggregazione* specificato.
+
+Dunque, il metodo `rollUp` prende in input la collezione di eventi primari da aggregare, la collezione di stringhe che rappresentano i nomi degli 
+attributi del group-by set e l'operatore di aggregazione di tipo `AggregationOp`.
+
+Il metodo `rollUp` è parametrizzato su `A` vincolato ad `Attribute`, `M` vincolato a `Measure` ed `E` vincolato a `Event[A, M]`, dove `E` 
+rappresenta il tipo degli eventi in input al `rollUp` e il tipo degli eventi che il metodo restituisce. 
+
+Affinchè sia garantito a compile time che il tipo degli eventi primari e il tipo degli eventi secondari sia lo stesso, al metodo `rollUp` viene 
+passato come ultimo parametro `using computable: Computable[A, M, E]` dove la type class `Computable` funge da context bound per il metodo. 
+Ciò implica che il metodo `rollUp` possa essere chiamato solo se c'è una `given Computable[A, M, E]` disponibile in scope. 
+Inoltre, il context bound rende disponibili i metodi della type class `Computable` sugli eventi primari, abilitando su di essi i meccanismi 
+di aggregazione mediante la chiamata al metodo `aggregateBy`.
+
+La dichiarazione del parametro `using` nella firma del metodo ha richiesto di implementare il metodo `rollUp` in forma curried.
+
+Nel corpo del metodo `rollUp` sono state utilizzate le funzioni higher-order `exists`, `groupBy` e `map`.
+
+
 ## DSL
 
 È stato realizzato un Domain-Specific Language (DSL) per consentire all’utente la definizione di eventi in modo semplice e leggibile.
+
+La sintassi per la definizione di un evento è la seguente: `event` `named` "nomeEvento" `having` dimension1 `and` dimension2 `and` measure1 
+`and` measure2.
 
 
 # Measure DSL 
@@ -108,6 +165,24 @@ Per implementare tale DSL, è stato introdotto l’oggetto di supporto `MeasureW
 
 
 Successivamente, la chiamata al metodo `as` sull'oggetto `MeasureName` consente di completare la definizione della misura, specificandone la tipologia numerica. Il metodo `as` è implementato come estensione del tipo `MeasureName`
+
+
+# Event Builder (Alice Alfonsi)
+L'*evento* è rappresentato dalla `case class Event(name: String, dimensions: Seq[Dimension], measures: Seq[Measure])`.
+
+L'`object EventBuilder` costituisce il builder dell'*evento* ed espone il metodo `event` come punto di accesso al DSL. Tale metodo 
+restituisce un oggetto intermedio `EventWord()` che rappresenta un'istanza di `EventBuilder`.
+
+Sull'oggetto appena creato è possibile invocare il metodo `named` passando in input una stringa che rappresenta il nome dell'evento.
+Il metodo `named` crea un'istanza di `Event` con il nome passato in input e *dimensioni* e *misure* vuote.
+
+Su tale istanza di `Event` è possibile chiamare il metodo `having` per aggiungere una `Dimension` o una `Measure` rispettivamente 
+all'insieme delle dimensioni o all'insieme delle misure dell'evento attualmente vuoti.
+
+Infine, su un'istanza di `Event` è disponibile il metodo `and` per aggiungere successivamente `Dimension` o `Measure` alle dimensioni o 
+misure dell'evento.
+
+
 ## DSL OLAP
 
 È stato realizzato un Domain-Specific Language (DSL) per facilitare all'utente l’esecuzione di interrogazioni OLAP.
