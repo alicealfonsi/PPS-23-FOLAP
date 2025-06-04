@@ -10,7 +10,6 @@ import org.scalatest.matchers.should.Matchers
 
 import GeographicAttribute._
 import ProductAttribute._
-import folap.olapdsl.QueryDSL
 
 class RollUpDSLSpec extends AnyFlatSpec with Matchers:
 

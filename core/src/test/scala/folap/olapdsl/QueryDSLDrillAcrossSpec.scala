@@ -1,10 +1,10 @@
 package folap.olapdsl
 import folap.core._
+import folap.core.multidimensionalmodel.Attribute
+import folap.core.multidimensionalmodel.Measure
 import folap.olapdsl.QueryDSLBuilder.union
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import folap.core.multidimensionalmodel.{Attribute, Measure}
-import folap.olapdsl.QueryDSL
 
 class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
   trait SalesAttribute extends Attribute
