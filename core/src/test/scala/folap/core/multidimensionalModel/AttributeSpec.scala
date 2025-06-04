@@ -6,6 +6,9 @@ import org.scalatest.flatspec._
 import org.scalatest.matchers._
 
 class AttributeSpec extends AnyFlatSpec with should.Matchers:
+  private case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
   private case class ExampleAttribute() extends Attribute:
     override val parent: Option[Attribute] = Some(TopAttribute())
     override val value: String = ""
