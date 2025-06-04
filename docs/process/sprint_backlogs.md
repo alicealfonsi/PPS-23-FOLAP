@@ -78,7 +78,34 @@ Le dipendenze fra i task hanno rallentato, soprattutto nella fase iniziale dello
 
 ### Sprint retrospective 2
 Durante l'implementazione del roll-up sono emerse complessità impreviste che non erano state affrontate in precedenza.
+
 Ciò ha richiesto di ripensare la soluzione e di conseguenza ha ritardato lo svolgimento di alcuni task.
+
+#### Note (Tampieri)
+
+Gran parte del mio *effort* durante questo sprint è stato dedicato ad approfondire i meccanismi di code generation di Scala.
+
+L'obiettivo che mi ero prefissato era quello di sostituire dei sottoalberi dell'_AST_
+in modo da rimpiazzare ciò che l'utente definiva con il codice generato.
+
+Mi sono documentato in primo luogo sulle [macro](https://docs.scala-lang.org/scala3/guides/macros/macros.html), pensando fossero simili a [quelle presenti in Rust](https://doc.rust-lang.org/book/ch20-05-macros.html).
+In realtà, consentono di trasformare codice a runtime ma sono spesso utilizzate per
+espandere codice o effettuare l'*inlining* delle funzioni (vedi esempio dell'elevamento a potenza).
+Non sono state utilizzate le *macro*, in quanto senza usare `@experimental` possono solo generare all'interno dello scope della funzione.
+
+Successivamente, ho approfondito la libreria [Scalameta](https://scalameta.org/docs/trees/guide.html).
+Dalle mie indagini, veniva usata in Scala 2 per effettuare metaprogrammazione.
+Questa libreria fornisce un parser di Scala, ed è idonea alla generazione di codice,
+ma da quanto ho capito questa generazione viene effettuata a runtime.
+
+Infine, ho letto la documentazione dei [plugin del compilatore](https://docs.scala-lang.org/scala3/reference/changed-features/compiler-plugins.html).
+Questi consentirebbero la modifica a compile time dell'*AST* ma, data la complessità
+dell'approccio, che i plugin non possono influenzare il *type-checking* (non ho capito se è
+permesso modificare l'*AST* prima della fase di *type-checking*) e che lo sprint si avvicinava alla conclusione, ho abbandonato questa strada.
+
+Considerata la scarsa complessità di questa *code generation*, ho optato per generare a
+runtime la stringa corrispondente alla definizione in Scala degli eventi, delle gerarchie e
+degli attributi.
 
 
 ## Sprint Backlog 3 (start on 16/05/2025, deadline 28/05/2025)
