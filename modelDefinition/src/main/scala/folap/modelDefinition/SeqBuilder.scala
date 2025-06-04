@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 object SeqBuilder:
   trait ToSeq[T]:
@@ -11,5 +11,13 @@ object SeqBuilder:
     override def toSeq: Seq[String] = s
 
   extension (head: ToSeq[String])
+    /** Append a string to a Seq of strings, or generate a Seq of strings from
+      * two strings
+      *
+      * @param tail
+      *   The string to be appended
+      * @return
+      *   A Seq with the provided element appended
+      */
     infix def -->(tail: String): Seq[String] =
       head.toSeq.appended(tail)

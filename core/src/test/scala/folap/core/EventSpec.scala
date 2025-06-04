@@ -1,8 +1,8 @@
 package folap.core
 
+import folap.core.multidimensionalModel._
 import org.scalatest._
 
-import MultidimensionalModel._
 import flatspec._
 import matchers._
 
@@ -49,8 +49,9 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
       RevenueExampleMeasure(17.5)
     )
 
+  import CubeMockup.*
   it should "return its attributes given their names" in:
-    import CubeMockup.*, GeographicAttribute.*, ProductAttribute.*
+    import GeographicAttribute.*, ProductAttribute.*
     event1.findAttributesByNames(List("Shop", "Product")) shouldEqual
       List(
         Shop(
@@ -74,3 +75,6 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
           "Drink1"
         )
       )
+
+  "An Iterable of events" should "match the name of an Attribute if all of them contain the Attribute" in:
+    List(event1, event2).matchAttributeByName("City") shouldBe true

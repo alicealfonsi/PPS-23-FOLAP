@@ -1,8 +1,8 @@
 package folap.core
 
+import folap.core.multidimensionalModel.Measure
 import org.scalatest._
 
-import MultidimensionalModel._
 import flatspec._
 import matchers._
 

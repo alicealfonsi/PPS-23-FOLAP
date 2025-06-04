@@ -1,6 +1,6 @@
 package folap.core
 
-import MultidimensionalModel._
+import multidimensionalModel._
 
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
@@ -136,13 +136,32 @@ object Operators:
   }
 
   
+import AggregationOp.*
 
-  import Cube.*
-  import AggregationOp.*
+  /** Performs events aggregation based on the specified group-by set and
+    * aggregation operator
+    * @param events
+    *   primary events to aggregate
+    * @param groupBySet
+    *   the names of the attributes against which to aggregate
+    * @param aggregationOperator
+    *   the operator according to which aggregate the measures values of primary
+    *   events
+    * @param computable
+    *   a Computable type class instance
+    * @tparam A
+    *   the type of Event attributes, which must be a subtype of Attribute
+    * @tparam M
+    *   the type of Event measures, which must be a subtype of Measure
+    * @tparam E
+    *   the events type, which must be a subtype of Event[A, M]
+    * @return
+    *   secondary events resulting from the aggregation
+    */
   def rollUp[A <: Attribute, M <: Measure, E <: Event[A, M]](
       events: Iterable[E]
-  )(groupBySet: Iterable[String])(aggregationOp: AggregationOp)(using
-      operational: Operational[A, M, E]
+  )(groupBySet: Iterable[String])(aggregationOperator: AggregationOp)(using
+      computable: Computable[A, M, E]
   ): Iterable[E] =
     if groupBySet.exists(name => events.matchAttributeByName(name)) then
       val groupByMap =
@@ -150,10 +169,10 @@ object Operators:
           _.findAttributesByNames(groupBySet).map(_.value)
         )
       groupByMap.values.map(events =>
-        aggregationOp match
-          case Sum => events.aggregateBySum(groupBySet)
-          case Avg => events.aggregateByAverage(groupBySet)
-          case Min => events.aggregateByMinimum(groupBySet)
-          case Max => events.aggregateByMaximum(groupBySet)
+        aggregationOperator match
+          case Sum => events.aggregateBy(Sum)(groupBySet)
+          case Avg => events.aggregateBy(Avg)(groupBySet)
+          case Min => events.aggregateBy(Min)(groupBySet)
+          case Max => events.aggregateBy(Max)(groupBySet)
       )
     else events

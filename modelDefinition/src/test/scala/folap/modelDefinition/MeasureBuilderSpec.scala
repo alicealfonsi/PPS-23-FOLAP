@@ -1,5 +1,5 @@
-package folap.typingDSL
-import folap.typingDSL.MeasureDSL._
+package folap.modelDefinition
+import folap.modelDefinition.MeasureDSL._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

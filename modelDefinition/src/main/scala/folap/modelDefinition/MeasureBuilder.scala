@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 /** A domain-specific language (DSL) for creating Measures
   *

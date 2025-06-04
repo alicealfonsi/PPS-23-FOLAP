@@ -1,4 +1,4 @@
-package folap.core
+package folap.core.multidimensionalModel
 
 /** Type alias that represents the numeric types allowed for
   * a Measure

@@ -1,4 +1,4 @@
-package folap.typingDSL
+package folap.modelDefinition
 
 /** The case class representing an Event
   * @param name
