@@ -10,7 +10,7 @@ def visualize(events: Iterable[Event[_, _]]): Unit =
       .flatMap(_.hierarchy)
       .filter(_.name != "TopAttribute")
 
-    val seen = scala.collection.mutable.LinkedHashSet[String]()
+    val seen = scala.collection.mutable.Set[String]()
     val orderedDims = expanded.filter { a =>
       val key = a.name + ":" + a.value
       if seen.contains(key) then false else { seen += key; true }
