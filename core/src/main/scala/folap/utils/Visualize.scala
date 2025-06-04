@@ -22,14 +22,11 @@ def visualize(events: Iterable[Event[_, _]]): Unit =
     }
 
     orderedDims.foreach { attr =>
-      val name = attr.name
-      println(s"$name: ${attr.value}")
+      println(s"${attr.name}: ${attr.value}")
     }
 
     event.measures.foreach { m =>
-      val name = m.name
-      val value = m.value
-      println(s"$name: $value")
+      println(s"${m.name}: ${m.value}")
     }
 
     println()
