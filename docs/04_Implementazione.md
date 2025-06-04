@@ -8,7 +8,7 @@ Questa astrazione consente un disaccoppiamento tra la logica generica dell’ope
 
 ## Operators
 
-L’object `Operators` raccoglie tutti gli *operatori OLAP* implementati nella libreria.  I risultati delle query possono essere visualizzati invocando la funzione `visualize`, che prende in input un iteratore di eventi.
+L’object `Operators` raccoglie tutti gli *operatori OLAP* implementati nella libreria.  I risultati delle query possono essere visualizzati invocando il metodo `visualize`, che prende in input un iteratore di eventi.
 
 # Slice And Dice
 
