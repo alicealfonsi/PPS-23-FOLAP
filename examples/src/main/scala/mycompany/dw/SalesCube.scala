@@ -6,9 +6,9 @@ import folap.core.EventConstructor
 import folap.core.multidimensionalModel._
 import folap.olapDSL.AttributeDSLBuilder._
 import folap.olapDSL.AttributeSeqBuilder._
+import folap.olapDSL.QueryDSL
 import folap.olapDSL.QueryDSLBuilder._
 import folap.utils.visualize
-import folap.olapDSL.QueryDSL
 
 trait Dimension extends Attribute
 trait DateDimension extends Dimension
