@@ -1,9 +1,9 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
-import folap.modelDefinition.CodegenUtils.indent
-import folap.modelDefinition.MeasureDSL.measure
 import org.scalatest._
 
+import CodegenUtils.indent
+import MeasureDSL.measure
 import flatspec._
 import matchers._
 import SeqBuilder.-->

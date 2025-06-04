@@ -1,8 +1,8 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
-import folap.modelDefinition.CodegenUtils.indent
-import folap.modelDefinition.CodegenUtils.sanitise
-import folap.modelDefinition.CodegenUtils.toCamelCase
+import folap.modeldefinition.CodegenUtils.indent
+import folap.modeldefinition.CodegenUtils.sanitise
+import folap.modeldefinition.CodegenUtils.toCamelCase
 
 object Codegen:
   /** Generate the Scala code for the given Dimension

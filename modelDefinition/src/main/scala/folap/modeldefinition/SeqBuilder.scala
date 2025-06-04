@@ -1,4 +1,4 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
 object SeqBuilder:
   trait ToSeq[T]:

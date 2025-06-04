@@ -1,4 +1,4 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should

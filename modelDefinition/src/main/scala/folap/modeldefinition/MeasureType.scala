@@ -1,4 +1,4 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
 /** A type representing the allowed numeric types for a Measure.
   *

@@ -1,6 +1,6 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
-import folap.modelDefinition.SeqBuilder.ToSeq
+import folap.modeldefinition.SeqBuilder.ToSeq
 
 case class Dimension(name: String, attributes: Seq[String])
 

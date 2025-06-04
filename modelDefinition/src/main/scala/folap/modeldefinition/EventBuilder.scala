@@ -1,4 +1,4 @@
-package folap.modelDefinition
+package folap.modeldefinition
 
 /** The case class representing an Event
   * @param name
