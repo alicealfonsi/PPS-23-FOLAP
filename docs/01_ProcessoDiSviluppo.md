@@ -1,13 +1,14 @@
 # 01 Processo di sviluppo
 
-Per la realizzazione del framework si intende seguire il processo di sviluppo consigliato SCRUM-inspired.
+Per la realizzazione della libreria si intende seguire il processo di sviluppo consigliato SCRUM-inspired.
 
 Il team di sviluppo è composto da:
 - Alice Alfonsi
 - Claudia Giannelli Taccarino
 - Eugenio Tampieri
 
-Tra i membri del team si è scelto di assegnare il ruolo di committente ed esperto di dominio a Eugenio Tampieri e il ruolo di product owner a Alice Alfonsi.
+Tra i membri del team si è scelto di assegnare il ruolo di committente ed esperto di dominio a Eugenio Tampieri e il ruolo di product 
+owner a Alice Alfonsi.
 
 ## "Definition of done"
 - software che ha superato i test
@@ -16,7 +17,7 @@ Tra i membri del team si è scelto di assegnare il ruolo di committente ed esper
 - software formattato secondo la configurazione di scalafmt
 
 ## Sprint
-Si prevede di realizzare un primo sprint organizzativo (sprint 0) e quattro sprint successivi indicativamente di durata 10 giorni ciascuno.
+Si prevede di realizzare un primo sprint organizzativo e tre sprint successivi indicativamente di durata 10 giorni ciascuno.
 
 Per ogni sprint si stima un carico di lavoro pari a 15 ore circa a testa.
 
@@ -38,7 +39,7 @@ Nel caso delle pull request, vengono eseguiti i test su Windows (ultima versione
 (ultima versione).
 Inoltre, vengono effettuati i controlli di `scalafmt` (preset di default) e di `scalafix`.
 Di quest'ultimo strumento sono stati abilitati:
- - `DisableSyntax`: verifica che non vengano utilizzate alcune sintassi non idiomatiche
- - `OrganizeImports`: verifica che gli `import` siano ordinati e ben organizzati
- - `RedundantSyntax`: verifica che non siano presenti qualificatori non necessari o altri elementi sintattici superflui
- - `RemoveUnused`: verifica che non siano presenti `import` non utilizzati
+ - `DisableSyntax`: verifica che non vengano utilizzate alcune sintassi non idiomatiche;
+ - `OrganizeImports`: verifica che gli `import` siano ordinati e ben organizzati;
+ - `RedundantSyntax`: verifica che non siano presenti qualificatori non necessari o altri elementi sintattici superflui;
+ - `RemoveUnused`: verifica che non siano presenti `import` non utilizzati.
