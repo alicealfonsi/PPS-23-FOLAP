@@ -106,11 +106,12 @@ class DrillAcrossSpec
   val eventsB: Seq[ProfitsEvent] = Seq(event4, event5)
   val eventsC: Seq[CustomerEvent] = Seq(event6)
 
-  def createEvent[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
+  def createEvent[A <: Attribute, M <: Measure, E <: Event[A, M]]
+      : EventConstructor[A, M, E] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]
-    ) => ResultEvent(attributes, measures)
+    ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
   "drillAcross" should "combine events with matching attributes" in:
     val result = drillAcross(eventsA, eventsB, createEvent)

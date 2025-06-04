@@ -9,27 +9,26 @@ private def extractAllDimensions(attr: Attribute): List[Attribute] =
       a.parent.toList.flatMap(extractAllDimensions) ++ List(a)
 
 def visualize(events: Iterable[Event[_, _]]): Unit =
-  println("===== Cube Result =====")
   events.zipWithIndex.foreach { (event, idx) =>
     println(s"--- Event ${idx + 1} ---")
 
-    val expanded = event.dimensions
+    val expanded = event.attributes
       .flatMap(extractAllDimensions)
-      .filter(_ != TopAttribute())
+      .filter(_.name != "TopAttribute")
 
     val seen = scala.collection.mutable.LinkedHashSet[String]()
     val orderedDims = expanded.filter { a =>
-      val key = a.getClass.getName + ":" + a.value
+      val key = a.name + ":" + a.value
       if seen.contains(key) then false else { seen += key; true }
     }
 
     orderedDims.foreach { attr =>
-      val name = attr.getClass.getSimpleName.replace("Attribute", "")
+      val name = attr.name
       println(s"$name: ${attr.value}")
     }
 
     event.measures.foreach { m =>
-      val name = m.getClass.getSimpleName
+      val name = m.name
       val value = m.value
       println(s"$name: $value")
     }

@@ -7,6 +7,66 @@ import multidimensionalModel._
   */
 
 object Operators:
+  /** Slice and dice operation used to filter events by matching attribute names
+    * and values.
+    *
+    * @param events
+    *   events to filter
+    * @param filters
+    *   attributes to match by name and value
+    * @tparam A
+    *   type of attributes
+    * @tparam M
+    *   type of measures
+    * @return
+    *   events that match all filters
+    */
+
+  def sliceAndDice[A <: Attribute, M <: Measure, E <: Event[A, M]](
+      events: Iterable[E],
+      filters: Iterable[Attribute]
+  ): Iterable[E] =
+    events.filter { event =>
+      filters.forall { filter =>
+        event.attributes
+          .find(attr => attr.name == filter.name)
+          .exists(_.value == filter.value)
+      }
+
+    }
+
+  /** Returns only the leaf attributes from a collection of attributes.
+    *
+    * A leaf attribute is defined as an attribute that does not appear as a
+    * parent of any other attribute in the given collection.
+    *
+    * @param attrs
+    *   the collection of attributes to process
+    * @tparam A
+    *   the type of attributes
+    * @return
+    *   a collection of attributes that are not parents of any other attributes
+    */
+  private def leafAttributes[A <: Attribute](attrs: Iterable[A]): Iterable[A] =
+    val allParents = attrs.flatMap(_.parent)
+    attrs.filterNot(a => allParents.exists(_ == a))
+
+  /** Compares two attributes and returns true if they share the exact same
+    * hierarchy path.
+    *
+    * @param a1
+    *   the first attribute
+    * @param a2
+    *   the second attribute
+    * @tparam A
+    *   the attribute type, which must extend `Attribute`
+    * @return
+    *   true if the two attributes share the same hierarchical structure and
+    *   values
+    */
+  private def sameHierarchy[A <: Attribute](a1: A, a2: A): Boolean =
+    a1.hierarchy == a2.hierarchy
+
   /** Performs a drill across operation that combines events from two cubes when
     * they share at least one common leaf attribute.
     *
@@ -33,21 +93,20 @@ object Operators:
     *   a collection of events, each one resulting from the combination of two
     *   matching events sharing one or more common leaf attributes
     */
-
   def drillAcross[
-      A1 <: Attribute,
+      A <: Attribute,
+      A1 <: A,
+      A2 <: A,
+      M <: Measure,
       M1 <: Measure,
-      A2 <: Attribute,
-      M2 <: Measure
+      E1 <: Event[A1, M],
+      E2 <: Event[A2, M1],
+      E <: Event[A1, M | M1]
   ](
-      events: Iterable[Event[A1, M1]],
-      otherEvents: Iterable[Event[A2, M2]],
-      createEvent: EventConstructor[Attribute, M1 | M2]
-  ): Iterable[Event[Attribute, M1 | M2]] = {
-
-    def leafAttributes(attrs: Iterable[Attribute]): Iterable[Attribute] =
-      val allParents = attrs.flatMap(_.parent)
-      attrs.filterNot(a => allParents.exists(_ == a))
+      events: Iterable[E1],
+      otherEvents: Iterable[E2],
+      createEvent: EventConstructor[A1, M | M1, E]
+  ): Iterable[E] = {
 
     events.flatMap { eventA =>
       val leavesA = leafAttributes(eventA.attributes)
@@ -56,13 +115,11 @@ object Operators:
         val leavesB = leafAttributes(eventB.attributes)
 
         val commonLeaves = leavesA.filter { attrA =>
-          leavesB.exists(attrB =>
-            attrA.name == attrB.name && attrA.value == attrB.value
-          )
+          leavesB.exists(attrB => sameHierarchy(attrA, attrB))
         }
 
         if (commonLeaves.nonEmpty) {
-          val combinedMeasures: Iterable[M1 | M2] =
+          val combinedMeasures: Iterable[M | M1] =
             eventA.measures ++ eventB.measures
           Seq(createEvent(commonLeaves, combinedMeasures))
         } else {
@@ -71,34 +128,6 @@ object Operators:
       }
     }
   }
-
-  /** "Slice and dice" operation used to filter events by matching attribute
-    * names and values.
-    *
-    * @param events
-    *   events to filter
-    * @param filters
-    *   attributes to match by name and value
-    * @tparam A
-    *   type of attributes
-    * @tparam M
-    *   type of measures
-    * @return
-    *   events that match all filters
-    */
-
-  def sliceAndDice[A <: Attribute, M <: Measure](
-      events: Iterable[Event[A, M]],
-      filters: Iterable[Attribute]
-  ): Iterable[Event[A, M]] =
-    events.filter { event =>
-      filters.forall { filter =>
-        event.attributes
-          .find(attr => attr.name == filter.name)
-          .exists(_.value == filter.value)
-      }
-
-    }
 
   import AggregationOp.*
 
