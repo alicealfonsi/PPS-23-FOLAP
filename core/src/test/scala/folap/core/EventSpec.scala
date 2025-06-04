@@ -1,13 +1,16 @@
 package folap.core
 
+import folap.core.multidimensionalModel._
 import org.scalatest._
 
-import MultidimensionalModel._
 import flatspec._
 import matchers._
 
 trait ExampleEventAttribute extends Attribute
 trait ExampleEventMeasure extends Measure
+private case class TopAttribute() extends Attribute:
+  override val parent: Option[Attribute] = None
+  override val value: String = ""
 private case class DimensionExampleAttribute(
     override val parent: Option[TopAttribute],
     override val value: String
@@ -49,8 +52,9 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
       RevenueExampleMeasure(17.5)
     )
 
+  import CubeMockup.*
   it should "return its attributes given their names" in:
-    import CubeMockup.*, GeographicAttribute.*, ProductAttribute.*
+    import GeographicAttribute.*, ProductAttribute.*
     event1.findAttributesByNames(List("Shop", "Product")) shouldEqual
       List(
         Shop(
@@ -74,3 +78,6 @@ class EventSpec extends AnyFlatSpec with should.Matchers:
           "Drink1"
         )
       )
+
+  "An Iterable of events" should "match the name of an Attribute if all of them contain the Attribute" in:
+    List(event1, event2).matchAttributeByName("City") shouldBe true

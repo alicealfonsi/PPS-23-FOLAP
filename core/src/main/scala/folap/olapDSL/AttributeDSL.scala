@@ -1,16 +1,14 @@
 package folap.olapDSL
-import folap.core.MultidimensionalModel._
+import folap.core.multidimensionalModel.Attribute
 
-/** Companion object providing factory methods to create attribute DSL instances
-  * for use in the OLAP DSL.
-  *
-  * All attribute names are automatically suffixed with "Attribute".
+/** Object providing factory methods to create attribute DSL instances for use
+  * in the OLAP DSL.
   */
 object AttributeDSL:
   trait AttributeDSL extends Attribute
 
-  /** A concrete implementation of EventAttribute used to define attributes with
-    * a value.
+  /** A concrete implementation of `Attribute` used to define attributes with a
+    * value.
     *
     * @param name
     *   name of the attribute
@@ -23,8 +21,8 @@ object AttributeDSL:
   ) extends AttributeDSL:
     override val parent: Option[Attribute] = None
 
-  /** A concrete implementation of EventAttribute used to define attributes
-    * without a value.
+  /** A concrete implementation of `Attribute` used to define attributes without
+    * a value.
     *
     * The value is always the empty string.
     *
@@ -40,21 +38,21 @@ object AttributeDSL:
   /** Creates an AttributeDSLWithValue with the specified base name and value.
     *
     * @param baseName
-    *   base name of the attribute; "Attribute" is appended automatically
+    *   nase name of the attribute
     * @param value
     *   value of the attribute
     * @return
     *   an instance of AttributeDSLWithValue
     */
-  def apply(baseName: String, value: String): AttributeDSLWithValue =
-    AttributeDSLWithValue(baseName + "Attribute", value)
+  def apply(name: String, value: String): AttributeDSLWithValue =
+    AttributeDSLWithValue(name, value)
 
   /** Creates an AttributeDSLWithoutValue with the specified base name.
     *
     * @param baseName
-    *   base name of the attribute; "Attribute" is appended automatically
+    *   name of the attribute
     * @return
     *   an instance of AttributeDSLWithoutValue with empty value
     */
-  def apply(baseName: String): AttributeDSLWithoutValue =
-    AttributeDSLWithoutValue(baseName + "Attribute")
+  def apply(name: String): AttributeDSLWithoutValue =
+    AttributeDSLWithoutValue(name)

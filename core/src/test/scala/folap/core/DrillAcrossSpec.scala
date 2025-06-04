@@ -1,10 +1,10 @@
 package folap.core
 
+import folap.core.multidimensionalModel._
 import org.scalatest._
 
 import scala.language.postfixOps
 
-import MultidimensionalModel._
 import Operators.drillAcross
 import flatspec._
 import matchers._
@@ -20,7 +20,9 @@ class DrillAcrossSpec
   trait SalesMeasure extends Measure
   trait ProfitsMeasure extends Measure
   trait CustomerMeasure extends Measure
-
+  case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
   case class NationAttribute(
       override val value: String,
       override val parent: Option[TopAttribute]
@@ -106,11 +108,12 @@ class DrillAcrossSpec
   val eventsB: Seq[ProfitsEvent] = Seq(event4, event5)
   val eventsC: Seq[CustomerEvent] = Seq(event6)
 
-  def createEvent[A <: Attribute, M <: Measure]: EventConstructor[A, M] =
+  def createEvent[A <: Attribute, M <: Measure, E <: Event[A, M]]
+      : EventConstructor[A, M, E] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]
-    ) => ResultEvent(attributes, measures)
+    ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
   "drillAcross" should "combine events with matching attributes" in:
     val result = drillAcross(eventsA, eventsB, createEvent)

@@ -1,7 +1,7 @@
 package folap.olapDSL
 
-import folap.core.MultidimensionalModel._
 import folap.core._
+import folap.core.multidimensionalModel._
 import folap.olapDSL.AttributeDSLBuilder._
 import folap.olapDSL.AttributeSeqBuilder._
 import folap.olapDSL.QueryDSLBuilder._
@@ -12,11 +12,14 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
 
   trait SalesAttribute extends Attribute
   trait SalesMeasure extends Measure
-  case class NationAttribute(
+  case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
+  case class Nation(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
-  case class YearAttribute(
+  case class Year(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
@@ -28,28 +31,25 @@ class QueryDSLSliceAndDiceSpec extends AnyFlatSpec with Matchers:
       override val measures: Iterable[SalesMeasure]
   ) extends Event[SalesAttribute, SalesMeasure]
   val event1: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("France", None), YearAttribute("2024", None)),
+    dimensions = Seq(Nation("France", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
   val events: Seq[SalesEvent] = Seq(event1, event2, event3)
 
-  val Sales: QueryDSL[SalesAttribute, SalesMeasure] = QueryDSL(events)
+  val Sales = QueryDSL(events)
 
-  "sliceAndDice" should "filter events by a single attribute (slice)" in:
+  "The DSL method `where`" should "filter events by a single attribute (slice)" in:
     val Nation = "Nation"
     val filtered = Sales where (Nation is "Italy")
     filtered.cube should contain theSameElementsAs Seq(event1, event3)
