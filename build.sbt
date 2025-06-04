@@ -1,13 +1,42 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+val scala3Version = "3.3.6"
 
-ThisBuild / scalaVersion := "3.3.5"
+ThisBuild / scalacOptions ++= Seq("-Wunused:all", "-explain")
 
-// For Scalafix
-ThisBuild / semanticdbEnabled := true
-scalacOptions ++= Seq("-Wunused:all")
-
-lazy val root = (project in file("."))
+lazy val core = project
+  .in(file("./core"))
   .settings(
+    version := "1.0.0",
+    scalaVersion := scala3Version,
+    // For Scalafix
+    semanticdbEnabled := true,
     name := "FOLAP",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.19",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % "test",
+    assembly / assemblyOutputPath := file("./FOLAP.jar")
+  )
+
+lazy val modelDefinition = project
+  .in(file("./modelDefinition"))
+  .settings(
+    version := "1.0.0",
+    scalaVersion := scala3Version,
+    // For Scalafix
+    semanticdbEnabled := true,
+    name := "FOLAP (typing DSL)",
+    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.19",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % "test",
+    assembly / assemblyOutputPath := file("./FOLAP-modelDSL.jar")
+  )
+
+lazy val examples = project
+  .in(file("./examples"))
+  .dependsOn(core)
+  .dependsOn(modelDefinition)
+  .settings(
+    version := "1.0.0",
+    scalaVersion := scala3Version,
+    // For Scalafix
+    semanticdbEnabled := true,
+    name := "FOLAP (examples)",
+    assembly / assemblyOutputPath := file("./FOLAP-example.jar")
   )
