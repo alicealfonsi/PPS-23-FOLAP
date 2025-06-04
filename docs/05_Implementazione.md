@@ -225,7 +225,33 @@ misura, specificandone la tipologia numerica. Il metodo `as` è implementato com
 
 ### Dimension DSL (Eugenio Tampieri)
 
+Al fine della *code generation*, una *dimensione* è rappresentata dal nome della stessa e dai suoi attributi, ordinati
+gerarchicamente.
 
+Per questo, è stata definita una `case class Dimension`, che contiene i dati sopraelencati.
+
+Il DSL la costruisce nel modo seguente:
+```
+"temporal" dimension "day" --> "month" --> "quarter" --> "year"
+```
+
+Questo è possibile definendo un *extension method*  sulle stringhe chiamato `dimension`.
+
+Per costruire la `Seq[String]` rappresentante la gerarchia, è stata definita una funzione
+`-->` che combina due stringhe in una sequenza o appende una stringa a una sequenza.
+
+È possibile definire la dimensione "in un colpo solo", senza ricorrere a parentesi, grazie alla priorità del carattere `-`.
+
+### Code generation (Eugenio Tampieri)
+
+L'`object Codegen` si occupa di trasformare in stringhe ciò che viene costruito dal DSL.
+Ogni metodo al suo interno si occupa di generare il codice Scala corrispondente alla definizione della *misura*, della
+*dimensione* e dell'*evento*.
+
+Sono stati anche definiti tre metodi di utilità:
+- `sanitise`, che elimina gli spazi e converte una stringa in Pascal Case (attualmente non elimina i caratteri non alfanumerici);
+- `indent`, che indenta di un certo numero di spazi la stringa fornita in input;
+- `toCamelCase`, che trasforma una stringa in Pascal Case in camel case.
 
 ### Event Builder (Alice Alfonsi)
 L'*evento* è rappresentato dalla `case class Event(name: String, dimensions: Seq[Dimension], measures: Seq[Measure])`.
