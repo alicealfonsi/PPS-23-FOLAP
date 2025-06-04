@@ -6,7 +6,7 @@ import folap.modelDefinition.EventBuilder.event
 import folap.modelDefinition.MeasureDSL.measure
 import folap.modelDefinition.SeqBuilder.-->
 
-@main def generate: Unit =
+@main def generateSales: Unit =
   val temporal = "temporal" dimension "Month" --> "Quarter" --> "Year"
   val geographic = "geographic" dimension "City" --> "Country" --> "Region"
   val product = "product" dimension "Product" --> "SubCategory" --> "Category"
