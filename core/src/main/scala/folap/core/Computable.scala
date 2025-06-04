@@ -1,6 +1,6 @@
 package folap.core
 
-import multidimensionalModel._
+import multidimensionalmodel.{Attribute, Measure}
 
 /** The Computable type class
   * @tparam A

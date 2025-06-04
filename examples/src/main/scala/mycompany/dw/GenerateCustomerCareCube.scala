@@ -1,10 +1,10 @@
 package mycompany.dw
 
-import folap.modelDefinition.Codegen
-import folap.modelDefinition.DimensionBuilder.dimension
-import folap.modelDefinition.EventBuilder.event
-import folap.modelDefinition.MeasureDSL.measure
-import folap.modelDefinition.SeqBuilder.-->
+import folap.modeldefinition.Codegen
+import folap.modeldefinition.DimensionBuilder.dimension
+import folap.modeldefinition.EventBuilder.event
+import folap.modeldefinition.MeasureDSL.measure
+import folap.modeldefinition.SeqBuilder.-->
 
 @main def generateCustomerCare: Unit =
   val geographic = "geographic" dimension "City" --> "Country" --> "Region"

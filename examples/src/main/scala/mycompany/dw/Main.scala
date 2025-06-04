@@ -3,11 +3,11 @@ package mycompany.dw
 import folap.core.AggregationOp._
 import folap.core.Event
 import folap.core.EventConstructor
-import folap.core.multidimensionalModel._
-import folap.olapDSL.AttributeDSLBuilder._
-import folap.olapDSL.AttributeSeqBuilder._
-import folap.olapDSL.QueryDSL
-import folap.olapDSL.QueryDSLBuilder._
+import folap.core.multidimensionalmodel._
+import folap.olapdsl.AttributeDSLBuilder._
+import folap.olapdsl.AttributeSeqBuilder._
+import folap.olapdsl.QueryDSL
+import folap.olapdsl.QueryDSLBuilder._
 import folap.utils.visualize
 
 val SalesCube = QueryDSL(SalesEvents.salesEvents)

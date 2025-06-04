@@ -1,19 +1,12 @@
-package folap.core
+package folap.olapdsl
+import folap.core._
+import folap.core.multidimensionalmodel.Attribute
+import folap.core.multidimensionalmodel.Measure
+import folap.olapdsl.QueryDSLBuilder.union
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-import org.scalatest._
-
-import scala.language.postfixOps
-
-import Operators.drillAcross
-import flatspec._
-import matchers._
-import multidimensionalmodel.{Attribute, Measure}
-
-class DrillAcrossSpec
-    extends AnyFlatSpec
-    with should.Matchers
-    with BeforeAndAfterEach:
-
+class QueryDSLDrillAcrossSpec extends AnyFlatSpec with Matchers:
   trait SalesAttribute extends Attribute
   trait ProfitsAttribute extends Attribute
   trait CustomerAttribute extends Attribute
@@ -23,33 +16,30 @@ class DrillAcrossSpec
   case class TopAttribute() extends Attribute:
     override val parent: Option[Attribute] = None
     override val value: String = ""
-  case class NationAttribute(
+  case class Nation(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
       with ProfitsAttribute
 
-  case class YearAttribute(
+  case class Year(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends SalesAttribute
 
-  case class CategoryAttribute(
+  case class Category(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends ProfitsAttribute
-  case class CustomerNameAttribute(
+  case class CustomerName(
       override val value: String,
       override val parent: Option[TopAttribute]
   ) extends CustomerAttribute
 
   case class TotSalesMeasure(override val value: Int) extends SalesMeasure:
     type T = Int
-
-  case class TotProfitsMeasure(override val value: Double)
-      extends ProfitsMeasure:
-    type T = Double
-
+  case class TotProfitsMeasure(override val value: Int) extends ProfitsMeasure:
+    type T = Int
   case class TotPurchasesMeasure(override val value: Int)
       extends CustomerMeasure:
     type T = Int
@@ -70,37 +60,31 @@ class DrillAcrossSpec
       override val dimensions: Iterable[A],
       override val measures: Iterable[M]
   ) extends Event[A, M]
-
   val event1: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2024", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(100))
   )
 
   val event2: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("France", None), YearAttribute("2024", None)),
+    dimensions = Seq(Nation("France", None), Year("2024", None)),
     measures = Seq(TotSalesMeasure(150))
   )
 
   val event3: SalesEvent = SalesEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), YearAttribute("2023", None)),
+    dimensions = Seq(Nation("Italy", None), Year("2023", None)),
     measures = Seq(TotSalesMeasure(120))
   )
 
   val event4: ProfitsEvent = ProfitsEvent(
-    dimensions =
-      Seq(NationAttribute("Italy", None), CategoryAttribute("shoes", None)),
+    dimensions = Seq(Nation("Italy", None), Category("shoes", None)),
     measures = Seq(TotProfitsMeasure(30))
   )
   val event5: ProfitsEvent = ProfitsEvent(
-    dimensions =
-      Seq(NationAttribute("Spain", None), CategoryAttribute("bags", None)),
+    dimensions = Seq(Nation("Spain", None), Category("bags", None)),
     measures = Seq(TotProfitsMeasure(40))
   )
   val event6: CustomerEvent = CustomerEvent(
-    Seq(CustomerNameAttribute("Claudia", None)),
+    Seq(CustomerName("Claudia", None)),
     Seq(TotPurchasesMeasure(5))
   )
 
@@ -108,27 +92,36 @@ class DrillAcrossSpec
   val eventsB: Seq[ProfitsEvent] = Seq(event4, event5)
   val eventsC: Seq[CustomerEvent] = Seq(event6)
 
-  def createEvent[A <: Attribute, M <: Measure, E <: Event[A, M]]
+  given EventConstructor[A <: Attribute, M <: Measure, E <: Event[A, M]]
       : EventConstructor[A, M, E] =
     (
         attributes: Iterable[A],
         measures: Iterable[M]
     ) => ResultEvent(attributes, measures).asInstanceOf[E]
 
-  "drillAcross" should "combine events with matching attributes" in:
-    val result = drillAcross(eventsA, eventsB, createEvent)
-    val resultEvent1 = ResultEvent(
-      Seq(NationAttribute("Italy", None)),
-      Seq(TotSalesMeasure(100), TotProfitsMeasure(30))
+  val Sales = QueryDSL(eventsA)
+  val Profits = QueryDSL(eventsB)
+  val Customers = QueryDSL(
+    eventsC
+  )
+
+  "The DSL method `union`" should "combine events with matching attributes" in:
+    val result = Sales union Profits
+
+    val expected = Seq(
+      ResultEvent(
+        Seq(Nation("Italy", None)),
+        Seq(TotSalesMeasure(100), TotProfitsMeasure(30))
+      ),
+      ResultEvent(
+        Seq(Nation("Italy", None)),
+        Seq(TotSalesMeasure(120), TotProfitsMeasure(30))
+      )
     )
-    val resultEvent2 = ResultEvent(
-      Seq(NationAttribute("Italy", None)),
-      Seq(TotSalesMeasure(120), TotProfitsMeasure(30))
-    )
-    val resultEvents = Seq(resultEvent1, resultEvent2)
-    result should have size 2
-    result should contain theSameElementsAs resultEvents
+
+    result.cube should have size 2
+    result.cube should contain theSameElementsAs expected
 
   it should "return empty when no attributes match" in:
-    val result = drillAcross(eventsA, eventsC, createEvent)
-    result should be(empty)
+    val result = Sales union Customers
+    result.cube shouldBe empty

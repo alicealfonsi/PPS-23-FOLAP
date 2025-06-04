@@ -1,6 +1,6 @@
 package folap.utils
 import folap.core.Event
-import folap.core.multidimensionalModel._
+import folap.core.multidimensionalmodel._
 
 /** Displays a sequence of events in a readable, structured format.
   *

@@ -2,14 +2,14 @@ package mycompany.dw
 
 object Sales:
   case class Revenue(value: Double)
-      extends folap.core.multidimensionalModel.Measure:
+      extends folap.core.multidimensionalmodel.Measure:
     type T = Double
   case class Quantity(value: Int)
-      extends folap.core.multidimensionalModel.Measure:
+      extends folap.core.multidimensionalmodel.Measure:
     type T = Int
 
   type Measures = Revenue | Quantity
-  sealed trait Dimension extends folap.core.multidimensionalModel.Attribute
+  sealed trait Dimension extends folap.core.multidimensionalmodel.Attribute
   object Dimension:
     sealed trait TemporalDimension extends Dimension
     object TemporalDimension:
