@@ -1,10 +1,10 @@
 package folap.core
 
+import folap.core.multidimensionalModel._
 import org.scalatest._
 
 import scala.language.postfixOps
 
-import MultidimensionalModel._
 import Operators.drillAcross
 import flatspec._
 import matchers._

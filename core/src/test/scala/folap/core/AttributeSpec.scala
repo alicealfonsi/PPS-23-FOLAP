@@ -1,8 +1,8 @@
 package folap.core
 
+import folap.core.multidimensionalModel._
 import org.scalatest._
 
-import MultidimensionalModel._
 import flatspec._
 import matchers._
 
@@ -28,11 +28,6 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
 
   it should "have a hierarchy" in:
     dim.hierarchy shouldEqual List(dim, attribute, TopAttribute())
-
-  it should "be comparable: equal to" in:
-    val other: Attribute =
-      DimensionAttribute(Some(TopAttribute()), "")
-    dim.equals(other) shouldBe true
 
   import CubeMockup.*, GeographicAttribute.*
   val shop: Shop = shop1

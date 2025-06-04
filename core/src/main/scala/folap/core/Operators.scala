@@ -1,6 +1,6 @@
 package folap.core
 
-import MultidimensionalModel._
+import multidimensionalModel._
 
 /** Operators for querying and manipulating events of a multidimensional data
   * warehouse
@@ -100,7 +100,6 @@ object Operators:
 
     }
 
-  import Cube.*
   import AggregationOp.*
 
   /** Performs events aggregation based on the specified group-by set and
