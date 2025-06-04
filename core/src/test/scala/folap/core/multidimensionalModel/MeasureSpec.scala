@@ -1,10 +1,8 @@
-package folap.core
+package folap.core.multidimensionalModel
 
-import folap.core.multidimensionalModel.Measure
 import org.scalatest._
-
-import flatspec._
-import matchers._
+import org.scalatest.flatspec._
+import org.scalatest.matchers._
 
 class MeasureSpec extends AnyFlatSpec with should.Matchers:
   private case class IntMeasure(override val value: Int) extends Measure:
