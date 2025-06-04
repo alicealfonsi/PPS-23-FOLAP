@@ -4,9 +4,10 @@ Gli obiettivi del progetto sono stati raggiunti. Come previsto, la libreria impl
 tramite DSL, fornisce una rappresentazione dei dati secondo il modello multidimensionale ed espone un DSL per la 
 generazione di codice conforme a tale modello.
 
-Siamo soddisfatti del risultato che si ottiene con l’utilizzo del DSL ….
+Siamo soddisfatti del risultato che si ottiene con l’utilizzo dei DSL, in quanto aumentano l'espressività e, nel caso
+del DSL di definizione del modello, consentono di esprimere in modo molto conciso le entità rispetto al codice generato.
 
-Abbiamo cercato di attenerci il più possibile alla metodologia SCRUM. La maggiore difficoltà che abbiamo riscontrato è 
+Abbiamo cercato di attenerci il più possibile alla metodologia Scrum. La maggiore difficoltà che abbiamo riscontrato è 
 stata rispettare i tempi stabiliti per gli sprint. Ciò può essere dipeso dalla nostra inesperienza nell’utilizzare tale 
 metodologia di progetto, ma sicuramente anche dalle stime ottimistiche fatte all’inizio. Nella fase iniziale del 
 progetto, infatti, non abbiamo considerato adeguatamente la complessità insita nel dominio.
@@ -19,3 +20,21 @@ diverse parti del progetto. Ciò ha rallentato il processo di sviluppo non perme
 task per come suddivisi tra i membri del team.
 
 Siamo consapevoli di alcuni refactor ed estensioni che non abbiamo realizzato per mancanza di tempo.
+
+Nello specifico, Eugenio Tampieri avrebbe voluto esprimere i livelli delle gerarchie con gli oggetti associati ai tipi
+(ad es. `City.type`), in modo da eliminare alcuni input non validi a compile time.
+Questo refactor avrebbe consentito di esprimere le interrogazioni nel seguente modo:
+```scala
+SalesCube where (City is "Berlin" and (Month is "January"))
+```
+Ciò avrebbe portato a lasciare i valori stringa solo per rappresentare i valori dimensionali, e non per l'intero nome.
+
+Questo non è stato possibile per mancanza di tempo.
+
+Tampieri avrebbe anche voluto realizzare la code generation o come plugin di *Dotty* o come task di `sbt`.
+
+Secondo Tampieri, dover aggregare sull'intero insieme di dati vanifica la lazyness e porta a una cattiva scalabilità sulla
+memoria, e questo è un peccato.
+
+Infine, Tampieri ha potuto apprezzare l'utilità del TDD, che gli ha permesso di intercettare molti errori compiuti in fase
+di code generation.
