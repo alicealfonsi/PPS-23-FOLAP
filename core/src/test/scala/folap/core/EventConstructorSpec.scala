@@ -17,8 +17,11 @@ class EventConstructorSpec extends AnyFlatSpec with should.Matchers:
   val measures: Iterable[ExampleEventMeasure] = List(
     QuantityExampleMeasure(measureValue)
   )
-  private def createEvent
-      : EventConstructor[ExampleEventAttribute, ExampleEventMeasure] =
+  private def createEvent: EventConstructor[
+    ExampleEventAttribute,
+    ExampleEventMeasure,
+    ResultEvent
+  ] =
     (
         dimensions: Iterable[ExampleEventAttribute],
         measures: Iterable[ExampleEventMeasure]

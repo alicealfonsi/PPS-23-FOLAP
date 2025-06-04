@@ -8,7 +8,7 @@ object AttributeDSLBuilder:
     * natural syntax with the infix `is` keyword.
     *
     * @param name
-    *   base name of the attribute.
+    *   name of the attribute.
     * @param value
     *   value of the attribute.
     * @return
