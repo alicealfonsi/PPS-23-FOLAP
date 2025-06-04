@@ -1,5 +1,5 @@
 package folap.olapdsl
-import folap.olapDSL.AttributeDSL.AttributeDSL
+import folap.olapdsl.AttributeDSL.AttributeDSL
 
 /** Provides a simple and readable DSL for creating AttributeDSL instances.
   */
