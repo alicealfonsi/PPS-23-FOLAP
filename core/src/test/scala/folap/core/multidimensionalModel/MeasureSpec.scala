@@ -1,10 +1,9 @@
-package folap.core
+package folap.core.multidimensionalModel
 
 import folap.core.multidimensionalmodel.Measure
 import org.scalatest._
-
-import flatspec._
-import matchers._
+import org.scalatest.flatspec._
+import org.scalatest.matchers._
 
 class MeasureSpec extends AnyFlatSpec with should.Matchers:
   private case class IntMeasure(override val value: Int) extends Measure:
@@ -31,12 +30,12 @@ class MeasureSpec extends AnyFlatSpec with should.Matchers:
     val measure: IntMeasure = IntMeasure(value)
     measure.name shouldEqual "IntMeasure"
 
-  it should "accept an integer value" in:
+  it should "accept an Int value" in:
     val value: Int = 42
     val measure: IntMeasure = IntMeasure(value)
     measure.value shouldEqual value
 
-  it should "accept a long value" in:
+  it should "accept a Long value" in:
     val value: Long = 4242
     val measure: LongMeasure = LongMeasure(value)
     measure.value shouldEqual value
@@ -46,12 +45,12 @@ class MeasureSpec extends AnyFlatSpec with should.Matchers:
     val measure: BigIntMeasure = BigIntMeasure(value)
     measure.value shouldEqual value
 
-  it should "accept a float value" in:
+  it should "accept a Float value" in:
     val value: Float = 42.42
     val measure: FloatMeasure = FloatMeasure(value)
     measure.value shouldEqual value
 
-  it should "accept a double value" in:
+  it should "accept a Double value" in:
     val value: Double = 424242.424242
     val measure: DoubleMeasure = DoubleMeasure(value)
     measure.value shouldEqual value

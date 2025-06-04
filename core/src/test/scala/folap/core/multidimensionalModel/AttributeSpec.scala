@@ -1,12 +1,15 @@
-package folap.core
+package folap.core.multidimensionalModel
 
 import folap.core.multidimensionalmodel._
+import folap.core.CubeMockup
 import org.scalatest._
-
-import flatspec._
-import matchers._
+import org.scalatest.flatspec._
+import org.scalatest.matchers._
 
 class AttributeSpec extends AnyFlatSpec with should.Matchers:
+  private case class TopAttribute() extends Attribute:
+    override val parent: Option[Attribute] = None
+    override val value: String = ""
   private case class ExampleAttribute() extends Attribute:
     override val parent: Option[Attribute] = Some(TopAttribute())
     override val value: String = ""
@@ -29,7 +32,8 @@ class AttributeSpec extends AnyFlatSpec with should.Matchers:
   it should "have a hierarchy" in:
     dim.hierarchy shouldEqual List(dim, attribute, TopAttribute())
 
-  import CubeMockup.*, GeographicAttribute.*
+  import CubeMockup.*
+  import GeographicAttribute.*
   val shop: Shop = shop1
   it should "find the Attribute name in its hierarchy that matches one of the specified names if such an Attribute exists" in:
     shop.searchCorrespondingAttributeName(

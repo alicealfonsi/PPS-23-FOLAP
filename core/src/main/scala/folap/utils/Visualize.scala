@@ -2,6 +2,11 @@ package folap.utils
 import folap.core.Event
 import folap.core.multidimensionalmodel._
 
+/** Displays a sequence of events in a readable, structured format.
+  *
+  * @param events
+  *   a collection of events.
+  */
 def visualize(events: Iterable[Event[_, _]]): Unit =
   events.zipWithIndex.foreach { (event, idx) =>
     println(s"--- Event ${idx + 1} ---")
@@ -17,14 +22,11 @@ def visualize(events: Iterable[Event[_, _]]): Unit =
     }
 
     orderedDims.foreach { attr =>
-      val name = attr.name
-      println(s"$name: ${attr.value}")
+      println(s"${attr.name}: ${attr.value}")
     }
 
     event.measures.foreach { m =>
-      val name = m.name
-      val value = m.value
-      println(s"$name: $value")
+      println(s"${m.name}: ${m.value}")
     }
 
     println()

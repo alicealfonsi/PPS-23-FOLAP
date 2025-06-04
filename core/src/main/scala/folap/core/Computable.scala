@@ -14,7 +14,7 @@ trait Computable[A <: Attribute, M <: Measure, E <: Event[A, M]]:
   /** Extension methods for instances of E
     */
   extension (e: E)
-    /** Performs the sum operation between the Event and the other Event
+    /** Performs the sum operation between this Event and the other Event
       * according to the group-by set
       * @param other
       *   the second term of the sum operation
@@ -25,15 +25,15 @@ trait Computable[A <: Attribute, M <: Measure, E <: Event[A, M]]:
       */
     def sum(other: E)(groupBySet: Iterable[String]): E
 
-    /** Performs the operation of dividing the Event by an integer
+    /** Performs the operation of dividing the Event by an Int number
       * @param n
-      *   the integer to divide by
+      *   the Int number to divide by
       * @return
       *   a new Event resulting from the division
       */
     def div(n: Int): E
 
-    /** Performs the minimum operation between the Event and the other Event
+    /** Performs the minimum operation between this Event and the other Event
       * according to the group-by set
       * @param other
       *   the second term of the minimum operation
@@ -45,7 +45,7 @@ trait Computable[A <: Attribute, M <: Measure, E <: Event[A, M]]:
       */
     def min(other: E)(groupBySet: Iterable[String]): E
 
-    /** Performs the maximum operation between the Event and the other Event
+    /** Performs the maximum operation between this Event and the other Event
       * according to the group-by set
       * @param other
       *   the second term of the maximum operation
