@@ -91,9 +91,3 @@ object Attribute:
       *   the Attribute whose name matches the one specified
       */
     def upToLevel(level: String): A = hierarchy.find(_.name == level).get
-
-/** The top Attribute in the hierarchy
-  */
-case class TopAttribute() extends Attribute:
-  override val parent: Option[Attribute] = None
-  override val value: String = ""

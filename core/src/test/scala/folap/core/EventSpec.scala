@@ -8,6 +8,9 @@ import matchers._
 
 trait ExampleEventAttribute extends Attribute
 trait ExampleEventMeasure extends Measure
+private case class TopAttribute() extends Attribute:
+  override val parent: Option[Attribute] = None
+  override val value: String = ""
 private case class DimensionExampleAttribute(
     override val parent: Option[TopAttribute],
     override val value: String
